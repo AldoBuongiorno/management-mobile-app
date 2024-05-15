@@ -7,8 +7,10 @@ environment:
   sdk: '>=3.3.4 <4.0.0'
 
 dependencies:
+  carousel_slider: ^4.2.1
   flutter:
     sdk: flutter
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +19,11 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+  - family: Poppins
+    fonts:
+      - asset: assets/fonts/poppins/Poppins-Regular.ttf
+      - asset: assets/fonts/poppins/Poppins-Bold.ttf
+        
+    
+
