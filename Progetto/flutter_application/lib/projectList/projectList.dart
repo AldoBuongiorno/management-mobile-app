@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../projectItems.dart';
 
+List<ProjectItem> testList = populateTestList();
+
 class ProjectList {
-  List<ProjectItem> testList = populateTestList();
+  List<ProjectItem> getList() {
+    return testList;
+  }
+  //List<ProjectItem> testList = populateTestList();
 }
 
 List<ProjectItem> populateTestList() {

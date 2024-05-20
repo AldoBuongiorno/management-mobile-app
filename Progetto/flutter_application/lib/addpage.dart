@@ -88,7 +88,7 @@ class SecondRoute extends StatelessWidget {
                 backgroundColor: const Color.fromARGB(0, 255, 193, 7),
                 title: const Text('Second Route'),
               ),*/
-              body: Column(children: [
+              body: SingleChildScrollView(child:  Column(children: [
                 ProjectNameForm(),
                 ElevatedButton(
                   onPressed: () {
@@ -97,6 +97,6 @@ class SecondRoute extends StatelessWidget {
                   child: const Text('Go back!'),
                 ),
               ]),
-            ));
+            )));
   }
 }

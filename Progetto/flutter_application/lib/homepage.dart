@@ -156,7 +156,7 @@ class HomePageScreen extends StatelessWidget {
                     color: Color.fromARGB(255, 0, 0, 0)))
           ]),
           const SizedBox(height: 10),
-          addCarouselIfNotEmpty(ProjectList().testList),
+          addCarouselIfNotEmpty(ProjectList().getList()),
           /*CarouselSlider.builder(
               itemCount: testList.length,
               itemBuilder: (context, index, realIndex) {
@@ -178,7 +178,7 @@ class HomePageScreen extends StatelessWidget {
                     color: Color.fromARGB(255, 0, 0, 0)))
           ]),
           const SizedBox(height: 10),
-          addTeamsIfNotEmpty(ProjectList().testList),
+          addTeamsIfNotEmpty(ProjectList().getList()),
           
         ],
       ),

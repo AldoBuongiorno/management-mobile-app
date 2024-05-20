@@ -22,7 +22,7 @@ class ProjectItem {
   ProjectItem(this.name, this.description, this.status, this.mainTeam);
 
   String toString() {
-    return name + '\n' + description;
+    return name + ' ' + description;
   }
   
 }
