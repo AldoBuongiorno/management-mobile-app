@@ -26,6 +26,7 @@ class Group21App extends StatelessWidget {
     return MaterialApp(
       title: 'Gruppo 21',
       theme: ThemeData(
+          textSelectionTheme: TextSelectionThemeData(selectionHandleColor: Colors.pink, selectionColor: Colors.pinkAccent, cursorColor: Colors.pink),
           scaffoldBackgroundColor: Colors.transparent,
           appBarTheme: AppBarTheme(backgroundColor: Colors.transparent, toolbarHeight: 50),
           textTheme: Theme.of(context).textTheme.apply(

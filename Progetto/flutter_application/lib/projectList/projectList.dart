@@ -2,9 +2,26 @@ import 'package:flutter/material.dart';
 
 import '../projectItems.dart';
 
+
+Member member1 = Member("Mario", "Rossi", "Direttore");
+  Member member2 = Member("Luigi", "Bianchi", "Operaio");
+  Member member3 = Member("Carla", "Verdi", "Supervisore");
+  Team team1 = Team("Team 1", List<Member>.from(<Member>[member1, member2]));
+  Team team2 = Team("Team 2", List<Member>.from(<Member>[member3, member2]));
+  Team team3 = Team("Team 3", List<Member>.from(<Member>[member1]));
+List<Team> teamsList = List.from(<Team>[team1, team2, team3]);
 List<ProjectItem> testList = populateTestList();
+List<AssetImage> thumbnailList = List.from(<AssetImage>[AssetImage('assets/images/projectPreview/default.jpg'), AssetImage('assets/images/projectPreview/architectural.jpg'), AssetImage('assets/images/projectPreview/baking.jpg'), AssetImage('assets/images/projectPreview/engineering.jpg'), AssetImage('assets/images/projectPreview/safety.jpg'), AssetImage('assets/images/projectPreview/studying.jpg')]);
 
 class ProjectList {
+  List<Team> getTeam() {
+    return teamsList;
+  }
+
+  List<AssetImage> getThumbnailList() {
+    return thumbnailList;
+  }
+
   List<ProjectItem> getList() {
     return testList;
   }
@@ -27,8 +44,7 @@ List<ProjectItem> populateTestList() {
   ProjectItem project5 =
       ProjectItem("Intelligenza Artificiale", "Boh", "Archiviato", team3);
 
-  project1.preview =
-      AssetImage('assets/images/projectPreview/architectural.jpg');
+  project1.preview = AssetImage('assets/images/projectPreview/architectural.jpg');
   project2.preview = AssetImage('assets/images/projectPreview/engineering.jpg');
   project3.preview = AssetImage('assets/images/projectPreview/safety.jpg');
   project4.preview = AssetImage('assets/images/projectPreview/baking.jpg');

@@ -75,8 +75,9 @@ class SecondRoute extends StatelessWidget {
                       child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                     child: AppBar(
+                      foregroundColor: Colors.white,
                       //titleTextStyle: TextStyle(color: Colors.white),
-                      backgroundColor: const Color.fromARGB(56, 0, 0, 0),
+                      backgroundColor: const Color.fromARGB(100, 0, 0, 0),
                       title: const Text('Aggiungi progetto'),
                     ),
                   )),
