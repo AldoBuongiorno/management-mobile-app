@@ -1,15 +1,29 @@
 
-class Project {
+import 'package:flutter/material.dart';
+
+class ProjectItem {
   String name;
   String description;
   String status;
 
   late DateTime completionDate;
-  Team team;
+  Team mainTeam;
+  late Team secondaryTeam;
 
   bool finished = false;
 
-  Project(this.name, this.description, this.status, this.team);
+  void setStatus(String status) {
+    if(status == 'Completato') finished = true;
+    this.status = status;
+  }
+
+  late AssetImage preview;
+
+  ProjectItem(this.name, this.description, this.status, this.mainTeam);
+
+  String toString() {
+    return name + '\n' + description;
+  }
   
 }
 

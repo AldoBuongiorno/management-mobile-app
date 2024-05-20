@@ -10,6 +10,7 @@ dependencies:
   carousel_slider: ^4.2.1
   flutter:
     sdk: flutter
+  css_colors: ^1.0.0
   smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
@@ -18,12 +19,25 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
+  assets:
+  - assets\images\projectPreview\architectural.jpg
+  - assets\images\projectPreview\baking.jpg
+  - assets\images\projectPreview\default.jpg
+  - assets\images\projectPreview\engineering.jpg
+  - assets\images\projectPreview\safety.jpg
+  - assets\images\projectPreview\studying.jpg
+  
   uses-material-design: true
   fonts:
   - family: Poppins
     fonts:
       - asset: assets/fonts/poppins/Poppins-Regular.ttf
       - asset: assets/fonts/poppins/Poppins-Bold.ttf
+  - family: SamsungSharpSans
+    fonts:
+      - asset: assets/fonts/samsungsharpsans/SamsungSharpSans-Regular.otf
+      - asset: assets/fonts/samsungsharpsans/SamsungSharpSans-Bold.otf
+      - asset: assets/fonts/samsungsharpsans/SamsungSharpSans-Medium.otf
         
     
 
