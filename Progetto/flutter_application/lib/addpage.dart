@@ -47,9 +47,7 @@ class SecondRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return /*Container(
-      decoration: BoxDecoration(image: DecorationImage(fit: BoxFit.fill, image: AssetImage('assets/images/projectPreview/engineering.jpg'))),
-        child: */
+    return 
         Container(
             decoration: const BoxDecoration(
                 gradient: LinearGradient(

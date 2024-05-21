@@ -29,7 +29,11 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
     DropdownButtonExample secondaryTeamDropDown = DropdownButtonExample();
     SelectableThumbnailGrid grid = SelectableThumbnailGrid();
     ProjectItem projectItem;
-    return Column(children: [
+    return Container( margin: EdgeInsets.symmetric(vertical: 10,
+                        horizontal: MediaQuery.of(context).orientation ==
+                                Orientation.portrait
+                            ? 75
+                            : 200), child: Column(children: [
       const SizedBox(height: 20),
       const Row(children: [
         SizedBox(width: 25),
@@ -45,7 +49,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: BlurredBox(
-            borderRadius: 10,
+            borderRadius: 30,
             sigma: 5,
             child: TextField(
               style: const TextStyle(color: Colors.white),
@@ -187,7 +191,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
                 .getThumbnail()]; //AssetImage('assets/images/projectPreview/engineering.jpg');
           },
           child: const Text("Aggiungi alla lista"))
-    ]);
+    ]));
   }
 }
 

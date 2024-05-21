@@ -8,35 +8,7 @@ import './carouselItem.dart';
 import './projectItems.dart';
 import './addpage.dart';
 import './projectList/projectList.dart';
-
-/*List<ProjectItem> testList = populateTestList();
-
-List<ProjectItem> populateTestList() {
-  Member member1 = Member("Mario", "Rossi", "Direttore");
-  Member member2 = Member("Luigi", "Bianchi", "Operaio");
-  Member member3 = Member("Carla", "Verdi", "Supervisore");
-  Team team1 = Team("Team 1", List<Member>.from(<Member>[member1, member2]));
-  Team team2 = Team("Team 2", List<Member>.from(<Member>[member3, member2]));
-  Team team3 = Team("Team 3", List<Member>.from(<Member>[member1]));
-
-  ProjectItem project1 =
-      ProjectItem("Mobile Programming", "Boh", "Attivo", team1);
-  ProjectItem project2 = ProjectItem("Basi di Dati", "Boh", "Attivo", team2);
-  ProjectItem project3 = ProjectItem("Statistica", "Boh", "Sospeso", team2);
-  ProjectItem project4 = ProjectItem("IOT", "Boh", "Archiviato", team3);
-  ProjectItem project5 =
-      ProjectItem("Intelligenza Artificiale", "Boh", "Archiviato", team3);
-
-  project1.preview =
-      AssetImage('assets/images/projectPreview/architectural.jpg');
-  project2.preview = AssetImage('assets/images/projectPreview/engineering.jpg');
-  project3.preview = AssetImage('assets/images/projectPreview/safety.jpg');
-  project4.preview = AssetImage('assets/images/projectPreview/baking.jpg');
-  project5.preview = AssetImage('assets/images/projectPreview/default.jpg');
-
-  return List<ProjectItem>.from(
-      <ProjectItem>[project1, project2, project3, project4, project5]);
-}*/
+import './navigation/project_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   final screens = [
     HomePageScreen(),
-    Center(child: Text('Progetti')),
+    ProjectScreen(),
     AddPage(),
     Center(child: Text('Gestione')),
     Center(child: Text('Statistiche')),
@@ -76,6 +48,7 @@ class _HomePageState extends State<HomePage> {
         )),
         child: Scaffold(
             appBar: AppBar(
+              toolbarHeight: 0,
               systemOverlayStyle: const SystemUiOverlayStyle(
                 statusBarColor: Color.fromARGB(56, 0, 0, 0),
               ),
