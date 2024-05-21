@@ -18,6 +18,7 @@ class ProjectItem {
   }
 
   late AssetImage preview;
+  late List<Task> tasks = List.empty(growable: true);
 
   ProjectItem(this.name, this.description, this.status, this.mainTeam);
 
