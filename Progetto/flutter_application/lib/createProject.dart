@@ -32,11 +32,11 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
     return Container( margin: EdgeInsets.symmetric(vertical: 10,
                         horizontal: MediaQuery.of(context).orientation ==
                                 Orientation.portrait
-                            ? 75
-                            : 200), child: Column(children: [
+                            ? 20
+                            : 100), child: Column(children: [
       const SizedBox(height: 20),
       const Row(children: [
-        SizedBox(width: 25),
+        //SizedBox(width: 5),
         Text(
           "Nome",
           style: TextStyle(
@@ -47,7 +47,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
         )
       ]),
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
         child: BlurredBox(
             borderRadius: 30,
             sigma: 5,
@@ -68,7 +68,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
       ),
       const SizedBox(height: 5),
       const Row(children: [
-        SizedBox(width: 25),
+        //SizedBox(width: 25),
         Text(
           "Descrizione",
           style: TextStyle(
@@ -79,7 +79,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
         )
       ]),
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
         child: BlurredBox(
             borderRadius: 10,
             sigma: 5,
@@ -99,7 +99,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
       ),
       const SizedBox(height: 5),
       const Row(children: [
-        SizedBox(width: 25),
+        //SizedBox(width: 25),
         Text(
           "Team",
           style: TextStyle(
@@ -111,13 +111,13 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
       ]),
       const SizedBox(height: 5),
       Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
+          padding: EdgeInsets.symmetric(horizontal: 0),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [mainTeamDropDown, secondaryTeamDropDown])),
       const SizedBox(height: 5),
       const Row(children: [
-        SizedBox(width: 25),
+        //SizedBox(width: 25),
         Text(
           "Copertina",
           style: TextStyle(
@@ -131,7 +131,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
       grid,
 
       const Row(children: [
-      SizedBox(width: 25),
+      //SizedBox(width: 25),
         Text(
           "Task",
           style: TextStyle(
@@ -142,7 +142,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
         )
       ]),
       Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
         child: BlurredBox(
             borderRadius: 10,
             sigma: 5,
@@ -268,7 +268,7 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
         child: GridView.builder(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,

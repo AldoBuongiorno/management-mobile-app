@@ -29,8 +29,8 @@ class _ProjectScreen extends State<ProjectScreen> {
     return Container(margin: EdgeInsets.symmetric(vertical: 10,
                         horizontal: MediaQuery.of(context).orientation ==
                                 Orientation.portrait
-                            ? 75
-                            : 200),
+                            ? 20
+                            : 100),
        child: Column(
         
           
