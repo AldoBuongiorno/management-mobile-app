@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../commonElements/blurredBox.dart';
-import '../projectItems.dart';
-import '../projectList/projectList.dart';
-import '../carouselItem.dart';
-import './screens/project_screen.dart';
+import '../commonElements/blurred_box.dart';
+import '../commonElements/project_items.dart';
+import '../data/project_list.dart';
+import '../commonElements/carousel_item.dart';
+import 'routes/project_screen.dart';
 
 class ProjectScreen extends StatefulWidget {
   const ProjectScreen({super.key});
@@ -96,7 +96,7 @@ Widget buildProjectContainer(list, context) {
                     height: 200,
                     decoration: BoxDecoration(
                         image: DecorationImage(
-                            image: list[index].preview,
+                            image: list[index].thumbnail,
                             fit: BoxFit.cover),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     padding: EdgeInsets.zero,

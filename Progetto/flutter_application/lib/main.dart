@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application/data/project_list.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:css_colors/css_colors.dart';
 import './homepage.dart';
@@ -23,6 +24,7 @@ class Group21App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProjectList();
     return MaterialApp(
       title: 'Gruppo 21',
       theme: ThemeData(

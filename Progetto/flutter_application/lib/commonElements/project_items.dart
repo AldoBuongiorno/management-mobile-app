@@ -7,7 +7,8 @@ class ProjectItem {
   String status;
 
   late DateTime completionDate;
-  Team mainTeam;
+  DateTime startDate = DateTime.now();
+  Team team;
   //late Team secondaryTeam;
 
   bool finished = false;
@@ -17,10 +18,14 @@ class ProjectItem {
     this.status = status;
   }
 
-  late AssetImage preview;
+  bool isActive() {
+    return status == "Attivo" ? true : false;
+  }
+
+  late AssetImage thumbnail;
   late List<Task> tasks = List.empty(growable: true);
 
-  ProjectItem(this.name, this.description, this.status, this.mainTeam);
+  ProjectItem(this.name, this.description, this.status, this.team);
 
   String toString() {
     return name + ' ' + description;
@@ -51,7 +56,7 @@ class Member {
 
 class Task {
   String taskName;
-  late DateTime completionTime;
+  late DateTime completionDate;
   bool finished = false;
   double progress = 0;
 

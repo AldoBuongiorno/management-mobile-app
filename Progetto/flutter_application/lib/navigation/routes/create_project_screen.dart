@@ -1,17 +1,19 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_application/commonElements/blurredBox.dart';
-import './projectList/projectList.dart';
-import 'projectItems.dart';
+import 'package:flutter_application/commonElements/blurred_box.dart';
+import 'package:flutter_application/commonElements/headings_title.dart';
+import '../../data/project_list.dart';
+import '../../commonElements/project_items.dart';
+import '../../commonElements/headings_title.dart';
 
-class ProjectNameForm extends StatefulWidget {
-  const ProjectNameForm({super.key});
+class CreateProjectScreen extends StatefulWidget {
+  const CreateProjectScreen({super.key});
 
   @override
-  State<ProjectNameForm> createState() => _ProjectNameFormState();
+  State<CreateProjectScreen> createState() => _CreateProjectScreenState();
 }
 
-class _ProjectNameFormState extends State<ProjectNameForm> {
+class _CreateProjectScreenState extends State<CreateProjectScreen> {
   final projectNameController = TextEditingController();
   final projectDescriptionController = TextEditingController();
   TextEditingController taskInputController = TextEditingController();
@@ -24,9 +26,9 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
 
   @override
   Widget build(BuildContext context) {
-    CheckboxListTileExample taskCheckboxList = CheckboxListTileExample();
-    DropdownButtonExample mainTeamDropDown = DropdownButtonExample();
-    DropdownButtonExample secondaryTeamDropDown = DropdownButtonExample();
+    CheckboxListTileExample taskCheckboxList = const CheckboxListTileExample();
+    DropdownButtonExample mainTeamDropDown = const DropdownButtonExample();
+    DropdownButtonExample secondaryTeamDropDown = const DropdownButtonExample();
     SelectableThumbnailGrid grid = SelectableThumbnailGrid();
     ProjectItem projectItem;
     return Container(
@@ -38,16 +40,9 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
                     : 100),
         child: Column(children: [
           const SizedBox(height: 20),
-          const Row(children: [
+          Row(children: [
             //SizedBox(width: 5),
-            Text(
-              "Nome",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'SamsungSharpSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
-            )
+            CustomHeadingTitle(titleText: "Nome"),
           ]),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
@@ -71,16 +66,9 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
                 )),
           ),
           const SizedBox(height: 5),
-          const Row(children: [
+          Row(children: [
             //SizedBox(width: 25),
-            Text(
-              "Descrizione",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'SamsungSharpSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
-            )
+            CustomHeadingTitle(titleText: "Descrizione"),
           ]),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
@@ -103,47 +91,26 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
                 )),
           ),
           const SizedBox(height: 5),
-          const Row(children: [
+          Row(children: [
             //SizedBox(width: 25),
-            Text(
-              "Team",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'SamsungSharpSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
-            )
-          ]),
+            CustomHeadingTitle(titleText: "Team"),
+                      ]),
           const SizedBox(height: 5),
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [mainTeamDropDown, secondaryTeamDropDown])),
           const SizedBox(height: 5),
-          const Row(children: [
+          Row(children: [
             //SizedBox(width: 25),
-            Text(
-              "Copertina",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'SamsungSharpSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
-            )
+            CustomHeadingTitle(titleText: "Copertina"),
           ]),
           grid,
-          const Row(children: [
+          Row(children: [
             //SizedBox(width: 25),
-            Text(
-              "Task",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'SamsungSharpSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22),
-            )
-          ]),
+            CustomHeadingTitle(titleText: "Task"),
+                      ]),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             child: BlurredBox(
@@ -155,28 +122,28 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
                           onPressed: () {
-                            if(!taskInputController.text.isEmpty)
-                            
-                            ProjectList()
+                            if(taskInputController.text.isNotEmpty) {
+                              ProjectList()
                                 .getTaskList()
                                 .add(Task(taskInputController.text));
+                            }
                             taskInputController.clear();
                             setState(() {});
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.add,
                             color: Colors.white,
                           )),
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                          const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       filled: true,
-                      fillColor: Color.fromARGB(100, 0, 0, 0),
-                      border: OutlineInputBorder(
+                      fillColor: const Color.fromARGB(100, 0, 0, 0),
+                      border: const OutlineInputBorder(
                           //borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none),
                       hintText: 'Inserisci una task',
-                      hintStyle: TextStyle(
-                          color: const Color.fromARGB(255, 192, 192, 192))),
+                      hintStyle: const TextStyle(
+                          color: Color.fromARGB(255, 192, 192, 192))),
                 )),
 
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
@@ -199,7 +166,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
                 ProjectList().getList().add(projectItem),
                 
 
-                projectItem.preview = ProjectList().getThumbnailList()[grid
+                projectItem.thumbnail = ProjectList().getThumbnailList()[grid
                     .getThumbnail()] };
               },
               child: const Text("Aggiungi alla lista"))
@@ -207,6 +174,7 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
   }
 }
 
+//da eliminare
 class DropdownButtonExample extends StatefulWidget {
   const DropdownButtonExample({super.key});
 
@@ -225,7 +193,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
         width: MediaQuery.of(context).orientation == Orientation.portrait
             ? 160
             : 350,
-        padding: EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.only(right: 10),
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(25)),
         child: DropdownButton<String>(
@@ -239,7 +207,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
           ),
           elevation: 8,
           style: const TextStyle(color: Colors.white),
-          underline: SizedBox(),
+          underline: const SizedBox(),
           //decoration: InputDecoration( ),
           onChanged: (String? value) {
             // This is called when the user selects an item.
@@ -254,7 +222,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
               value: value.teamName,
               child: Text(
                 value.teamName,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             );
           }).toList(),
@@ -317,9 +285,9 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
                                   borderRadius: 10,
                                   sigma: 2,
                                   child: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         color:
-                                            const Color.fromARGB(100, 0, 0, 0)),
+                                            Color.fromARGB(100, 0, 0, 0)),
                                     child: Center(
                                       child: Icon(
                                         Icons.check_circle,
@@ -343,7 +311,7 @@ class CheckboxListTileApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTileExample();
+    return const CheckboxListTileExample();
   }
 }
 
@@ -360,7 +328,7 @@ class _CheckboxListTileExampleState extends State<CheckboxListTileExample> {
   Widget build(BuildContext context) {
     return ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: ProjectList().getTaskList().length,
         itemBuilder: (context, index) {
           return CheckboxListTile(
@@ -375,7 +343,7 @@ class _CheckboxListTileExampleState extends State<CheckboxListTileExample> {
               });
             },
             secondary: IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 onPressed: () {
                   ProjectList().getTaskList().removeAt(ProjectList()
                       .getTaskList()

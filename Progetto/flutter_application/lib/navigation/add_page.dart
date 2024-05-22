@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import '../createProject.dart';
+import 'routes/create_project_screen.dart';
 
 class AddPage extends StatelessWidget {
   const AddPage({super.key});
@@ -88,7 +88,7 @@ class SecondRoute extends StatelessWidget {
                 title: const Text('Second Route'),
               ),*/
               body: SingleChildScrollView(child:  Column(children: [
-                ProjectNameForm(),
+                CreateProjectScreen(),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../commonElements/blurredBox.dart';
+import '../commonElements/blurred_box.dart';
 import '../commonElements/headings_title.dart';
-import '../projectItems.dart';
-import '../projectList/projectList.dart';
+import '../commonElements/project_items.dart';
+import '../data/project_list.dart';
 
 //List<Member> memberList = getMembersList(); //.add(Member("Mario", "Rossi", "Impiegato"));
 
@@ -12,13 +12,13 @@ class MemberListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: memberList.length,
                 itemBuilder: ((context, index) {
                   return Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    padding: EdgeInsets.only(top: 8, bottom: 8, left: 10),
+                    margin: const EdgeInsets.symmetric(vertical: 5),
+                    padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
@@ -26,7 +26,9 @@ class MemberListView extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Column(
+                            /*Icon(Icons.person, size: 35,),
+                            SizedBox(width: 10,),*/
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -35,7 +37,7 @@ class MemberListView extends StatelessWidget {
                                 Text('Ruolo:')
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 10,
                             ),
                             Column(
@@ -43,15 +45,15 @@ class MemberListView extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                       memberList[index].name),
                                   Text(
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                       memberList[index].surname),
                                   Text(
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                       memberList[index].role)
                                 ])
@@ -71,10 +73,7 @@ class TeamScreen extends StatefulWidget {
 }
 
 class _TeamScreenState extends State<TeamScreen> {
-  List<Member> memberList = List.from(<Member>[
-    Member("Mario", "Rossi", "Impiegato"),
-    Member("Jeanne", "QT", "Altro")
-  ]);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -89,38 +88,38 @@ class _TeamScreenState extends State<TeamScreen> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               CustomHeadingTitle(titleText: "Partecipanti"),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                   "Per aggiungere partecipanti, recati nella schermata di aggiunta progetti e team."),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              !memberList.isEmpty
-                  ? MemberListView(memberList)
-                  : Text("Al momento non sono presenti partecipanti."),
-              SizedBox(height: 10),
+              !ProjectList.membersList.isEmpty
+                  ? MemberListView(ProjectList.membersList)
+                  : const Text("Al momento non sono presenti partecipanti."),
+              const SizedBox(height: 10),
               CustomHeadingTitle(titleText: "Team"),
               ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: ProjectList().getTeam().length,
                   itemBuilder: (context, index) {
-                    return ExpansionTileExample(memberList, index);
+                    return ExpandableTeamTile(ProjectList.membersList, index);
                   })
             ])));
   }
 }
 
-class ExpansionTileExample extends StatefulWidget {
-  ExpansionTileExample(this.memberList, this.index, {super.key});
+class ExpandableTeamTile extends StatefulWidget {
+  ExpandableTeamTile(this.memberList, this.index, {super.key});
   List<Member> memberList;
   int index;
 
   @override
-  State<ExpansionTileExample> createState() => _ExpansionTileExampleState();
+  State<ExpandableTeamTile> createState() => _ExpandableTeamTileState();
 }
 
-class _ExpansionTileExampleState extends State<ExpansionTileExample> {
+class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
   bool _customTileExpanded = false;
 
   @override
@@ -132,7 +131,7 @@ class _ExpansionTileExampleState extends State<ExpansionTileExample> {
           dividerColor: Colors.transparent,
         ),
         child: Container(
-            margin: EdgeInsets.symmetric(vertical: 5),
+            margin: const EdgeInsets.symmetric(vertical: 5),
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(25)),
             child: Column(
@@ -142,16 +141,22 @@ class _ExpansionTileExampleState extends State<ExpansionTileExample> {
                   collapsedIconColor: Colors.pink,
                   expandedAlignment: Alignment.centerLeft,
 
-                  title: Text(
+                  title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween ,children: [ Text(
                     teamList[widget.index].teamName,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontFamily: 'Poppins', fontWeight: FontWeight.bold),
+                        
                   ),
+                  Text(
+                    ("(${teamList[widget.index].members.length} membri)"),
+                    style: const TextStyle(
+                        fontFamily: 'Poppins', fontSize: 14)
+                )]),
                   //subtitle: Text('Trailing expansion arrow icon'),
                   children: [
                     for (Member member in widget.memberList)
                       Container(
-                          margin: EdgeInsets.only(left: 30, bottom: 5),
+                          margin: const EdgeInsets.only(left: 30, bottom: 5),
                           child: Text(member.name + ' ' + member.surname))
                   ],
                 ),

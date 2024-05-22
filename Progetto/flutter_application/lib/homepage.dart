@@ -5,10 +5,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application/navigation/team_page.dart';
-import './carouselItem.dart';
-import './projectItems.dart';
+import 'commonElements/carousel_item.dart';
+import 'commonElements/project_items.dart';
 import 'navigation/add_page.dart';
-import './projectList/projectList.dart';
+import 'data/project_list.dart';
 import './navigation/project_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -44,8 +44,6 @@ class _HomePageState extends State<HomePage> {
           stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-
-          //stops: [0.6, 0.7, 0.8, 0.9]
         )),
         child: Scaffold(
             appBar: AppBar(
@@ -130,7 +128,7 @@ class HomePageScreen extends StatelessWidget {
                     color: Color.fromARGB(255, 0, 0, 0)))
           ]),
           const SizedBox(height: 10),
-          addCarouselIfNotEmpty(ProjectList().getList()),
+          addCarouselIfNotEmpty(ProjectList().getList().where((element) => element.isActive()).toList()),
           /*CarouselSlider.builder(
               itemCount: testList.length,
               itemBuilder: (context, index, realIndex) {
@@ -152,8 +150,21 @@ class HomePageScreen extends StatelessWidget {
                     color: Color.fromARGB(255, 0, 0, 0)))
           ]),
           const SizedBox(height: 10),
-          addTeamsIfNotEmpty(ProjectList().getList()),
-          
+          Container(
+            margin: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 20
+                        : 100),
+            child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: ProjectList().getTeam().length,
+                  itemBuilder: (context, index) {
+                    return ExpandableTeamTile(ProjectList.membersList, index);
+                  }),
+          )
         ],
       ),
     )));
@@ -163,7 +174,7 @@ class HomePageScreen extends StatelessWidget {
 Widget addCarouselIfNotEmpty(List testList) {
   if (testList.isEmpty) {
     return Container(
-      child: Text('Non ci sono progetti.'),
+      child: Text('Non ci sono progetti recenti.'),
       alignment: Alignment(0, 0),
       height: 75,
     );
