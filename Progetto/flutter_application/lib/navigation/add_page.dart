@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import './createProject.dart';
+import '../createProject.dart';
 
 class AddPage extends StatelessWidget {
   const AddPage({super.key});

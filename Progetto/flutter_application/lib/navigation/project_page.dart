@@ -21,11 +21,7 @@ class _ProjectScreen extends State<ProjectScreen> {
   final filterProjectListController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    /*for (ProjectItem item in list) {
-      projectContainers
-          .add(buildProjectContainer(context, list, list.indexOf(item)));
-      projectContainers.add(SizedBox(height: 20));
-    }*/
+    
     return Container(margin: EdgeInsets.symmetric(vertical: 10,
                         horizontal: MediaQuery.of(context).orientation ==
                                 Orientation.portrait

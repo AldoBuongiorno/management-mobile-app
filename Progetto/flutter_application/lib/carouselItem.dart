@@ -39,9 +39,10 @@ Widget teamCheck(ProjectItem testItem) {
 }
 
 Widget getProjectName(ProjectItem testItem) {
-  return Text(testItem.name,
+  return Flexible(child: Container(child: Text(testItem.name,
+  overflow: TextOverflow.ellipsis,
       style: TextStyle(
-          fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white));
+          fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white))));
 }
 
 Widget buildCarousel(int index, ProjectItem testItem) => Container(

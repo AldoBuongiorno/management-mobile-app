@@ -29,169 +29,181 @@ class _ProjectNameFormState extends State<ProjectNameForm> {
     DropdownButtonExample secondaryTeamDropDown = DropdownButtonExample();
     SelectableThumbnailGrid grid = SelectableThumbnailGrid();
     ProjectItem projectItem;
-    return Container( margin: EdgeInsets.symmetric(vertical: 10,
-                        horizontal: MediaQuery.of(context).orientation ==
-                                Orientation.portrait
-                            ? 20
-                            : 100), child: Column(children: [
-      const SizedBox(height: 20),
-      const Row(children: [
-        //SizedBox(width: 5),
-        Text(
-          "Nome",
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'SamsungSharpSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 22),
-        )
-      ]),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-        child: BlurredBox(
-            borderRadius: 30,
-            sigma: 5,
-            child: TextField(
-              style: const TextStyle(color: Colors.white),
-              controller: projectNameController,
-              decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  filled: true,
-                  fillColor: Color.fromARGB(100, 0, 0, 0),
-                  border: OutlineInputBorder(
-                      //borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  hintText: 'Inserisci il nome del progetto',
-                  hintStyle: TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
-            )),
-      ),
-      const SizedBox(height: 5),
-      const Row(children: [
-        //SizedBox(width: 25),
-        Text(
-          "Descrizione",
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'SamsungSharpSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 22),
-        )
-      ]),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-        child: BlurredBox(
-            borderRadius: 10,
-            sigma: 5,
-            child: TextField(
-              style: const TextStyle(color: Colors.white),
-              maxLines: 5,
-              controller: projectDescriptionController,
-              decoration: const InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  filled: true,
-                  fillColor: Color.fromARGB(100, 0, 0, 0),
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                  hintText: 'Questo progetto si pone l\' obiettivo di...',
-                  hintStyle: TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
-            )),
-      ),
-      const SizedBox(height: 5),
-      const Row(children: [
-        //SizedBox(width: 25),
-        Text(
-          "Team",
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'SamsungSharpSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 22),
-        )
-      ]),
-      const SizedBox(height: 5),
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [mainTeamDropDown, secondaryTeamDropDown])),
-      const SizedBox(height: 5),
-      const Row(children: [
-        //SizedBox(width: 25),
-        Text(
-          "Copertina",
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'SamsungSharpSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 22),
-        )
-      ]),
-      
-      grid,
-
-      const Row(children: [
-      //SizedBox(width: 25),
-        Text(
-          "Task",
-          style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'SamsungSharpSans',
-              fontWeight: FontWeight.bold,
-              fontSize: 22),
-        )
-      ]),
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-        child: BlurredBox(
-            borderRadius: 10,
-            sigma: 5,
-            child: TextField(
-              
-              style: const TextStyle(color: Colors.white),
-              controller: taskInputController,
-              decoration: InputDecoration(
-                suffixIcon: IconButton(onPressed: () { ProjectList().getTaskList().add(Task(taskInputController.text)); taskInputController.clear(); }, icon: Icon(Icons.add, color: Colors.white,)),
-                
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  filled: true,
-                  fillColor: Color.fromARGB(100, 0, 0, 0),
-                  border: OutlineInputBorder(
-                      //borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none),
-                  hintText: 'Inserisci una task',
-                  hintStyle: TextStyle(color: const Color.fromARGB(255, 192, 192, 192))),
-            )),
+    return Container(
+        margin: EdgeInsets.symmetric(
+            vertical: 10,
+            horizontal:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 20
+                    : 100),
+        child: Column(children: [
+          const SizedBox(height: 20),
+          const Row(children: [
+            //SizedBox(width: 5),
+            Text(
+              "Nome",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'SamsungSharpSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            )
+          ]),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+            child: BlurredBox(
+                borderRadius: 30,
+                sigma: 5,
+                child: TextField(
+                  style: const TextStyle(color: Colors.white),
+                  controller: projectNameController,
+                  decoration: const InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      filled: true,
+                      fillColor: Color.fromARGB(100, 0, 0, 0),
+                      border: OutlineInputBorder(
+                          //borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
+                      hintText: 'Inserisci il nome del progetto',
+                      hintStyle:
+                          TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
+                )),
+          ),
+          const SizedBox(height: 5),
+          const Row(children: [
+            //SizedBox(width: 25),
+            Text(
+              "Descrizione",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'SamsungSharpSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            )
+          ]),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+            child: BlurredBox(
+                borderRadius: 10,
+                sigma: 5,
+                child: TextField(
+                  style: const TextStyle(color: Colors.white),
+                  maxLines: 5,
+                  controller: projectDescriptionController,
+                  decoration: const InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      filled: true,
+                      fillColor: Color.fromARGB(100, 0, 0, 0),
+                      border: OutlineInputBorder(borderSide: BorderSide.none),
+                      hintText: 'Questo progetto si pone l\' obiettivo di...',
+                      hintStyle:
+                          TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
+                )),
+          ),
+          const SizedBox(height: 5),
+          const Row(children: [
+            //SizedBox(width: 25),
+            Text(
+              "Team",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'SamsungSharpSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            )
+          ]),
+          const SizedBox(height: 5),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [mainTeamDropDown, secondaryTeamDropDown])),
+          const SizedBox(height: 5),
+          const Row(children: [
+            //SizedBox(width: 25),
+            Text(
+              "Copertina",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'SamsungSharpSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            )
+          ]),
+          grid,
+          const Row(children: [
+            //SizedBox(width: 25),
+            Text(
+              "Task",
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'SamsungSharpSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22),
+            )
+          ]),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+            child: BlurredBox(
+                borderRadius: 10,
+                sigma: 5,
+                child: TextField(
+                  style: const TextStyle(color: Colors.white),
+                  controller: taskInputController,
+                  decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            if(!taskInputController.text.isEmpty)
+                            
+                            ProjectList()
+                                .getTaskList()
+                                .add(Task(taskInputController.text));
+                            taskInputController.clear();
+                            setState(() {});
+                          },
+                          icon: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                          )),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                      filled: true,
+                      fillColor: Color.fromARGB(100, 0, 0, 0),
+                      border: OutlineInputBorder(
+                          //borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none),
+                      hintText: 'Inserisci una task',
+                      hintStyle: TextStyle(
+                          color: const Color.fromARGB(255, 192, 192, 192))),
+                )),
 
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
+          ),
+          taskCheckboxList,
+          ElevatedButton(
             
-      ),
-      taskCheckboxList,
+              onPressed: () { projectNameController.text.isEmpty ? null : 
+                
+                { projectItem = ProjectItem(
+                    projectNameController.text,
+                    projectDescriptionController.text,
+                    "Attivo",
+                    Team(
+                        "Team 1",
+                        List<Member>.from(<Member>[
+                          Member("Mario", "Rossi", "Direttore"),
+                          Member("Luigi", "Bianchi", "Operaio")
+                        ]))),
+                ProjectList().getList().add(projectItem),
+                
 
-      ElevatedButton(
-          onPressed: () {
-            //projectDescriptionController.clear();
-            projectItem = ProjectItem(
-                projectNameController.text,
-                projectDescriptionController.text,
-                "Attivo",
-                Team(
-                    "Team 1",
-                    List<Member>.from(<Member>[
-                      Member("Mario", "Rossi", "Direttore"),
-                      Member("Luigi", "Bianchi", "Operaio")
-                    ])));
-            ProjectList().getList().add(projectItem);
-            for (ProjectItem item in ProjectList().getList()) {
-              print(item.toString());
-            }
-
-            projectItem.preview = ProjectList().getThumbnailList()[grid
-                .getThumbnail()]; //AssetImage('assets/images/projectPreview/engineering.jpg');
-          },
-          child: const Text("Aggiungi alla lista"))
-    ]));
+                projectItem.preview = ProjectList().getThumbnailList()[grid
+                    .getThumbnail()] };
+              },
+              child: const Text("Aggiungi alla lista"))
+        ]));
   }
 }
 
@@ -326,7 +338,6 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
   }
 }
 
-
 class CheckboxListTileApp extends StatelessWidget {
   const CheckboxListTileApp({super.key});
 
@@ -348,29 +359,32 @@ class _CheckboxListTileExampleState extends State<CheckboxListTileExample> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: ProjectList().getTaskList().length,
-      itemBuilder: (context, index) {
-      return CheckboxListTile(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: ProjectList().getTaskList().length,
+        itemBuilder: (context, index) {
+          return CheckboxListTile(
             activeColor: Colors.pink,
-            
-          title: Text(ProjectList().getTaskList()[index].taskName),
-          value: ProjectList().getTaskList()[index].finished,
-          onChanged: (bool? value) {
-            setState(() {
-              ProjectList().getTaskList()[index].finished = value! ? true : false;
-              
-            });
-          },
-          secondary: IconButton(icon: Icon(Icons.delete), onPressed: () { ProjectList().getTaskList().removeAt(ProjectList().getTaskList().indexOf(ProjectList().getTaskList()[index])); }), //Text((ProjectList().getTaskList().indexOf(task) + 1).toString(), style: TextStyle(fontSize: 16),),
-        );
-    });
-        
-        
-    
-    
-    
+
+            title: Text(ProjectList().getTaskList()[index].taskName),
+            value: ProjectList().getTaskList()[index].finished,
+            onChanged: (bool? value) {
+              setState(() {
+                ProjectList().getTaskList()[index].finished =
+                    value! ? true : false;
+              });
+            },
+            secondary: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  ProjectList().getTaskList().removeAt(ProjectList()
+                      .getTaskList()
+                      .indexOf(ProjectList().getTaskList()[index]));
+                  setState(() {});
+                }), //Text((ProjectList().getTaskList().indexOf(task) + 1).toString(), style: TextStyle(fontSize: 16),),
+          );
+        });
+
     /*Column (
         children: [  for(Task task in ProjectList().getTaskList())
           CheckboxListTile(
@@ -387,6 +401,5 @@ class _CheckboxListTileExampleState extends State<CheckboxListTileExample> {
           secondary: IconButton(icon: Icon(Icons.delete), onPressed: () { ProjectList().getTaskList().removeAt(ProjectList().getTaskList().indexOf(task)); }), //Text((ProjectList().getTaskList().indexOf(task) + 1).toString(), style: TextStyle(fontSize: 16),),
         ),
       ]);*/
-    
   }
 }

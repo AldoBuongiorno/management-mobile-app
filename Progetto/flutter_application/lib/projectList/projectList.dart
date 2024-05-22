@@ -9,9 +9,11 @@ Member member1 = Member("Mario", "Rossi", "Direttore");
   Team team1 = Team("Team 1", List<Member>.from(<Member>[member1, member2]));
   Team team2 = Team("Team 2", List<Member>.from(<Member>[member3, member2]));
   Team team3 = Team("Team 3", List<Member>.from(<Member>[member1]));
+
 List<Task> taskList = List.empty(growable: true);
 List<Team> teamsList = List.from(<Team>[team1, team2, team3]);
 List<ProjectItem> testList = populateTestList();
+List<Member> memberList = List.empty(growable: true);
 List<AssetImage> thumbnailList = List.from(<AssetImage>[AssetImage('assets/images/projectPreview/default.jpg'), AssetImage('assets/images/projectPreview/architectural.jpg'), AssetImage('assets/images/projectPreview/baking.jpg'), AssetImage('assets/images/projectPreview/engineering.jpg'), AssetImage('assets/images/projectPreview/safety.jpg'), AssetImage('assets/images/projectPreview/studying.jpg')]);
 
 class ProjectList {
@@ -29,6 +31,10 @@ class ProjectList {
 
   List<Task> getTaskList() {
     return taskList;
+  }
+
+  List<Member> getMembersList() {
+    return memberList;
   }
   //List<ProjectItem> testList = populateTestList();
 }

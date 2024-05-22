@@ -8,7 +8,7 @@ class ProjectItem {
 
   late DateTime completionDate;
   Team mainTeam;
-  late Team secondaryTeam;
+  //late Team secondaryTeam;
 
   bool finished = false;
 
@@ -39,6 +39,12 @@ class Member {
   String name;
   String surname;
   String role;
+
+  String getMemberName() {
+    return name;
+  }
+
+  
 
   Member(this.name, this.surname, this.role);
 }

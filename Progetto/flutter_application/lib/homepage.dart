@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application/navigation/team_page.dart';
 import './carouselItem.dart';
 import './projectItems.dart';
-import './addpage.dart';
+import 'navigation/add_page.dart';
 import './projectList/projectList.dart';
 import './navigation/project_page.dart';
 
@@ -21,9 +22,9 @@ class _HomePageState extends State<HomePage> {
 
   final screens = [
     HomePageScreen(),
-    ProjectScreen(),
-    AddPage(),
-    Center(child: Text('Gestione')),
+    ProjectScreen(),    //in navigation/project_page.dart
+    AddPage(),          //in navigation/add_page.dart
+    TeamScreen(),       //in navigation/team_page.dart
     Center(child: Text('Statistiche')),
   ];
 
