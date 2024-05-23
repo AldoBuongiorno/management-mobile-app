@@ -14,6 +14,8 @@ Member member1 = Member("Mario", "Rossi", "Direttore");
 
 class ProjectList {
 
+static int projectOnHomepageNumber = 5;
+
 // liste contenenti i dati utilizzati dall' app; sono istanziate con valori a caso per prova
 static List<Task> tasksList = List.empty(growable: true);
 static List<Team> teamsList = List.from(<Team>[team1, team2, team3]);

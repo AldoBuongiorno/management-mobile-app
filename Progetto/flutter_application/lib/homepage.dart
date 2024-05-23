@@ -64,8 +64,8 @@ class _HomePageState extends State<HomePage> {
                     //I'm using BackdropFilter for the blurring effect
                     child: BackdropFilter(
                         filter: ImageFilter.blur(
-                          sigmaX: 5.0,
-                          sigmaY: 5.0,
+                          sigmaX: 20.0,
+                          sigmaY: 20.0,
                         ),
                         child: Opacity(
                           //you can change the opacity to whatever suits you best
@@ -128,7 +128,7 @@ class HomePageScreen extends StatelessWidget {
                     color: Color.fromARGB(255, 0, 0, 0)))
           ]),
           const SizedBox(height: 10),
-          addCarouselIfNotEmpty(ProjectList().getList().where((element) => element.isActive()).toList()),
+          addCarouselIfNotEmpty(ProjectList.projectsList.where((element) => element.isActive()).toList()),
           /*CarouselSlider.builder(
               itemCount: testList.length,
               itemBuilder: (context, index, realIndex) {
@@ -180,7 +180,7 @@ Widget addCarouselIfNotEmpty(List testList) {
     );
   } else {
     return CarouselSlider.builder(
-        itemCount: testList.length,
+        itemCount: ProjectList.projectsList.where((element) => element.isActive()).toList().length < ProjectList.projectOnHomepageNumber ? ProjectList.projectsList.where((element) => element.isActive()).toList().length : ProjectList.projectOnHomepageNumber,
         itemBuilder: (context, index, realIndex) {
           //final urlImage = testList[index];
           ProjectItem testItem = testList[index];
@@ -199,7 +199,7 @@ Widget addTeamsIfNotEmpty(List testList) {
     );
   } else {
     return CarouselSlider.builder(
-        itemCount: testList.length,
+        itemCount: ProjectList.projectOnHomepageNumber,
         itemBuilder: (context, index, realIndex) {
           //final urlImage = testList[index];
           ProjectItem testItem = testList[index];

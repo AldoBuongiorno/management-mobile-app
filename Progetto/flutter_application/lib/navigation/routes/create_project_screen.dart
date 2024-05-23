@@ -26,7 +26,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    CheckboxListTileExample taskCheckboxList = const CheckboxListTileExample();
+    CheckboxListTileExample taskCheckboxList = CheckboxListTileExample();
     DropdownButtonExample mainTeamDropDown = const DropdownButtonExample();
     DropdownButtonExample secondaryTeamDropDown = const DropdownButtonExample();
     SelectableThumbnailGrid grid = SelectableThumbnailGrid();
@@ -48,7 +48,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             child: BlurredBox(
                 borderRadius: 30,
-                sigma: 5,
+                sigma: 15,
                 child: TextField(
                   style: const TextStyle(color: Colors.white),
                   controller: projectNameController,
@@ -74,7 +74,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             child: BlurredBox(
                 borderRadius: 10,
-                sigma: 5,
+                sigma: 15,
                 child: TextField(
                   style: const TextStyle(color: Colors.white),
                   maxLines: 5,
@@ -115,7 +115,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             child: BlurredBox(
                 borderRadius: 10,
-                sigma: 5,
+                sigma: 15,
                 child: TextField(
                   style: const TextStyle(color: Colors.white),
                   controller: taskInputController,
@@ -123,10 +123,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       suffixIcon: IconButton(
                           onPressed: () {
                             if(taskInputController.text.isNotEmpty) {
-                              ProjectList()
-                                .getTaskList()
-                                .add(Task(taskInputController.text));
+                              ProjectList.tasksList.add(Task(taskInputController.text));
                             }
+                            for(var item in ProjectList.tasksList) {
+                              print(item.taskName);
+                            }
+                            
                             taskInputController.clear();
                             setState(() {});
                           },
@@ -311,12 +313,12 @@ class CheckboxListTileApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CheckboxListTileExample();
+    return CheckboxListTileExample();
   }
 }
 
 class CheckboxListTileExample extends StatefulWidget {
-  const CheckboxListTileExample({super.key});
+  CheckboxListTileExample({super.key});
 
   @override
   State<CheckboxListTileExample> createState() =>
@@ -329,45 +331,29 @@ class _CheckboxListTileExampleState extends State<CheckboxListTileExample> {
     return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: ProjectList().getTaskList().length,
+        itemCount: ProjectList.tasksList.length,
         itemBuilder: (context, index) {
           return CheckboxListTile(
             activeColor: Colors.pink,
-
-            title: Text(ProjectList().getTaskList()[index].taskName),
-            value: ProjectList().getTaskList()[index].finished,
+            //side: BorderSide(color: Colors.lightBlue, width: 2),
+            checkboxShape: CircleBorder(),
+            title: Text(ProjectList.tasksList[index].taskName),
+            value: ProjectList.tasksList[index].finished,
             onChanged: (bool? value) {
               setState(() {
-                ProjectList().getTaskList()[index].finished =
+                ProjectList.tasksList[index].finished =
                     value! ? true : false;
               });
             },
             secondary: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  ProjectList().getTaskList().removeAt(ProjectList()
-                      .getTaskList()
-                      .indexOf(ProjectList().getTaskList()[index]));
+                  ProjectList.tasksList.removeAt(ProjectList.tasksList
+                      .indexOf(ProjectList.tasksList[index]));
                   setState(() {});
                 }), //Text((ProjectList().getTaskList().indexOf(task) + 1).toString(), style: TextStyle(fontSize: 16),),
           );
         });
 
-    /*Column (
-        children: [  for(Task task in ProjectList().getTaskList())
-          CheckboxListTile(
-            activeColor: Colors.pink,
-            
-          title: Text(task.taskName),
-          value: task.finished,
-          onChanged: (bool? value) {
-            setState(() {
-              task.finished = value! ? true : false;
-              
-            });
-          },
-          secondary: IconButton(icon: Icon(Icons.delete), onPressed: () { ProjectList().getTaskList().removeAt(ProjectList().getTaskList().indexOf(task)); }), //Text((ProjectList().getTaskList().indexOf(task) + 1).toString(), style: TextStyle(fontSize: 16),),
-        ),
-      ]);*/
   }
 }

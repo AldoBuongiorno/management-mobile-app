@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   css_colors: ^1.0.0
   smooth_page_indicator: ^1.1.0
+  input_quantity: ^2.3.3
 
 dev_dependencies:
   flutter_test:
