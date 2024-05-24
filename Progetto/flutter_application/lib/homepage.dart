@@ -109,8 +109,6 @@ class _HomePageState extends State<HomePage> {
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
 
-  const HomePageScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
