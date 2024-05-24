@@ -27,8 +27,9 @@ class ProjectItem {
 
   ProjectItem(this.name, this.description, this.status, this.team);
 
+  @override
   String toString() {
-    return name + ' ' + description;
+    return '$name $description';
   }
   
 }
