@@ -154,10 +154,11 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
                 )]),
                   //subtitle: Text('Trailing expansion arrow icon'),
                   children: [
-                    for (Member member in widget.memberList)
+                    for (Member member in teamList[widget.index].members)
                       Container(
+                        alignment: Alignment.centerLeft,
                           margin: const EdgeInsets.only(left: 30, bottom: 5),
-                          child: Text(member.name + ' ' + member.surname))
+                          child: Text('${member.name} ${member.surname}'))
                   ],
                 ),
               ],

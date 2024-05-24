@@ -38,7 +38,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 MediaQuery.of(context).orientation == Orientation.portrait
                     ? 20
                     : 100),
-        child: Column(children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.end ,children: [
           const SizedBox(height: 20),
           Row(children: [
             //SizedBox(width: 5),
@@ -171,7 +171,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 projectItem.thumbnail = ProjectList().getThumbnailList()[grid
                     .getThumbnail()] };
               },
-              child: const Text("Aggiungi alla lista"))
+              child: const Row(mainAxisSize: MainAxisSize.min, children: [ Icon(Icons.add_task), SizedBox(width: 5,),Text("Aggiungi progetto") ]))
         ]));
   }
 }
