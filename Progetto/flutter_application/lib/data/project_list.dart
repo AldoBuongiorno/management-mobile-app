@@ -15,15 +15,13 @@ Member member1 = Member("Mario", "Rossi", "Direttore");
 class ProjectList {
 
 static int projectOnHomepageNumber = 5;
+static int teamOnHomepageNumber = 5;
 
 // liste contenenti i dati utilizzati dall' app; sono istanziate con valori a caso per prova
-static List<Task> tasksList = List.empty(growable: true);
-static List<Team> teamsList = List.from(<Team>[team1, team2, team3]);
-static List<ProjectItem> projectsList = populateTestList();
-static List<Member> membersList = List.from(<Member>[
-    Member("Mario", "Rossi", "Impiegato"),
-    Member("Jeanne", "QT", "Altro")
-  ]);
+static List<Task> tasksList = [];
+static List<Team> teamsList = [];
+static List<ProjectItem> projectsList = [];
+static List<Member> membersList = [];
 static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg')]);
 
   List<Team> getTeam() {

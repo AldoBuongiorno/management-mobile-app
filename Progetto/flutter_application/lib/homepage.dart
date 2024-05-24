@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     const ProjectScreen(), //in navigation/project_page.dart
     const AddPage(), //in navigation/add_page.dart
     TeamScreen(), //in navigation/team_page.dart
-    Center(child: Text('Statistiche')),
+    const Center(child: Text('Statistiche')),
   ];
 
   @override
@@ -109,108 +109,118 @@ class _HomePageState extends State<HomePage> {
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
 
+  const HomePageScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         //backgroundColor: Colors.amber,
         body: SingleChildScrollView(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.start, 
-            children: [
-              const Row(
-                children: [
-                  SizedBox(width: 55),
-                  Text("Progetti recenti",
-                    style: TextStyle(
-                    fontFamily: 'SamsungSharpSans',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    //color: Color.fromARGB(255, 0, 0, 0)
-                    )
-                  )
-                ]
-              ),
-              const SizedBox(height: 10),
-              addCarouselIfNotEmpty(ProjectList.projectsList
-                  .where((element) => element.isActive())
-                  .toList()),
-              /*CarouselSlider.builder(
-                  itemCount: testList.length,
-                  itemBuilder: (context, index, realIndex) {
-                    //final urlImage = testList[index];
-                    ProjectItem testItem = testList[index];
-                    return buildCarousel(index, testItem);
-                  },
-                  options: CarouselOptions(height: 200)),*/
-              const SizedBox(
-                height: 20,
-              ),
-              const Row(children: [
-                SizedBox(width: 55),
-                Text("Team recenti",
+            child: Column(
+      //mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+            margin: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 20
+                        : 100),
+            child: const Row(children: [
+              Text("Progetti recenti",
                   style: TextStyle(
-                    fontFamily: 'SamsungSharpSans',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    //color: Color.fromARGB(255, 0, 0, 0)
-                  )
-                )
-              ]),
-              const SizedBox(height: 10),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal:
-                        MediaQuery.of(context).orientation == Orientation.portrait
-                            ? 20
-                            : 100),
-                child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: ProjectList().getTeam().length,
-                    itemBuilder: (context, index) {
-                      return ExpandableTeamTile(ProjectList.membersList, index);
-                    }),
-              )
-            ],
-          )));
+                      fontFamily: 'SamsungSharpSans',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Color.fromARGB(255, 0, 0, 0)))
+            ])),
+        const SizedBox(height: 10),
+        addCarouselIfNotEmpty(
+            ProjectList.projectsList
+                .where((element) => element.isActive())
+                .toList(),
+            context),
+        const SizedBox(
+          height: 20,
+        ),
+        Container(
+            margin: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 20
+                        : 100),
+            child: const Row(children: [
+              Text("Team recenti",
+                  style: TextStyle(
+                      fontFamily: 'SamsungSharpSans',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 22,
+                      color: Color.fromARGB(255, 0, 0, 0)))
+            ])),
+        const SizedBox(height: 10),
+        Container(
+            margin: EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 20
+                        : 100),
+            child: addTeamsIfNotEmpty(ProjectList.teamsList, context))
+      ],
+    )));
   }
 }
 
-Widget addCarouselIfNotEmpty(List testList) {
-  if (testList.isEmpty) {
+Widget addCarouselIfNotEmpty(List testList, context) {
+  if (ProjectList.projectsList.isEmpty) {
     return Container(
-      alignment: const Alignment(0, 0),
-      height: 75,
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.symmetric(
+          vertical: 10,
+          horizontal: MediaQuery.of(context).orientation == Orientation.portrait
+              ? 20
+              : 100),
       child: const Text('Non ci sono progetti recenti.'),
     );
   } else {
     return CarouselSlider.builder(
-        itemCount: ProjectList.projectsList.where((element) => element.isActive()).toList().length < ProjectList.projectOnHomepageNumber ? ProjectList.projectsList.where((element) => element.isActive()).toList().length : ProjectList.projectOnHomepageNumber,
-        itemBuilder: (context, index, realIndex) {
-          //final urlImage = testList[index];
-          ProjectItem testItem = testList[index];
-          return buildCarousel(index, testItem);
-        },
-        options: CarouselOptions(height: 200), );
+      itemCount: ProjectList.projectsList
+                  .where((element) => element.isActive())
+                  .toList()
+                  .length <
+              ProjectList.projectOnHomepageNumber
+          ? ProjectList.projectsList
+              .where((element) => element.isActive())
+              .toList()
+              .length
+          : ProjectList.projectOnHomepageNumber,
+      itemBuilder: (context, index, realIndex) {
+        //final urlImage = testList[index];
+        ProjectItem testItem = testList[index];
+        return buildCarousel(index, testItem);
+      },
+      options: CarouselOptions(height: 200),
+    );
   }
 }
 
-Widget addTeamsIfNotEmpty(List testList) {
+Widget addTeamsIfNotEmpty(List testList, context) {
   if (testList.isEmpty) {
     return Container(
-      child: Text('Non ci sono team.'),
-      alignment: Alignment(0, 0),
-      height: 75,
-    );
+        alignment: Alignment.centerLeft,
+        child: const Text('Non ci sono team recenti.'));
   } else {
-    return CarouselSlider.builder(
-        itemCount: ProjectList.projectOnHomepageNumber,
-        itemBuilder: (context, index, realIndex) {
-          //final urlImage = testList[index];
-          ProjectItem testItem = testList[index];
-          return buildCarousel(index, testItem);
-        },
-        options: CarouselOptions(height: 200));
+    return ListView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: ProjectList.teamsList.length
+                     <
+                ProjectList.teamOnHomepageNumber
+            ? ProjectList.teamsList.length
+            : ProjectList.projectOnHomepageNumber,
+        itemBuilder: (context, index) {
+          return ExpandableTeamTile(ProjectList.membersList, index);
+        });
   }
 }

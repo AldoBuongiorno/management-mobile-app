@@ -50,7 +50,8 @@ class Group21App extends StatelessWidget {
         )
       ),
       child: MaterialApp(
-        title: 'Gruppo 21',
+        debugShowCheckedModeBanner: false,
+      title: 'Gruppo 21',
         theme: ThemeData(
           textSelectionTheme: const TextSelectionThemeData(selectionHandleColor: Colors.pink, selectionColor: Colors.pinkAccent, cursorColor: Colors.pink),
           scaffoldBackgroundColor: Colors.transparent,
