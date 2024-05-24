@@ -94,18 +94,21 @@ class _TeamScreenState extends State<TeamScreen> {
               const SizedBox(
                 height: 5,
               ),
-              !ProjectList.membersList.isEmpty
+              ProjectList.membersList.isNotEmpty
                   ? MemberListView(ProjectList.membersList)
                   : const Text("Al momento non sono presenti partecipanti."),
               const SizedBox(height: 10),
               CustomHeadingTitle(titleText: "Team"),
-              ListView.builder(
+              const SizedBox(height: 10),
+              ProjectList.teamsList.isNotEmpty
+                  ? ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: ProjectList().getTeam().length,
+                  itemCount: ProjectList.teamsList.length,
                   itemBuilder: (context, index) {
-                    return ExpandableTeamTile(ProjectList.membersList, index);
+                    return ExpandableTeamTile(ProjectList.teamsList[index].members, index);
                   })
+                  : const Text("Al momento non è presente alcun team."),
             ])));
   }
 }

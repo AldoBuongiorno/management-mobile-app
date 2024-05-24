@@ -26,6 +26,7 @@ class Group21App extends StatelessWidget {
   Widget build(BuildContext context) {
     ProjectList();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Gruppo 21',
       theme: ThemeData(
           textSelectionTheme: TextSelectionThemeData(selectionHandleColor: Colors.pink, selectionColor: Colors.pinkAccent, cursorColor: Colors.pink),

@@ -11,24 +11,19 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../commonElements/project_items.dart';
 
 List<Member> selectedMembers = [];
-final _items = ProjectList.membersList
-      .map((member) =>
-          MultiSelectItem<Member>(member, ("${member.name} ${member.surname}")))
-      .toList();
+var _items = ProjectList.membersList
+    .map((member) =>
+        MultiSelectItem<Member>(member, ("${member.name} ${member.surname}")))
+    .toList();
 
 class CreateTeamScreen extends StatefulWidget {
   const CreateTeamScreen({super.key});
 
-  
-
-  
   @override
   State<CreateTeamScreen> createState() => _CreateTeamScreen();
 }
 
 class _CreateTeamScreen extends State<CreateTeamScreen> {
-  
-
   final teamNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -44,7 +39,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
           Row(children: [
             CustomHeadingTitle(titleText: "Nome team"),
           ]),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           BlurredBox(
@@ -64,28 +59,50 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                     border: OutlineInputBorder(
                         //borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none),
-                    hintText: 'Inserisci il nome del progetto',
+                    hintText: 'Inserisci il nome del team',
                     hintStyle:
                         TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(children: [
             CustomHeadingTitle(titleText: "Membri del team"),
           ]),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          
-          SelectableMembersList(),
-          
+          const SelectableMembersList(),
           ElevatedButton(
               onPressed: () {
-                teamNameController.text.isEmpty ? null : {
+                Team team;
+                teamNameController.text.isEmpty
+                    ? null
+                    : {
+                        team = Team(teamNameController.text, selectedMembers),
+                        ProjectList.teamsList
+                            .add(team),
 
-                  ProjectList.teamsList.add(Team(teamNameController.text, selectedMembers))
-                };
+                            teamNameController.clear,
+                            selectedMembers.clear,
+
+                            showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text('Successo!'),
+                                    content: Text(
+                                        ("Il team \"${team.teamName}\" è stato creato correttamente.\nPuoi creare altri team se ti va.")),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'Ok'),
+                                        child: const Text('Ok'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                      };
               },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(Icons.group_add),
@@ -108,7 +125,6 @@ class SelectableMembersList extends StatefulWidget {
 }
 
 class _SelectableMembersListState extends State<SelectableMembersList> {
-
   @override
   void initState() {
     super.initState();
@@ -117,59 +133,62 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
   @override
   Widget build(BuildContext context) {
     return BlurredBox(
-            borderRadius: 10,
-            sigma: 15,
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(100, 0, 0, 0),
-              ),
-              child: MultiSelectDialogField(
-                
-                listType: MultiSelectListType.CHIP,
-                items: _items,
-                title: const Text("Aggiungi membri"),
-                selectedColor: Colors.pink,
-                backgroundColor: Colors.white,
-                
-                
-                cancelText: Text("Annulla", style: TextStyle(color: Colors.pink),),
-                confirmText: Text("Conferma", style: TextStyle(color: Colors.pink),),
-                checkColor: Colors.white,
-                selectedItemsTextStyle: const TextStyle(color: Colors.black),
-                decoration: const BoxDecoration(
-                  
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.all(Radius.circular(40)),
-                  
-                ),
-                buttonIcon: const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-                buttonText: const Text(
-                  "Partecipanti al progetto",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
-                onConfirm: (results) {
-                  selectedMembers = results;
-                },
-              ),
+      borderRadius: 10,
+      sigma: 15,
+      child: Container(
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(100, 0, 0, 0),
+        ),
+        child: MultiSelectDialogField(
+          listType: MultiSelectListType.CHIP,
+          items: ProjectList.membersList
+              .map((member) => MultiSelectItem<Member>(
+                  member, ("${member.name} ${member.surname}")))
+              .toList(),
+          title: const Text("Aggiungi membri"),
+          selectedColor: Colors.pink,
+          backgroundColor: Colors.white,
+          cancelText: const Text(
+            "Annulla",
+            style: TextStyle(color: Colors.lightBlue),
+          ),
+          confirmText: const Text(
+            "Conferma",
+            style: TextStyle(color: Colors.pink),
+          ),
+          checkColor: Colors.white,
+          selectedItemsTextStyle: const TextStyle(color: Colors.black),
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.all(Radius.circular(40)),
+          ),
+          buttonIcon: const Icon(
+            Icons.person,
+            color: Colors.white,
+          ),
+          buttonText: const Text(
+            "Partecipanti al progetto",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
             ),
-          );
+          ),
+          onConfirm: (results) {
+            selectedMembers = results;
+          },
+        ),
+      ),
+    );
   }
-  
 }
  
 
-Widget buildMembersGrid() {
+/*Widget buildMembersGrid() {
   return GridView.builder(
       gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       itemCount: ProjectList.membersList.length,
       itemBuilder: (context, index) {
         return Container();
       });
-}
+}*/

@@ -5,6 +5,11 @@ import 'package:flutter_application/commonElements/headings_title.dart';
 import '../../data/project_list.dart';
 import '../../commonElements/project_items.dart';
 import '../../commonElements/headings_title.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+
+int selectedTeam = 0;
+List<Task> tasks = [];
+
 
 class CreateProjectScreen extends StatefulWidget {
   const CreateProjectScreen({super.key});
@@ -27,8 +32,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     CheckboxListTileExample taskCheckboxList = CheckboxListTileExample();
-    DropdownButtonExample mainTeamDropDown = const DropdownButtonExample();
-    DropdownButtonExample secondaryTeamDropDown = const DropdownButtonExample();
     SelectableThumbnailGrid grid = SelectableThumbnailGrid();
     ProjectItem projectItem;
     return Container(
@@ -96,11 +99,19 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             CustomHeadingTitle(titleText: "Team"),
                       ]),
           const SizedBox(height: 5),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
+          const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [mainTeamDropDown, secondaryTeamDropDown])),
+                  children: [
+
+
+                    SelectableTeamsList(),
+
+
+
+
+                  ])),
           const SizedBox(height: 5),
           Row(children: [
             //SizedBox(width: 25),
@@ -122,11 +133,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
                           onPressed: () {
+                            
                             if(taskInputController.text.isNotEmpty) {
-                              ProjectList.tasksList.add(Task(taskInputController.text));
-                            }
-                            for(var item in ProjectList.tasksList) {
-                              print(item.taskName);
+                              tasks.add(Task(taskInputController.text));
                             }
                             
                             taskInputController.clear();
@@ -153,84 +162,48 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           taskCheckboxList,
           ElevatedButton(
             
-              onPressed: () { projectNameController.text.isEmpty ? null : 
+              onPressed: () { projectNameController.text.isEmpty || ProjectList.teamsList.isEmpty ? null : 
                 
-                { projectItem = ProjectItem(
+                {   projectItem = ProjectItem(
                     projectNameController.text,
                     projectDescriptionController.text,
                     "Attivo",
-                    Team(
-                        "Team 1",
-                        List<Member>.from(<Member>[
-                          Member("Mario", "Rossi", "Direttore"),
-                          Member("Luigi", "Bianchi", "Operaio")
-                        ]))),
-                ProjectList().getList().add(projectItem),
+                    ProjectList.teamsList[selectedTeam]),
+                ProjectList.projectsList.add(projectItem),
                 
-
-                projectItem.thumbnail = ProjectList().getThumbnailList()[grid
-                    .getThumbnail()] };
+                projectItem.tasks = tasks,
+                projectItem.thumbnail = ProjectList.thumbnailsList[grid.choosenThumbnail] ,
+                    
+                    projectNameController.clear(),
+                    projectDescriptionController.clear(),
+                    grid.choosenThumbnail = 0,
+                    tasks.clear(),
+                    
+                    showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text('Successo!'),
+                                    content: Text(
+                                        ("Il progetto \"${projectItem.name}\" è stato creato correttamente.\nPuoi creare altri progetti se ti va.")),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'Ok'),
+                                        child: const Text('Ok'),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                    
+                    };
               },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [ Icon(Icons.add_task), SizedBox(width: 5,),Text("Aggiungi progetto") ]))
         ]));
   }
 }
 
-//da eliminare
-class DropdownButtonExample extends StatefulWidget {
-  const DropdownButtonExample({super.key});
 
-  @override
-  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
-}
-
-class _DropdownButtonExampleState extends State<DropdownButtonExample> {
-  String dropdownValue = ProjectList().getTeam().first.teamName;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 45,
-        alignment: Alignment.centerRight,
-        width: MediaQuery.of(context).orientation == Orientation.portrait
-            ? 160
-            : 350,
-        padding: const EdgeInsets.only(right: 10),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(25)),
-        child: DropdownButton<String>(
-          //alignment: Alignment.topRight,
-          //hint: Text('Team primario'),
-          //dropdownColor: Colors.pink,
-          value: dropdownValue,
-          icon: const Icon(
-            Icons.arrow_drop_down,
-            color: Colors.black,
-          ),
-          elevation: 8,
-          style: const TextStyle(color: Colors.white),
-          underline: const SizedBox(),
-          //decoration: InputDecoration( ),
-          onChanged: (String? value) {
-            // This is called when the user selects an item.
-            setState(() {
-              dropdownValue = value!;
-            });
-          },
-          items: ProjectList()
-              .getTeam()
-              .map<DropdownMenuItem<String>>((Team value) {
-            return DropdownMenuItem<String>(
-              value: value.teamName,
-              child: Text(
-                value.teamName,
-                style: const TextStyle(color: Colors.black),
-              ),
-            );
-          }).toList(),
-        ));
-  }
-}
 
 class SelectableThumbnailGrid extends StatefulWidget {
   int choosenThumbnail = 0;
@@ -277,7 +250,7 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image:
-                                      ProjectList().getThumbnailList()[index],
+                                      ProjectList.thumbnailsList[index],
                                   fit: BoxFit.cover),
                               borderRadius: BorderRadius.circular(10)),
                           height: 200,
@@ -308,8 +281,8 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
   }
 }
 
-class CheckboxListTileApp extends StatelessWidget {
-  const CheckboxListTileApp({super.key});
+class TasksCheckboxList extends StatelessWidget {
+  const TasksCheckboxList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -331,25 +304,25 @@ class _CheckboxListTileExampleState extends State<CheckboxListTileExample> {
     return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: ProjectList.tasksList.length,
+        itemCount: tasks.length,
         itemBuilder: (context, index) {
           return CheckboxListTile(
             activeColor: Colors.pink,
             //side: BorderSide(color: Colors.lightBlue, width: 2),
-            checkboxShape: CircleBorder(),
-            title: Text(ProjectList.tasksList[index].taskName),
-            value: ProjectList.tasksList[index].finished,
+            checkboxShape: const CircleBorder(),
+            title: Text(tasks[index].taskName),
+            value: tasks[index].finished,
             onChanged: (bool? value) {
               setState(() {
-                ProjectList.tasksList[index].finished =
+                tasks[index].finished =
                     value! ? true : false;
               });
             },
             secondary: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  ProjectList.tasksList.removeAt(ProjectList.tasksList
-                      .indexOf(ProjectList.tasksList[index]));
+                  tasks.removeAt(tasks
+                      .indexOf(tasks[index]));
                   setState(() {});
                 }), //Text((ProjectList().getTaskList().indexOf(task) + 1).toString(), style: TextStyle(fontSize: 16),),
           );
@@ -357,3 +330,48 @@ class _CheckboxListTileExampleState extends State<CheckboxListTileExample> {
 
   }
 }
+
+
+class SelectableTeamsList extends StatefulWidget {
+  const SelectableTeamsList({super.key});
+
+  @override
+  State<SelectableTeamsList> createState() => _SelectableTeamsListState();
+}
+
+class _SelectableTeamsListState extends State<SelectableTeamsList> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ProjectList.teamsList.isNotEmpty ?
+    Wrap(
+              
+              spacing: 5.0,
+              children: List<Widget>.generate(
+                ProjectList.teamsList.length,
+                (int index) {
+                  return ChoiceChip(
+                    
+                    selectedColor: Colors.pink,
+                    iconTheme: const IconThemeData(color: Colors.white),
+                    label: Text(ProjectList.teamsList[index].teamName),
+                    selected: selectedTeam == index,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        selectedTeam = selected ? index : 0;
+                      });
+                    },
+                  );
+                },
+              ).toList(),
+            )
+    : Text("Non ci sono team disponibili. Non è possibile creare un progetto senza team.");
+  }
+  
+}
+

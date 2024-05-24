@@ -129,7 +129,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                             memberNameController.text,
                             memberSurnameController.text,
                             memberRoleController.text),
-                        !ProjectList.membersList.contains(member)
+                          true
                             ? {
                                 ProjectList.membersList.add(member),
                                 memberNameController.clear(),
@@ -142,7 +142,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                                       AlertDialog(
                                     title: const Text('Successo!'),
                                     content: Text(
-                                        ("${member.name} ${member.surname} è stato inserito correttamente.\n\nPuoi inserire altri membri se ti va.")),
+                                        ("${member.name} ${member.surname} è stato inserito correttamente.\nPuoi inserire altri membri se ti va.")),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () =>

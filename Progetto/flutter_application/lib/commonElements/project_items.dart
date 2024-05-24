@@ -49,6 +49,14 @@ class Member {
     return name;
   }
 
+  bool exists(Member otherMember) {
+    
+    if(this.name.toLowerCase() == otherMember.name.toLowerCase() &&
+    this.surname.toLowerCase() == otherMember.surname.toLowerCase() &&
+    this.role.toLowerCase() == otherMember.role.toLowerCase()) return true;
+    return false;
+  }
+
   
 
   Member(this.name, this.surname, this.role);

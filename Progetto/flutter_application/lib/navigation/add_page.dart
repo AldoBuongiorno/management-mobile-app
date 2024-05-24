@@ -230,7 +230,7 @@ class ToAddMemberRoute extends StatelessWidget {
                   foregroundColor: Colors.white,
                   //titleTextStyle: TextStyle(color: Colors.white),
                   backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-                  title: const Text('Aggiungi team'),
+                  title: const Text('Aggiungi membro'),
                 ),
               )),
             ),
