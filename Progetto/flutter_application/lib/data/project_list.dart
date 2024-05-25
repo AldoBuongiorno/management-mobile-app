@@ -4,11 +4,11 @@ import '../commonElements/project_items.dart';
 
 
 Member member1 = Member("Mario", "Rossi", "Direttore");
-  Member member2 = Member("Luigi", "Bianchi", "Operaio");
-  Member member3 = Member("Carla", "Verdi", "Supervisore");
-  Team team1 = Team("Team 1", List<Member>.from(<Member>[member1, member2]));
-  Team team2 = Team("Team 2", List<Member>.from(<Member>[member3, member2]));
-  Team team3 = Team("Team 3", List<Member>.from(<Member>[member1]));
+Member member2 = Member("Luigi", "Bianchi", "Operaio");
+Member member3 = Member("Carla", "Verdi", "Supervisore");
+Team team1 = Team("Team 1", List<Member>.from(<Member>[member1, member2]));
+Team team2 = Team("Team 2", List<Member>.from(<Member>[member3, member2]));
+Team team3 = Team("Team 3", List<Member>.from(<Member>[member1]));
 
 
 

@@ -9,7 +9,7 @@ class ProjectScreen extends StatefulWidget {
   const ProjectScreen({super.key});
   @override
   @override
-  _ProjectScreen createState() => _ProjectScreen();
+  State<ProjectScreen> createState() => _ProjectScreen();
 }
 
 class _ProjectScreen extends State<ProjectScreen> {
@@ -50,7 +50,7 @@ class _ProjectScreen extends State<ProjectScreen> {
           const SizedBox(
             height: 20,
           ),
-          filteredList.length != 0 ||
+          filteredList.isNotEmpty ||
                   filterProjectListController.text.isNotEmpty
               ? buildProjectContainer(filteredList, context)
               : buildProjectContainer(list, context),

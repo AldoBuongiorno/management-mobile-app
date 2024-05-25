@@ -7,7 +7,7 @@ import '../data/project_list.dart';
 //List<Member> memberList = getMembersList(); //.add(Member("Mario", "Rossi", "Impiegato"));
 
 class MemberListView extends StatelessWidget {
-  MemberListView(this.memberList);
+  MemberListView(this.memberList, {super.key});
   List<Member> memberList;
   @override
   Widget build(BuildContext context) {
@@ -68,6 +68,8 @@ class MemberListView extends StatelessWidget {
 }
 
 class TeamScreen extends StatefulWidget {
+  const TeamScreen({super.key});
+
   @override
   State<TeamScreen> createState() => _TeamScreenState();
 }
