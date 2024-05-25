@@ -1,17 +1,15 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_application/navigation/team_page.dart';
 import 'commonElements/carousel_item.dart';
-import 'commonElements/project_items.dart';
 import 'navigation/add_page.dart';
 import 'data/project_list.dart';
 import './navigation/project_page.dart';
-
 import './main.dart';
+import 'package:flutter_application/classes/all.dart';
 
 
 class HomePage extends StatefulWidget {

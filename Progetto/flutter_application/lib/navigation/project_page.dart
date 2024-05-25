@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../commonElements/blurred_box.dart';
-import '../commonElements/project_items.dart';
 import '../data/project_list.dart';
 import '../commonElements/carousel_item.dart';
 import 'routes/project_screen.dart';
+import 'package:flutter_application/classes/all.dart';
 
 class ProjectScreen extends StatefulWidget {
   const ProjectScreen({super.key});

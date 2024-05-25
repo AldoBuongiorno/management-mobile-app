@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'project_items.dart';
+import 'package:flutter_application/classes/all.dart';
 
 Widget smallInfoContainer(Color containerColor, Color textColor, String text,
     LinearGradient? gradient) {

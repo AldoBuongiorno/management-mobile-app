@@ -1,10 +1,9 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
-import '../../commonElements/project_items.dart';
+import 'package:flutter_application/classes/all.dart';
 
 List<ProjectItem> list = ProjectList().getList();
 

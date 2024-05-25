@@ -6,8 +6,8 @@ import 'routes/create_project_screen.dart';
 import 'package:input_quantity/input_quantity.dart';
 import '../data/project_list.dart';
 import 'routes/create_team_screen.dart';
-import '../commonElements/project_items.dart';
 import '../commonElements/responsive_padding.dart';
+import 'package:flutter_application/classes/all.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});

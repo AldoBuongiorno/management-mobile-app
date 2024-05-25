@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../commonElements/project_items.dart';
+import 'package:flutter_application/classes/all.dart';
 
 
 Member member1 = Member("Mario", "Rossi", "Direttore");

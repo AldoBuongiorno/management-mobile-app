@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/blurred_box.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import '../../data/project_list.dart';
-import '../../commonElements/project_items.dart';
 import '../../commonElements/headings_title.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:flutter_application/classes/all.dart';
 
 int selectedTeam = 0;
 List<Task> tasks = [];

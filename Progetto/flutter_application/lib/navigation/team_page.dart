@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../commonElements/blurred_box.dart';
 import '../commonElements/headings_title.dart';
-import '../commonElements/project_items.dart';
 import '../data/project_list.dart';
+import 'package:flutter_application/classes/all.dart';
 
 //List<Member> memberList = getMembersList(); //.add(Member("Mario", "Rossi", "Impiegato"));
 
