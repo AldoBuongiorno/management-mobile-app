@@ -170,7 +170,7 @@ class HomePageScreen extends StatelessWidget {
   }
 }
 
-Widget addCarouselIfNotEmpty(List testList, context) {
+Widget addCarouselIfNotEmpty(List testList, BuildContext context) {
   if (ProjectList.projectsList.isEmpty) {
     return Container(
       alignment: Alignment.centerLeft,
@@ -203,7 +203,7 @@ Widget addCarouselIfNotEmpty(List testList, context) {
   }
 }
 
-Widget addTeamsIfNotEmpty(List testList, context) {
+Widget addTeamsIfNotEmpty(List testList, BuildContext context) {
   if (testList.isEmpty) {
     return Container(
         alignment: Alignment.centerLeft,

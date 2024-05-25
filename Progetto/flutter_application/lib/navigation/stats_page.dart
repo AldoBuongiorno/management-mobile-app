@@ -7,6 +7,7 @@ import 'package:input_quantity/input_quantity.dart';
 import '../data/project_list.dart';
 import 'routes/create_team_screen.dart';
 import '../commonElements/project_items.dart';
+import '../commonElements/responsive_padding.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -21,6 +22,9 @@ class _StatsPageState extends State<StatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView();
+    return Container(
+      margin: getResponsivePadding(context), //in responsive_padding.dart
+      // child: 
+    );
   }
 }
