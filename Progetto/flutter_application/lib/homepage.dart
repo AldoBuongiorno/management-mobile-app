@@ -10,6 +10,7 @@ import 'data/project_list.dart';
 import './navigation/project_page.dart';
 import './main.dart';
 import 'package:flutter_application/classes/all.dart';
+import './navigation/stats_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -22,11 +23,11 @@ class _HomePageState extends State<HomePage> {
   int index = 0;
 
   final screens = [
-    HomePageScreen(),
+    const HomePageScreen(),
     const ProjectScreen(), //in navigation/project_page.dart
     const AddPage(), //in navigation/add_page.dart
-    TeamScreen(), //in navigation/team_page.dart
-    const Center(child: Text('Statistiche')),
+    const TeamScreen(), //in navigation/team_page.dart
+    const StatsPage(),  //in navigation/stats_page.dart
   ];
 
   @override

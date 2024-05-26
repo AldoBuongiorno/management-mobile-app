@@ -17,14 +17,32 @@ class StatsPage extends StatefulWidget {
 }
 
 @override
+  List<ProjectItem> list = ProjectList().testList; //utilizzo lista di prova
 class _StatsPageState extends State<StatsPage> {
-  List<ProjectItem> list = ProjectList().getList();
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: getResponsivePadding(context), //in responsive_padding.dart
-      // child: 
+      child: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              title: Text(list[index].name),
+              subtitle: Text(list[index].status),
+              onTap: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => CreateProjectScreen(project: list[index]),
+                //   ),
+                // );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

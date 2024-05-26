@@ -42,7 +42,7 @@ static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage
   List<Member> getMembersList() {
     return membersList;
   }
-  //List<ProjectItem> testList = populateTestList();
+  List<ProjectItem> testList = populateTestList();
 }
 
 List<ProjectItem> populateTestList() {
