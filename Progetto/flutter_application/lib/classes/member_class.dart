@@ -12,9 +12,9 @@ class Member {
 
   bool exists(Member otherMember) {
     
-    if(this.name.toLowerCase() == otherMember.name.toLowerCase() &&
-    this.surname.toLowerCase() == otherMember.surname.toLowerCase() &&
-    this.role.toLowerCase() == otherMember.role.toLowerCase()) return true;
+    if(name.toLowerCase() == otherMember.name.toLowerCase() &&
+    surname.toLowerCase() == otherMember.surname.toLowerCase() &&
+    role.toLowerCase() == otherMember.role.toLowerCase()) return true;
     return false;
   }
 
