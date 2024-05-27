@@ -16,17 +16,4 @@ class TaskDao {
     );
   }
 
-  Future<List<Task>> getAllTasks() async {
-  final db = await DatabaseHelper.instance.database;
-  final List<Map<String, dynamic>> maps = await db.query('Task');
-
-  return Future.wait(maps.map((map) async {
-    final projectName = map['project']; // Ottieni il nome del progetto
-    final project = await ProjectDao.instance.getProjectByName(projectName); // Ottieni l'oggetto Project associato
-    return Task.fromMap(map, project);
-  }).toList());
-}
-
-
-
 }

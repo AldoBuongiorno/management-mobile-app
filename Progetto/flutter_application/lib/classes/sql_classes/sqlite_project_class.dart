@@ -10,7 +10,7 @@ class Project {
   String status = "Attivo";
   final String? projectFailureReason;
   final Team team;
-  final String thumbnail;
+  final AssetImage thumbnail;
 
   Project({
     required this.name,
@@ -38,27 +38,13 @@ class Project {
       'status': status,
       'projectFailureReason': projectFailureReason,
       'team': team.getName(),
-      'thumbnail': thumbnail,
+      'thumbnail': thumbnail.assetName,
     };
-  }
-
-  factory Project.fromMap(Map<String, dynamic> map) {
-    return Project(
-      name: map['name'],
-      description: map['description'],
-      creationDate: DateTime.parse(map['creationDate']),
-      expirationDate: DateTime.parse(map['expirationDate']),
-      lastModified: DateTime.parse(map['lastModified']),
-      status: map['status'],
-      projectFailureReason: map['projectFailureReason'],
-      team: Team(name: map['team']),
-      thumbnail: map['thumbnail'],
-    );
   }
 
   @override
   String toString() {
-    return 'Project{name: $name, description: $description, creationDate: $creationDate, expirationDate: $expirationDate, lastModified: $lastModified, status: $status, projectFailureReason: $projectFailureReason, team: $team, thumbnail: $thumbnail}';
+    return 'Project{name: $name, description: $description, creationDate: $creationDate, expirationDate: $expirationDate, lastModified: $lastModified, status: $status, projectFailureReason: $projectFailureReason, team: $team, ${(thumbnail).assetName}}';
   }
 }
 

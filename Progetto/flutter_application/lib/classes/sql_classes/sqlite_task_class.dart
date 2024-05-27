@@ -23,14 +23,6 @@ class Task {
     };
   }
 
-  factory Task.fromMap(Map<String, dynamic> map, Project project) {
-    return Task(
-      name: map['name'],
-      completed: map['completed'] == 1 ? true : false,
-      project: project,
-    );
-  }
-
   @override
   String toString() {
     return 'Task{name: $name, completed: $completed, project: $project}';

@@ -15,13 +15,4 @@ class TeamDao {
     );
   }
 
-  Future<List<Team>> getAllTeams() async {
-    final db = await DatabaseHelper.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('Team');
-
-    return List.generate(maps.length, (i) {
-      return Team.fromMap(maps[i]);
-    });
-  }
-
 }

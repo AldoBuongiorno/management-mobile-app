@@ -15,14 +15,4 @@ class MemberDao {
     );
   }
 
-  Future<List<Member>> getAllMembers() async {
-    final db = await DatabaseHelper.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('Member');
-
-    return List.generate(maps.length, (i) {
-      return Member.fromMap(maps[i]);
-    });
-  }
-
-  // Altre operazioni, come update, delete, ecc.
 }

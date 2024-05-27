@@ -15,12 +15,6 @@ class Team {
     };
   }
 
-  factory Team.fromMap(Map<String, dynamic> map) {
-    return Team(
-      name: map['name'],
-    );
-  }
-
   @override
   String toString() {
     return 'Team{name: $name}';

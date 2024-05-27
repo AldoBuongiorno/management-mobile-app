@@ -32,17 +32,6 @@ class Member {
     };
   }
 
-  factory Member.fromMap(Map<String, dynamic> map) {
-    return Member(
-      code: map['code'],
-      name: map['name'],
-      surname: map['surname'],
-      role: map['role'],
-      mainTeam: Team(name: map['mainTeam']),
-      secondaryTeam: Team(name: map['secondaryTeam']),
-    );
-  }
-
   @override
   String toString() {
     return 'Member{code: $code, name: $name, surname: $surname, role: $role, mainTeam: $mainTeam, secondaryTeam: $secondaryTeam}';

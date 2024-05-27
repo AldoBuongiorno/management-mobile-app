@@ -15,27 +15,4 @@ class ProjectDao {
     );
   }
 
-  Future<List<Project>> getAllProjects() async {
-    final db = await DatabaseHelper.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query('Project');
-
-    return List.generate(maps.length, (i) {
-      return Project.fromMap(maps[i]);
-    });
-  }
-
-  Future<Project> getProjectByName(String projectName) async {
-    final db = await DatabaseHelper.instance.database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'Project',
-      where: 'name = ?',
-      whereArgs: [projectName],
-    );
-
-    if (maps.isNotEmpty) {
-      return Project.fromMap(maps.first);
-    } else {
-      throw Exception('Project not found');
-    }
-  }
 }
