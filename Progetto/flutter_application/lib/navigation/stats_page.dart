@@ -27,21 +27,24 @@ class _StatsPageState extends State<StatsPage> {
       child: ListView.builder(
         itemCount: list.length,
         itemBuilder: (context, index) {
+          //Prende il primo elemento della lista e lo trasforma in statistica generali, 
+          //invece dovrebbe crearne una nuova completamente. Forse da aggiungere una nuova lista
+          //oltre a quella dichiarata in precedenza che acquisice quella di prova.
           if (index == 0) {
             return Card(
-            child: ListTile(
-              title: const Text('Statstiche generali'),
-              // subtitle: Text(list[index].status),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CreateStatsProjectScreen(project: list[index]),
-                  ),
-                );
-              },
-            ),
-          );
+              child: ListTile(
+                title: const Text('Statstiche generali'), 
+                subtitle: Text(list[index].status),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateTotalStatsProjectScreen(projects: list),
+                    ),
+                  );
+                },
+              ),
+            );
           }
           else{
             return Card(
@@ -49,12 +52,12 @@ class _StatsPageState extends State<StatsPage> {
                 title: Text(list[index].name),
                 subtitle: Text(list[index].status),
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CreateStatsProjectScreen(project: list[index]),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateStatsProjectScreen(project: list[index]),
+                    ),
+                  );
                 },
               ),
             );
@@ -82,10 +85,51 @@ class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
       ),
       body: Column(
         children: <Widget>[
-          // Text(widget.project.name),
-          // Text(widget.project.status),
-          // Text(widget.project.team.name),
-          // Text(widget.project.team.members.toString()),
+          Text('Nome del progetto: ${widget.project.name}'),
+          Text('Stato del progetto: ${widget.project.status}'),
+          Text('Nome del team: ${widget.project.team.teamName}'),
+          ...widget.project.team.members.asMap().entries.map((entry) {
+            int idx = entry.key;
+            Member member = entry.value;
+            return Text('Membro ${idx + 1}: ${member.name}');
+          }),
+        ],
+      ),
+    );
+  }
+}
+
+class CreateTotalStatsProjectScreen extends StatefulWidget {
+  final List<ProjectItem> projects;
+  const CreateTotalStatsProjectScreen({super.key, required this.projects});
+
+  @override
+  State<CreateTotalStatsProjectScreen> createState() => _CreateTotalStatsProjectScreenState();
+}
+
+class _CreateTotalStatsProjectScreenState extends State<CreateTotalStatsProjectScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Statistiche complessive'),
+      ),
+      body: Column(
+        children: <Widget>[
+          ...widget.projects.map((project) {
+            return Column(
+              children: <Widget>[
+                Text('Nome del progetto: ${project.name}'),
+                Text('Stato del progetto: ${project.status}'),
+                Text('Nome del team: ${project.team.teamName}'),
+                ...project.team.members.asMap().entries.map((entry) {
+                  int idx = entry.key;
+                  Member member = entry.value;
+                  return Text('Membro ${idx + 1}: ${member.name}');
+                }),
+              ],
+            );
+          }),
         ],
       ),
     );
