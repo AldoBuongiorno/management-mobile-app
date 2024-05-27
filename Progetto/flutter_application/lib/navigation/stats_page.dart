@@ -16,8 +16,8 @@ class StatsPage extends StatefulWidget {
   State<StatsPage> createState() => _StatsPageState();
 }
 
+List<ProjectItem> list = ProjectList().testList; //utilizzo lista di prova
 @override
-  List<ProjectItem> list = ProjectList().testList; //utilizzo lista di prova
 class _StatsPageState extends State<StatsPage> {
 
   @override
@@ -27,21 +27,66 @@ class _StatsPageState extends State<StatsPage> {
       child: ListView.builder(
         itemCount: list.length,
         itemBuilder: (context, index) {
-          return Card(
+          if (index == 0) {
+            return Card(
             child: ListTile(
-              title: Text(list[index].name),
-              subtitle: Text(list[index].status),
+              title: const Text('Statstiche generali'),
+              // subtitle: Text(list[index].status),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => CreateProjectScreen(project: list[index]),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CreateStatsProjectScreen(project: list[index]),
+                  ),
+                );
               },
             ),
           );
-        },
+          }
+          else{
+            return Card(
+              child: ListTile(
+                title: Text(list[index].name),
+                subtitle: Text(list[index].status),
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => CreateStatsProjectScreen(project: list[index]),
+                  //   ),
+                  // );
+                },
+              ),
+            );
+          }
+        }
+      ),
+    );
+  }
+}
+
+class CreateStatsProjectScreen extends StatefulWidget {
+  final ProjectItem project;
+  const CreateStatsProjectScreen({super.key, required this.project});
+
+  @override
+  State<CreateStatsProjectScreen> createState() => _CreateStatsProjectScreenState();
+}
+
+class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Statistiche progetto'),
+      ),
+      body: Column(
+        children: <Widget>[
+          // Text(widget.project.name),
+          // Text(widget.project.status),
+          // Text(widget.project.team.name),
+          // Text(widget.project.team.members.toString()),
+        ],
       ),
     );
   }

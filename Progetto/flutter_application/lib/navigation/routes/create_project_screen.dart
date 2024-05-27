@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/blurred_box.dart';
@@ -213,7 +215,7 @@ class SelectableThumbnailGrid extends StatefulWidget {
   }
 
   @override
-  _SelectableThumbnailGridState createState() =>
+  State<SelectableThumbnailGrid> createState() =>
       _SelectableThumbnailGridState();
 }
 
