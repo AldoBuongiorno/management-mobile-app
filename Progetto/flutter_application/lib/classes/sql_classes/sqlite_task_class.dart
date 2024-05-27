@@ -1,4 +1,4 @@
-import 'package:flutter_application/classes/sql_classes/sqlite_class_all';
+import 'package:flutter_application/classes/sql_classes/sqlite_class_all.dart';
 
 class Task {
   final String name;

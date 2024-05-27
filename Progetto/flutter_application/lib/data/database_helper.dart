@@ -1,6 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:flutter_application/classes/sql_classes/sqlite_class_all';
+import 'package:flutter_application/classes/sql_classes/sqlite_class_all.dart';
 
 
 class DatabaseHelper {
