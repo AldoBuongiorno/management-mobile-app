@@ -22,47 +22,69 @@ class _StatsPageState extends State<StatsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: getResponsivePadding(context), //in responsive_padding.dart
-      child: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          //Prende il primo elemento della lista e lo trasforma in statistica generali, 
-          //invece dovrebbe crearne una nuova completamente. Forse da aggiungere una nuova lista
-          //oltre a quella dichiarata in precedenza che acquisice quella di prova.
-          if (index == 0) {
-            return Card(
-              child: ListTile(
-                title: const Text('Statstiche generali'), 
-                subtitle: Text(list[index].status),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateTotalStatsProjectScreen(projects: list),
-                    ),
-                  );
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: <Widget>[
+          const SliverToBoxAdapter(
+            child: Column(
+              children: <Widget>[
+                SizedBox(height: 20),
+                Text('Statistiche progetti', 
+                  style: TextStyle(
+                    fontFamily: 'SamsungSharpSans',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                    color: Color.fromARGB(255, 0, 0, 0)
+                  )
+                ),
+                SizedBox(height: 20),
+              ],
+            ),
+          ),
+          SliverPadding(
+            padding: getResponsivePadding(context), //in responsive_padding.dart
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  if (index == 0) {
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      child: ListTile(
+                        title: const Text('Statstiche generali'), 
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreateTotalStatsProjectScreen(projects: list),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  else{
+                    return Card(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      child: ListTile(
+                        title: Text(list[--index].name), //decrementa l'indice per accedere al primo elemento
+                        subtitle: Text(list[index].status),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CreateStatsProjectScreen(project: list[index]),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
                 },
+                childCount: list.length,
               ),
-            );
-          }
-          else{
-            return Card(
-              child: ListTile(
-                title: Text(list[--index].name), //decrementa l'indice per accedere al primo elemento
-                subtitle: Text(list[index].status),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CreateStatsProjectScreen(project: list[index]),
-                    ),
-                  );
-                },
-              ),
-            );
-          }
-        }
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -81,7 +103,14 @@ class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Statistiche progetto'),
+        title: const Text('Statistiche progetto',
+          style: TextStyle(
+            fontFamily: 'SamsungSharpSans',
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+            color: Color.fromARGB(255, 0, 0, 0)
+          )
+        ),
       ),
       body: Column(
         children: <Widget>[
