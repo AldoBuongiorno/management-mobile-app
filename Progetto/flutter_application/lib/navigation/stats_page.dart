@@ -49,7 +49,7 @@ class _StatsPageState extends State<StatsPage> {
           else{
             return Card(
               child: ListTile(
-                title: Text(list[index].name),
+                title: Text(list[--index].name), //decrementa l'indice per accedere al primo elemento
                 subtitle: Text(list[index].status),
                 onTap: () {
                   Navigator.push(
