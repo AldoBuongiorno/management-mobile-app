@@ -136,15 +136,48 @@ class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
           ),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text('Nome del progetto: ${widget.project.name}'),
-            Text('Stato del progetto: ${widget.project.status}'),
-            Text('Nome del team: ${widget.project.team.teamName}'),
-            ...widget.project.team.members.asMap().entries.map((entry) {
-              int idx = entry.key;
-              Member member = entry.value;
-              return Text('Membro ${idx + 1}: ${member.name}');
-            }),
+            ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: 350,
+                minWidth: 350, 
+                minHeight: 250, 
+                maxHeight: 250, 
+              ),
+              child: Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: <Widget>[
+                    const Padding( 
+                      padding: EdgeInsets.only(bottom: 11),
+                    ),
+                    Text('Nome del progetto: ${widget.project.name}'),
+                    Text('Stato del progetto: ${widget.project.status}'),
+                    Text('Nome del team: ${widget.project.team.teamName}'),
+                    ...widget.project.team.members.asMap().entries.map((entry) {
+                      int idx = entry.key;
+                      Member member = entry.value;
+                      return Text('Membro ${idx + 1}: ${member.name}');
+                    }),
+                  ],
+                ),
+              ),
+            ),  
           ],
         ),
       ),
@@ -197,40 +230,69 @@ class _CreateTotalStatsProjectScreenState extends State<CreateTotalStatsProjectS
           ),
         ),
         body: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ...widget.projects.map((project) {
-                return Container(
-                  margin: const EdgeInsets.all(10),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ...widget.projects.map((project) {
+                  return ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 350,
+                      minWidth: 350, 
+                      minHeight: 250, 
+                      maxHeight: 250, 
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Text('Nome del progetto: ${project.name}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      Text('Stato del progetto: ${project.status}', style: TextStyle(fontSize: 16)),
-                      Text('Nome del team: ${project.team.teamName}', style: TextStyle(fontSize: 16)),
-                      ...project.team.members.asMap().entries.map((entry) {
-                          int idx = entry.key;
-                          Member member = entry.value;
-                          return Text('Membro ${idx + 1}: ${member.name}', style: TextStyle(fontSize: 16));
-                      }),
-                    ],
-                  ),
-                );
-              }),
-            ],
+                      child: Scrollbar(
+                        thickness: 6.0, // adjust the thickness of the scrollbar as needed
+                        radius: const Radius.circular(10), 
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: <Widget>[
+                              const Padding( 
+                                padding: EdgeInsets.only(bottom: 11),
+                              ),
+                              Text('Nome del progetto: ${project.name}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                              Text('Stato del progetto: ${project.status}', style: const TextStyle(fontSize: 16), 
+                                textAlign: TextAlign.center
+                              ),
+                              Text('Nome del team: ${project.team.teamName}', style: const TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center
+                              ),
+                              ...project.team.members.asMap().entries.map((entry) {
+                                  int idx = entry.key;
+                                  Member member = entry.value;
+                                  return Text('Membro ${idx + 1}: ${member.name}', style: const TextStyle(fontSize: 16),
+                                    textAlign: TextAlign.center
+                                  );
+                                }
+                              ),
+                              const Padding( 
+                                padding: EdgeInsets.only(bottom: 11),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
           ),
         ),
       ),
