@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/navigation/team_page.dart';
 import 'commonElements/carousel_item.dart';
 import 'navigation/add_page.dart';
@@ -123,13 +124,8 @@ class HomePageScreen extends StatelessWidget {
                     MediaQuery.of(context).orientation == Orientation.portrait
                         ? 20
                         : 100),
-            child: const Row(children: [
-              Text("Progetti recenti",
-                  style: TextStyle(
-                      fontFamily: 'SamsungSharpSans',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: Color.fromARGB(255, 0, 0, 0)))
+            child: Row(children: [
+              CustomHeadingTitle(titleText: 'Progetti recenti'),
             ])),
         const SizedBox(height: 10),
         addCarouselIfNotEmpty(
@@ -147,13 +143,8 @@ class HomePageScreen extends StatelessWidget {
                     MediaQuery.of(context).orientation == Orientation.portrait
                         ? 20
                         : 100),
-            child: const Row(children: [
-              Text("Team recenti",
-                  style: TextStyle(
-                      fontFamily: 'SamsungSharpSans',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 22,
-                      color: Color.fromARGB(255, 0, 0, 0)))
+            child: Row(children: [
+              CustomHeadingTitle(titleText: 'Team recenti'),
             ])),
         const SizedBox(height: 10),
         Container(

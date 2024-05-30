@@ -33,7 +33,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
             height: 10,
           ),
           BlurredBox(
-              borderRadius: 30,
+              borderRadius: BorderRadius.circular(30),
               sigma: 15,
               child: TextField(
                 maxLength: 50,
@@ -63,7 +63,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
             height: 10,
           ),
           BlurredBox(
-              borderRadius: 30,
+              borderRadius: BorderRadius.circular(30),
               sigma: 15,
               child: TextField(
                 maxLength: 50,
@@ -93,7 +93,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
             height: 10,
           ),
           BlurredBox(
-              borderRadius: 30,
+              borderRadius: BorderRadius.circular(30),
               sigma: 15,
               child: TextField(
                 maxLength: 50,

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_application/classes/all.dart';
 
+import 'blurred_box.dart';
+
 Widget smallInfoContainer(Color containerColor, Color textColor, String text,
     LinearGradient? gradient) {
   return Container(
-      margin: const EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10, left: 15),
       decoration: BoxDecoration(
           gradient: gradient,
           color: containerColor,
@@ -79,8 +81,8 @@ Widget buildCarousel(int index, ProjectItem testItem) => Container(
           //SizedBox(height: 0),
           //Align(alignment: Alignment(-0.5, 0), child: Text("Progetti recenti", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white))),
           Row(
+            //mainAxisAlignment: MainAxisAlignment.
             children: [
-              const SizedBox(width: 15),
               statusCheck(testItem),
             ],
           ),
@@ -90,6 +92,7 @@ Widget buildCarousel(int index, ProjectItem testItem) => Container(
               children: [
                 const SizedBox(width: 12),
                 Container(
+                    margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
@@ -98,34 +101,23 @@ Widget buildCarousel(int index, ProjectItem testItem) => Container(
                         child: teamCheck(testItem)))
               ],
             ),
-            Container(
-              height: 45,
-              alignment: Alignment.bottomLeft,
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      //Color.fromARGB(151, 0, 0, 0),
-                      Color.fromARGB(173, 0, 0, 0),
-                      Color.fromARGB(203, 0, 0, 0)
+            BlurredBox(
+                borderRadius:
+                    const BorderRadius.vertical(bottom: Radius.circular(20)),
+                sigma: 15,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  decoration:
+                      const BoxDecoration(color: Color.fromARGB(100, 0, 0, 0)),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      getProjectName(testItem),
                     ],
-                    stops: [0.1, 0.5, 0.9],
                   ),
-                  borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20))),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 15,
-                    height: 45,
-                  ),
-                  getProjectName(testItem),
-                ],
-              ),
-            )
+                ))
           ]), //SizedBox(height: 10)
         ],
       ),

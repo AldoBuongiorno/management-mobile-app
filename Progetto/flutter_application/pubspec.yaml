@@ -41,6 +41,10 @@ flutter:
       - asset: assets/fonts/samsungsharpsans/SamsungSharpSans-Regular.otf
       - asset: assets/fonts/samsungsharpsans/SamsungSharpSans-Bold.otf
       - asset: assets/fonts/samsungsharpsans/SamsungSharpSans-Medium.otf
+  - family: VisbyCF
+    fonts:
+      - asset: assets/fonts/visby/VisbyCF-Regular.otf
+      - asset: assets/fonts/visby/VisbyCF-Bold.otf
         
     
 

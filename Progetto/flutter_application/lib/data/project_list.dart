@@ -19,7 +19,7 @@ static int teamOnHomepageNumber = 5;
 // liste contenenti i dati utilizzati dall' app; sono istanziate con valori a caso per prova
 static List<Task> tasksList = [];
 static List<Team> teamsList = [];
-static List<ProjectItem> projectsList = [];
+static List<ProjectItem> projectsList = populateTestList();
 static List<Member> membersList = [];
 static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg')]);
 

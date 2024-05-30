@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/navigation/routes/edit_project_screen.dart';
 import '../commonElements/blurred_box.dart';
 import '../data/project_list.dart';
 import '../commonElements/carousel_item.dart';
@@ -13,9 +14,8 @@ class ProjectScreen extends StatefulWidget {
 }
 
 class _ProjectScreen extends State<ProjectScreen> {
-  List<ProjectItem> list = ProjectList().getList();
-  List<ProjectItem> filteredList = List.empty(growable: true);
-  List<Widget> projectContainers = List.empty(growable: true);
+  List<ProjectItem> filteredList = [];
+  List<Widget> projectContainers = [];
   final filterProjectListController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _ProjectScreen extends State<ProjectScreen> {
                     : 100),
         child: Column(children: [
           BlurredBox(
-              borderRadius: 30,
+              borderRadius: BorderRadius.circular(30),
               sigma: 5,
               child: TextField(
                 style: const TextStyle(color: Colors.white),
@@ -50,11 +50,9 @@ class _ProjectScreen extends State<ProjectScreen> {
           const SizedBox(
             height: 20,
           ),
-          filteredList.isNotEmpty ||
-                  filterProjectListController.text.isNotEmpty
+          filteredList.isNotEmpty || filterProjectListController.text.isNotEmpty
               ? buildProjectContainer(filteredList, context)
-              : buildProjectContainer(list, context),
-          
+              : buildProjectContainer(ProjectList.projectsList, context),
         ]));
   }
 
@@ -67,177 +65,95 @@ class _ProjectScreen extends State<ProjectScreen> {
       return;
     }
 
-    for (var item in list) {
+    for (var item in ProjectList.projectsList) {
       if (item.name.toLowerCase().contains(text.toLowerCase())) {
         filteredList.add(item);
       }
     }
-    setState(() {
-      for (var item in filteredList) {
-        print(item.name);
-      }
-    });
+    setState(() {});
   }
 }
 
 Widget buildProjectContainer(list, context) {
   return Expanded(
-      child: ListView.builder(
-          //physics: AlwaysScrollableScrollPhysics(),
-          //shrinkWrap: false,
-          itemCount: list.length,
-          itemBuilder: ((context, index) {
-            return GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ProjectRoute(ProjectList.projectsList.indexOf(list[index])))),
-                child: Container(
-                  height: 200,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: list[index].thumbnail, fit: BoxFit.cover),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(20))),
-                  padding: EdgeInsets.zero,
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      //SizedBox(height: 0),
-                      //Align(alignment: Alignment(-0.5, 0), child: Text("Progetti recenti", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white))),
+    child: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: ((context, index) {
+          return GestureDetector(
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ProjectRoute(
+                          ProjectList.projectsList.indexOf(list[index])))),
+              child: Container(
+                height: 200,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: list[index].thumbnail, fit: BoxFit.cover),
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                padding: EdgeInsets.zero,
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        //const SizedBox(width: 15),
+                        statusCheck(list[index]),
+                        IconButton(
+                            onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditProjectScreen(
+                                          index: ProjectList.projectsList
+                                              .indexOf(list[index]),
+                                        ))),
+                            icon: const Icon(
+                              Icons.settings,
+                              color: Colors.white,
+                            ))
+                      ],
+                    ),
+                    //SizedBox(height: 3),
+                    Column(children: [
                       Row(
                         children: [
-                          const SizedBox(width: 15),
-                          statusCheck(list[index]),
+                          const SizedBox(width: 12),
+                          Container(
+                              margin: const EdgeInsets.only(bottom: 10),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: teamCheck(list[index])))
                         ],
                       ),
-                      //SizedBox(height: 3),
-                      Column(children: [
-                        Row(
-                          children: [
-                            const SizedBox(width: 12),
-                            Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.circular(10)),
-                                child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    child: teamCheck(list[index])))
-                          ],
-                        ),
-                        Container(
-                          height: 45,
-                          alignment: Alignment.bottomLeft,
-                          decoration: const BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.transparent,
-                                  //Color.fromARGB(151, 0, 0, 0),
-                                  Color.fromARGB(173, 0, 0, 0),
-                                  Color.fromARGB(203, 0, 0, 0)
-                                ],
-                                stops: [0.1, 0.5, 0.9],
-                              ),
-                              borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))),
-                          child: Row(
-                            children: [
-                              const SizedBox(
-                                width: 15,
-                                height: 45,
-                              ),
-                              getProjectName(list[index]),
-                            ],
-                          ),
-                        )
-                      ]), //SizedBox(height: 10)
-                    ],
-                  ),
-                  //child: Image.network(urlImage, height: 300)
-                ));
-          })),);
-}
+                      BlurredBox(
+                          borderRadius: const BorderRadius.vertical(
+                              bottom: Radius.circular(20)),
+                          sigma: 15,
 
-/*Widget buildProjectContainer(context, List list, int index) {
-  return GestureDetector(
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => ProjectRoute(index))),
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-            image:
-                DecorationImage(image: list[index].preview, fit: BoxFit.cover),
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        padding: EdgeInsets.zero,
-        margin: EdgeInsets.symmetric(
-            horizontal:
-                MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 75
-                    : 175),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            //SizedBox(height: 0),
-            //Align(alignment: Alignment(-0.5, 0), child: Text("Progetti recenti", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white))),
-            Row(
-              children: [
-                SizedBox(width: 15),
-                statusCheck(list[index]),
-              ],
-            ),
-            //SizedBox(height: 3),
-            Column(children: [
-              Row(
-                children: [
-                  SizedBox(width: 12),
-                  Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          child: teamCheck(list[index])))
-                ],
-              ),
-              Container(
-                height: 45,
-                alignment: Alignment.bottomLeft,
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        //Color.fromARGB(151, 0, 0, 0),
-                        Color.fromARGB(173, 0, 0, 0),
-                        Color.fromARGB(203, 0, 0, 0)
-                      ],
-                      stops: [0.1, 0.5, 0.9],
-                    ),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20))),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 15,
-                      height: 45,
-                    ),
-                    getProjectName(list[index]),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            decoration: const BoxDecoration(
+                                color: Color.fromARGB(100, 0, 0, 0)),
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                getProjectName(list[index]),
+                              ],
+                            ),
+                          ))
+                    ]),
                   ],
                 ),
-              )
-            ]), //SizedBox(height: 10)
-          ],
-        ),
-        //child: Image.network(urlImage, height: 300)
-      ));
-}*/
+              ));
+        })),
+  );
+}
+

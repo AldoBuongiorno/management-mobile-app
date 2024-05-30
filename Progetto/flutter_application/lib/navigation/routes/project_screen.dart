@@ -5,7 +5,9 @@ import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
 import 'package:flutter_application/classes/all.dart';
 
-List<ProjectItem> list = ProjectList().getList();
+import 'edit_project_screen.dart';
+
+//List<ProjectItem> list = ProjectList().getList();
 
 Widget projectView(int index, context) {
   return Container(
@@ -19,20 +21,29 @@ Widget projectView(int index, context) {
       children: [
         CustomHeadingTitle(titleText: "Descrizione"),
         Container( 
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child:
           Expanded( child: Row(
-          children: [ Expanded( child: Text(list[index].description) ) ]),),
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          children: [ Expanded( child: Text(ProjectList.projectsList[index].description) ) ]),),
         ),
       ],
     ),
   );
 }
 
-class ProjectRoute extends StatelessWidget {
+class ProjectRoute extends StatefulWidget {
   int index;
   ProjectRoute(this.index);
+
+  @override
+  State<ProjectRoute> createState() => _ProjectRouteState();
+}
+
+class _ProjectRouteState extends State<ProjectRoute> {
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,19 +65,27 @@ class ProjectRoute extends StatelessWidget {
         child: Scaffold(
             backgroundColor: Color.fromARGB(0, 0, 0, 0),
             appBar: PreferredSize(
-              child: Container(
-                  child: BlurredBox(
-                borderRadius: 0,
-                sigma: 5,
-                child: AppBar(
-                  foregroundColor: Colors.white,
-                  //titleTextStyle: TextStyle(color: Colors.white),
-                  backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-                  title: Text(list[index].name),
-                ),
-              )),
+              
               preferredSize: Size(MediaQuery.of(context).size.width, 55),
+              child: BlurredBox(
+                              borderRadius: BorderRadius.zero,
+                              sigma: 5,
+                              child: AppBar(
+                                actions: [
+                                  IconButton(onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditProjectScreen(
+                                          index: widget.index,
+                                        ))), icon: Icon(Icons.settings))
+                                ],
+              foregroundColor: Colors.white,
+              //titleTextStyle: TextStyle(color: Colors.white),
+              backgroundColor: const Color.fromARGB(100, 0, 0, 0),
+              title: Text(ProjectList.projectsList[widget.index].name),
+                              ),
+                            ),
             ),
-            body: SingleChildScrollView(child: projectView(index, context))));
+            body: SingleChildScrollView(child: projectView(widget.index, context))));
   }
 }

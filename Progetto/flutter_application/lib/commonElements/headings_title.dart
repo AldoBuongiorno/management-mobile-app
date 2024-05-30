@@ -9,7 +9,7 @@ class CustomHeadingTitle extends StatelessWidget{
           titleText,
           style: const TextStyle(
               color: Colors.black,
-              fontFamily: 'SamsungSharpSans',
+              fontFamily: 'VisbyCF',
               fontWeight: FontWeight.bold,
               fontSize: 22),
         );

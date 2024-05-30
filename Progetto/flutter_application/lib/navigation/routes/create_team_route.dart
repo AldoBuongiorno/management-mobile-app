@@ -40,7 +40,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
             height: 10,
           ),
           BlurredBox(
-              borderRadius: 30,
+              borderRadius: BorderRadius.circular(30),
               sigma: 15,
               child: TextField(
                 maxLength: 50,
@@ -130,7 +130,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
   @override
   Widget build(BuildContext context) {
     return BlurredBox(
-      borderRadius: 10,
+      borderRadius: BorderRadius.circular(10),
       sigma: 15,
       child: Container(
         decoration: const BoxDecoration(
