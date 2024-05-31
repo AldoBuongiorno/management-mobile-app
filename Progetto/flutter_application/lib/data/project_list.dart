@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
-
-
-Member member1 = Member("Mario", "Rossi", "Direttore");
-Member member2 = Member("Luigi", "Bianchi", "Operaio");
-Member member3 = Member("Carla", "Verdi", "Supervisore");
-Team team1 = Team("Team 1", List<Member>.from(<Member>[member1, member2]));
-Team team2 = Team("Team 2", List<Member>.from(<Member>[member3, member2]));
-Team team3 = Team("Team 3", List<Member>.from(<Member>[member1]));
-
+import 'package:flutter_application/data/database_helper.dart';
 
 
 class ProjectList {
 
-static int projectOnHomepageNumber = 5;
-static int teamOnHomepageNumber = 5;
+  static int projectOnHomepageNumber = 5;
+  static int teamOnHomepageNumber = 5;
+  static List<Task> tasksList = [];
+  static List<Team> teamsList = [];
+  static List<Project> projectsList = [];
+  static List<Member> membersList = [];
+  static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg')]);
 
-// liste contenenti i dati utilizzati dall' app; sono istanziate con valori a caso per prova
-static List<Task> tasksList = [];
-static List<Team> teamsList = [];
-static List<ProjectItem> projectsList = populateTestList();
-static List<Member> membersList = [];
-static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg')]);
+  static Team team1 = Team(name: "Team 1");
+  static Team team2 = Team(name: "Team 2");
+  static Team team3 = Team(name: "Team 3");
+  static Member member1 = Member(code: 1, name: "Mario", surname: "Rossi", role: "Direttore", mainTeam: team1 , secondaryTeam: team3);
+  static Member member2 = Member(code: 2, name: "Luigi", surname: "Bianchi", role: "Operaio", mainTeam: team1 , secondaryTeam: team2);
+  static Member member3 = Member(code: 3, name: "Carla", surname: "Verdi", role: "Supervisore", mainTeam: team2);
+
+  static Project project1 = Project(name: "Mobile Programming",description: "Boh",team: team1, thumbnail: const AssetImage('assets/images/projectPreview/architectural.jpg'));
+  static Project project2 = Project(name: "Basi di Dati",description: "Boh",team: team2, thumbnail: const AssetImage('assets/images/projectPreview/engineering.jpg'));
+  static Project project3 = Project(name: "Statistica",description: "Boh",team: team2, thumbnail: const AssetImage('assets/images/projectPreview/safety.jpg'));
+  static Project project4 = Project(name: "IOT",description: "Boh",team: team3, thumbnail: const AssetImage('assets/images/projectPreview/baking.jpg'));
+  static Project project5 = Project(name: "Intelligenza Artificiale",description: "Boh",team: team3, thumbnail: const AssetImage('assets/images/projectPreview/default.jpg'));
 
   List<Team> getTeam() {
     return teamsList;
@@ -31,7 +34,7 @@ static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage
     return thumbnailsList;
   }
 
-  List<ProjectItem> getList() {
+  List<Project> getList() {
     return projectsList;
   }
 
@@ -42,30 +45,29 @@ static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage
   List<Member> getMembersList() {
     return membersList;
   }
-  List<ProjectItem> testList = populateTestList();
-}
 
-List<ProjectItem> populateTestList() {
-  Member member1 = Member("Mario", "Rossi", "Direttore");
-  Member member2 = Member("Luigi", "Bianchi", "Operaio");
-  Member member3 = Member("Carla", "Verdi", "Supervisore");
-  Team team1 = Team("Team 1", List<Member>.from(<Member>[member1, member2, member3, member2, member2]));
-  Team team2 = Team("Team 2", List<Member>.from(<Member>[member3, member2]));
-  Team team3 = Team("Team 3", List<Member>.from(<Member>[member1]));
+  List<Project> getProjectsList() {
+    return projectsList;
+  }
 
-  ProjectItem project1 = ProjectItem("Mobile Programming", "Boh", "Attivo", team1);
-  ProjectItem project2 = ProjectItem("Basi di Dati", "Boh", "Attivo", team2);
-  ProjectItem project3 = ProjectItem("Statistica", "Boh", "Sospeso", team2);
-  ProjectItem project4 = ProjectItem("IOT", "Boh", "Archiviato", team3);
-  ProjectItem project5 = ProjectItem("Intelligenza Artificiale", "Boh", "Completato", team3);
+  Future<void> loadSampleData() async {
+  await DatabaseHelper.instance.insertProject(project1);
+  await DatabaseHelper.instance.insertProject(project2);
+  await DatabaseHelper.instance.insertProject(project3);
+  await DatabaseHelper.instance.insertProject(project4);
+  await DatabaseHelper.instance.insertProject(project5);
+  await DatabaseHelper.instance.insertMember(member1);
+  await DatabaseHelper.instance.insertMember(member2);
+  await DatabaseHelper.instance.insertMember(member3);
+  await DatabaseHelper.instance.insertTeam(team1);
+  await DatabaseHelper.instance.insertTeam(team2);
+  await DatabaseHelper.instance.insertTeam(team3);
 
-  project1.thumbnail = const AssetImage('assets/images/projectPreview/architectural.jpg');
-  project2.thumbnail = const AssetImage('assets/images/projectPreview/engineering.jpg');
-  project3.thumbnail = const AssetImage('assets/images/projectPreview/safety.jpg');
-  project4.thumbnail = const AssetImage('assets/images/projectPreview/baking.jpg');
-  project5.thumbnail = const AssetImage('assets/images/projectPreview/default.jpg');
+  tasksList = await DatabaseHelper.instance.getTasks();
+  teamsList = await DatabaseHelper.instance.getTeams();
+  projectsList = await DatabaseHelper.instance.getProjects();
+  membersList = await DatabaseHelper.instance.getMembers();
+  }
 
-  return List<ProjectItem>.from(
-      <ProjectItem>[project1, project2, project3, project4, project5]);
 }
 

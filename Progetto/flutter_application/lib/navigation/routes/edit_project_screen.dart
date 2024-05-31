@@ -1,12 +1,10 @@
-
-
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
+import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/navigation/routes/create_project_screen.dart';
-
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
@@ -43,9 +41,13 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
     super.dispose();
   }
 
+  Future<TasksCheckboxView> _loadTasks() async {
+    List<Task> tasks = await DatabaseHelper.instance.getTasksByProjectName(ProjectList.projectsList[widget.index].getName());
+    return TasksCheckboxView(tasks: tasks);
+  }
+
   @override
   Widget build(BuildContext context) {
-    TasksCheckboxView taskCheckboxList = TasksCheckboxView(tasks: ProjectList.projectsList[widget.index].tasks);
     SelectableThumbnailGrid grid = SelectableThumbnailGrid(ProjectList.thumbnailsList.indexOf(ProjectList.projectsList[widget.index].thumbnail));
 
 
@@ -173,10 +175,11 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                   controller: taskInputController,
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             
                             if(taskInputController.text.isNotEmpty) {
-                              ProjectList.projectsList[widget.index].tasks.add(Task(taskInputController.text));
+                              List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(ProjectList.projectsList[widget.index].getName());
+                              tasksList.add(Task(name: taskInputController.text, project: ProjectList.projectsList[widget.index]));
                             }
                             
                             taskInputController.clear();
@@ -200,7 +203,18 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
 
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
           ),
-          taskCheckboxList,
+          FutureBuilder<TasksCheckboxView>(
+                    future: _loadTasks(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Errore: ${snapshot.error}'));
+                      } else {
+                        return snapshot.data!;
+                      }
+                    },
+                  ),
           ElevatedButton(
             
               onPressed: () {  

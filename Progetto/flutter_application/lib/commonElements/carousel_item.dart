@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_application/classes/all.dart';
-
 import 'blurred_box.dart';
 
 Widget smallInfoContainer(Color containerColor, Color textColor, String text,
@@ -21,8 +20,8 @@ Widget smallInfoContainer(Color containerColor, Color textColor, String text,
                   fontSize: 15))));
 }
 
-Widget statusCheck(ProjectItem testItem) {
-  switch (testItem.status) {
+Widget statusCheck(Project testItem) {
+  switch (testItem.getStatus()) {
     case 'Attivo':
       return smallInfoContainer(Colors.green, Colors.white, "Attivo", null);
     case 'Sospeso':
@@ -52,12 +51,12 @@ Widget statusCheck(ProjectItem testItem) {
   }
 }
 
-Widget teamCheck(ProjectItem testItem) {
-  return Text(testItem.team.teamName,
+Widget teamCheck(Project testItem) {
+  return Text(testItem.getTeam()!.getName(), 
       style: const TextStyle(color: Colors.black, fontSize: 13));
 }
 
-Widget getProjectName(ProjectItem testItem) {
+Widget getProjectName(Project testItem) {
   return Flexible(
       child: Container(
           child: Text(testItem.name,
@@ -68,7 +67,7 @@ Widget getProjectName(ProjectItem testItem) {
                   color: Colors.white))));
 }
 
-Widget buildCarousel(int index, ProjectItem testItem) => Container(
+Widget buildCarousel(int index, Project testItem) => Container(
       decoration: BoxDecoration(
           image: DecorationImage(image: testItem.thumbnail, fit: BoxFit.cover),
           borderRadius: const BorderRadius.all(Radius.circular(20))),

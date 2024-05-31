@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/data/project_list.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:css_colors/css_colors.dart';
 import './homepage.dart';
 import '../commonElements/responsive_padding.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 
-void main() { 
-  runApp(const Group21App()); 
+void main() async { 
+  WidgetsFlutterBinding.ensureInitialized();
+  final db = DatabaseHelper.instance; 
+  await db.database; 
+  DatabaseHelper.instance.database.then((_) {
+    ProjectList().loadSampleData();
+    runApp(const Group21App());   
+  });
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       systemNavigationBarColor: Color.fromARGB(0, 0, 0, 0),
@@ -33,7 +42,6 @@ class Group21App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProjectList();
     return Container(
       decoration: getGradientDecoration(),
       child: MaterialApp(

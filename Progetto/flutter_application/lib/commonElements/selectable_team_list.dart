@@ -29,7 +29,7 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
                     
                     selectedColor: Colors.pink,
                     iconTheme: const IconThemeData(color: Colors.white),
-                    label: Text(ProjectList.teamsList[index].teamName),
+                    label: Text(ProjectList.teamsList[index].getName()),
                     selected: widget.selectedTeam == index,
                     onSelected: (bool selected) {
                       setState(() {

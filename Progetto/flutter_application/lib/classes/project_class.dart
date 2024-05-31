@@ -1,35 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 
-class ProjectItem {
+class Project {
+
   String name;
-  String description; 
-  String status;
-
-  late DateTime completionDate;
-  DateTime startDate = DateTime.now();
-  Team team;
-  //late Team secondaryTeam;
-
-  bool finished = false;
-
-  void setStatus(String status) {
-    if(status == 'Completato') finished = true;
-    this.status = status;
-  }
+  String description;
+  DateTime? creationDate;
+  DateTime? expirationDate;
+  DateTime? lastModified;
+  String? status;
+  String? projectFailureReason;
+  Team? team;
+  AssetImage thumbnail;
 
   bool isActive() {
     return status == "Attivo" ? true : false;
   }
 
-  late AssetImage thumbnail;
-  late List<Task> tasks = List.empty(growable: true);
+  bool isSuspended() {
+    return status == "Sospeso" ? true : false;
+  }
 
-  ProjectItem(this.name, this.description, this.status, this.team);
+  bool isArchived() {
+    return status == "Archiviato" ? true : false;
+  }
+
+  String getName() {
+    return name;
+  }
+
+  String getDescription() {
+    return description;
+  }
+
+  DateTime? getCreationDate() {
+    return creationDate;
+  }
+
+  DateTime? getExpirationDate() {
+    return expirationDate;
+  }
+
+  DateTime? getLastModified() {
+    return lastModified;
+  }
+
+  String? getProjectFailureReason() {
+    return projectFailureReason;
+  }
+
+  Team? getTeam() {
+    return team;
+  }
+  
+  String? getStatus() {
+    return status;
+  }
+
+  AssetImage getThumbnail() {
+    return thumbnail;
+  }
+
+  Project({
+    required this.name,
+    required this.description,
+    this.creationDate,
+    this.expirationDate,
+    this.lastModified,
+    this.status,
+    this.projectFailureReason,
+    required this.team,
+    required this.thumbnail,
+  }) {
+    creationDate ??= DateTime.now();
+    expirationDate ??= DateTime.now().add(const Duration(days: 60));
+    lastModified ??= DateTime.now();
+    status ??= "Attivo";
+  }
+  
+
+   Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'description': description,
+      'creationDate': creationDate?.toIso8601String(),
+      'expirationDate': expirationDate?.toIso8601String(),
+      'lastModified': lastModified?.toIso8601String(),
+      'status': status,
+      'projectFailureReason': projectFailureReason,
+      'team': team?.getName(),
+      'thumbnail': thumbnail.assetName,
+    };
+  }
 
   @override
   String toString() {
-    return '$name $description';
+    return 'Project{name: $name, description: $description, creationDate: $creationDate, expirationDate: $expirationDate, lastModified: $lastModified, status: $status, projectFailureReason: $projectFailureReason, team: $team, ${(thumbnail).assetName}}';
   }
-  
+
 }

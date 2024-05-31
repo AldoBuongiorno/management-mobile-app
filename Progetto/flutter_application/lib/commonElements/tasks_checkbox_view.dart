@@ -23,11 +23,11 @@ class _TasksCheckboxViewState extends State<TasksCheckboxView> {
             activeColor: Colors.pink,
             //side: BorderSide(color: Colors.lightBlue, width: 2),
             checkboxShape: const CircleBorder(),
-            title: Text(widget.tasks[index].taskName),
-            value: widget.tasks[index].finished,
+            title: Text(widget.tasks[index].getName()),
+            value: widget.tasks[index].getCompleted(),
             onChanged: (bool? value) {
               setState(() {
-                widget.tasks[index].finished =
+                widget.tasks[index].completed =
                     value! ? true : false;
               });
             },

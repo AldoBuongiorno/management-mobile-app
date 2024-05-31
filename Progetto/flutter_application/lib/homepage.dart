@@ -2,8 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
+import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/navigation/team_page.dart';
 import 'commonElements/carousel_item.dart';
 import 'navigation/add_page.dart';
@@ -109,9 +109,26 @@ class _HomePageState extends State<HomePage> {
 class HomePageScreen extends StatelessWidget {
   const HomePageScreen({super.key});
 
+  Future<List<Project>> _loadProjectsOrderByLastModified() async {
+    return await DatabaseHelper.instance.getActiveProjectsOrderedByLastModified(); 
+  }
+
+  Future<List<Team>> _TeamsOrderedByMemberCount() async {
+    return await DatabaseHelper.instance.getTeamsOrderedByMemberCount(); 
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FutureBuilder(
+      future: Future.wait([_loadProjectsOrderByLastModified() , _TeamsOrderedByMemberCount()]),
+      builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          return Scaffold(
         //backgroundColor: Colors.amber,
         body: SingleChildScrollView(
             child: Column(
@@ -129,9 +146,7 @@ class HomePageScreen extends StatelessWidget {
             ])),
         const SizedBox(height: 10),
         addCarouselIfNotEmpty(
-            ProjectList.projectsList
-                .where((element) => element.isActive())
-                .toList(),
+            snapshot.data?[0] as List<Project>,
             context),
         const SizedBox(
           height: 20,
@@ -154,14 +169,22 @@ class HomePageScreen extends StatelessWidget {
                     MediaQuery.of(context).orientation == Orientation.portrait
                         ? 20
                         : 100),
-            child: addTeamsIfNotEmpty(ProjectList.teamsList, context))
+            child: addTeamsIfNotEmpty(snapshot.data?[1] as List<Team>, context))
       ],
     )));
+        
+     
+        }
+      },
+    );
   }
-}
+
+
+    
+ 
 
 Widget addCarouselIfNotEmpty(List testList, BuildContext context) {
-  if (ProjectList.projectsList.isEmpty) {
+  if (testList.isEmpty) {
     return Container(
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.symmetric(
@@ -173,7 +196,7 @@ Widget addCarouselIfNotEmpty(List testList, BuildContext context) {
     );
   } else {
     return CarouselSlider.builder(
-      itemCount: ProjectList.projectsList
+      itemCount: testList.length /*ProjectList.projectsList
                   .where((element) => element.isActive())
                   .toList()
                   .length <
@@ -182,10 +205,10 @@ Widget addCarouselIfNotEmpty(List testList, BuildContext context) {
               .where((element) => element.isActive())
               .toList()
               .length
-          : ProjectList.projectOnHomepageNumber,
+          : ProjectList.projectOnHomepageNumber*/,
       itemBuilder: (context, index, realIndex) {
         //final urlImage = testList[index];
-        ProjectItem testItem = testList[index];
+        Project testItem = testList[index];
         return buildCarousel(index, testItem);
       },
       options: CarouselOptions(height: 200),
@@ -202,13 +225,36 @@ Widget addTeamsIfNotEmpty(List testList, BuildContext context) {
     return ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        itemCount: ProjectList.teamsList.length
+        itemCount: testList.length/*testlistProjectList.teamsList.length
                      <
                 ProjectList.teamOnHomepageNumber
             ? ProjectList.teamsList.length
-            : ProjectList.projectOnHomepageNumber,
-        itemBuilder: (context, index) {
-          return ExpandableTeamTile(ProjectList.membersList, index);
+            : ProjectList.projectOnHomepageNumber*/,
+        itemBuilder: (context, index)  {
+          return FutureBuilder<List<Member>>(
+            future: DatabaseHelper.instance.getMembersByTeam(testList[index].getName()),
+            builder: (context, membersSnapshot) {
+                if (membersSnapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator(); // Visualizza un indicatore di caricamento durante il caricamento dei membri del team
+                } else if (membersSnapshot.hasError) {
+                  return Text('Errore: ${membersSnapshot.error}'); // Gestisci eventuali errori durante il caricamento dei membri del team
+                } else {
+                  return ExpandableTeamTile(testList[index].getName(),membersSnapshot.data!, index);
+                }
+              },
+
+          );
+        
+        
+        
+        
+        
+        
+        
+        
         });
   }
+}
+
+
 }

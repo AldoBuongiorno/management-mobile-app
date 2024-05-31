@@ -2,23 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 
 class Member {
+  
+  int code;
   String name;
   String surname;
   String role;
+  Team? mainTeam;
+  Team? secondaryTeam;
+
+  int getCode() {
+    return code;
+  }
 
   String getMemberName() {
     return name;
   }
-
-  bool exists(Member otherMember) {
-    
-    if(name.toLowerCase() == otherMember.name.toLowerCase() &&
-    surname.toLowerCase() == otherMember.surname.toLowerCase() &&
-    role.toLowerCase() == otherMember.role.toLowerCase()) return true;
-    return false;
+  
+  String getMemberSurname() {
+    return surname;
   }
 
-  
+  String getMemberRole() {
+    return role;
+  }
 
-  Member(this.name, this.surname, this.role);
+
+  Member({
+    required this.code,
+    required this.name,
+    required this.surname,
+    required this.role,
+    this.mainTeam,
+    this.secondaryTeam,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'code': code,
+      'name': name,
+      'surname': surname,
+      'role': role,
+      'mainTeam': mainTeam?.getName(),
+      'secondaryTeam': secondaryTeam?.getName(),
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Member{code: $code, name: $name, surname: $surname, role: $role, mainTeam: $mainTeam, secondaryTeam: $secondaryTeam}';
+  }
+
+
 }

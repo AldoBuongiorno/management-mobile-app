@@ -125,9 +125,10 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                     ? null
                     : {
                         member = Member(
-                            memberNameController.text,
-                            memberSurnameController.text,
-                            memberRoleController.text),
+                            code: 1,
+                            name: memberNameController.text,
+                            surname: memberSurnameController.text,
+                            role: memberRoleController.text),
                           true
                             ? {
                                 ProjectList.membersList.add(member),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/database_helper.dart';
 import 'routes/create_member_route.dart';
 import 'routes/create_project_screen.dart';
 import 'package:input_quantity/input_quantity.dart';
@@ -16,10 +17,14 @@ class StatsPage extends StatefulWidget {
   State<StatsPage> createState() => _StatsPageState();
 }
 
-List<ProjectItem> list = ProjectList().testList; //utilizzo lista di prova
+Future<List<Member>> _loadMembers(String teamName) async {
+  return await DatabaseHelper.instance.getMembersByTeam(teamName);
+}
+
+List<Project> list = ProjectList().getProjectsList(); //utilizzo lista di prova
+
 @override
 class _StatsPageState extends State<StatsPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,14 +34,12 @@ class _StatsPageState extends State<StatsPage> {
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Text('Statistiche progetti', 
-                  style: TextStyle(
-                    fontFamily: 'SamsungSharpSans',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22,
-                    color: Color.fromARGB(255, 0, 0, 0)
-                  )
-                ),
+                Text('Statistiche progetti',
+                    style: TextStyle(
+                        fontFamily: 'SamsungSharpSans',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 22,
+                        color: Color.fromARGB(255, 0, 0, 0))),
                 SizedBox(height: 20),
               ],
             ),
@@ -50,29 +53,31 @@ class _StatsPageState extends State<StatsPage> {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 15),
                       child: ListTile(
-                        title: const Text('Statstiche generali'), 
+                        title: const Text('Statstiche generali'),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CreateTotalStatsProjectScreen(projects: list),
+                              builder: (context) =>
+                                  CreateTotalStatsProjectScreen(projects: list),
                             ),
                           );
                         },
                       ),
                     );
-                  }
-                  else{
+                  } else {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 15),
                       child: ListTile(
-                        title: Text(list[--index].name), //decrementa l'indice per accedere al primo elemento
-                        subtitle: Text(list[index].status),
+                        title: Text(list[--index]
+                            .name), //decrementa l'indice per accedere al primo elemento
+                        subtitle: Text(list[index].getStatus()!),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CreateStatsProjectScreen(project: list[index]),
+                              builder: (context) => CreateStatsProjectScreen(
+                                  project: list[index]),
                             ),
                           );
                         },
@@ -91,11 +96,12 @@ class _StatsPageState extends State<StatsPage> {
 }
 
 class CreateStatsProjectScreen extends StatefulWidget {
-  final ProjectItem project;
+  final Project project;
   const CreateStatsProjectScreen({super.key, required this.project});
 
   @override
-  State<CreateStatsProjectScreen> createState() => _CreateStatsProjectScreenState();
+  State<CreateStatsProjectScreen> createState() =>
+      _CreateStatsProjectScreenState();
 }
 
 class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
@@ -103,37 +109,35 @@ class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color.fromARGB(255, 232, 232, 232), //255, 232
-            Color.fromARGB(255, 0, 183, 255),
-            Color.fromARGB(255, 0, 183, 255),
-            Color.fromARGB(255, 255, 0, 115),
-            Color.fromARGB(255, 255, 0, 115),
-            Colors.yellow
-          ],
-          stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-        )
-      ),
+          gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 232, 232, 232), //255, 232
+          Color.fromARGB(255, 0, 183, 255),
+          Color.fromARGB(255, 0, 183, 255),
+          Color.fromARGB(255, 255, 0, 115),
+          Color.fromARGB(255, 255, 0, 115),
+          Colors.yellow
+        ],
+        stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+      )),
       child: Scaffold(
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
         appBar: PreferredSize(
           preferredSize: Size(MediaQuery.of(context).size.width, 55),
           child: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: AppBar(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-                title: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text('Statistiche ${widget.project.name}'),
-                ),
+              child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: AppBar(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(100, 0, 0, 0),
+              title: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text('Statistiche ${widget.project.name}'),
               ),
-            )
-          ),
+            ),
+          )),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -142,9 +146,9 @@ class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
             ConstrainedBox(
               constraints: const BoxConstraints(
                 maxWidth: 350,
-                minWidth: 350, 
-                minHeight: 250, 
-                maxHeight: 250, 
+                minWidth: 350,
+                minHeight: 250,
+                maxHeight: 250,
               ),
               child: Container(
                 margin: const EdgeInsets.all(10),
@@ -163,21 +167,40 @@ class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
                 ),
                 child: Column(
                   children: <Widget>[
-                    const Padding( 
+                    const Padding(
                       padding: EdgeInsets.only(bottom: 11),
                     ),
                     Text('Nome del progetto: ${widget.project.name}'),
                     Text('Stato del progetto: ${widget.project.status}'),
-                    Text('Nome del team: ${widget.project.team.teamName}'),
-                    ...widget.project.team.members.asMap().entries.map((entry) {
-                      int idx = entry.key;
-                      Member member = entry.value;
-                      return Text('Membro ${idx + 1}: ${member.name}');
-                    }),
+                    Text('Nome del team: ${widget.project.team?.getName()}'),
+                    FutureBuilder<List<Member>>(
+                      future: _loadMembers(widget.project.team!.getName()),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Errore: ${snapshot.error}');
+                        } else {
+                          return Column(
+                            children:
+                                snapshot.data!.asMap().entries.map((entry) {
+                              int idx = entry.key;
+                              Member member = entry.value;
+                              return Text(
+                                'Membro ${idx + 1}: ${member.name}',
+                                style: const TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center,
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
-            ),  
+            ),
           ],
         ),
       ),
@@ -186,48 +209,46 @@ class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
 }
 
 class CreateTotalStatsProjectScreen extends StatefulWidget {
-  final List<ProjectItem> projects;
+  final List<Project> projects;
   const CreateTotalStatsProjectScreen({super.key, required this.projects});
 
   @override
-  State<CreateTotalStatsProjectScreen> createState() => _CreateTotalStatsProjectScreenState();
+  State<CreateTotalStatsProjectScreen> createState() =>
+      _CreateTotalStatsProjectScreenState();
 }
 
-
-
-class _CreateTotalStatsProjectScreenState extends State<CreateTotalStatsProjectScreen> {
+class _CreateTotalStatsProjectScreenState
+    extends State<CreateTotalStatsProjectScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color.fromARGB(255, 232, 232, 232), //255, 232
-            Color.fromARGB(255, 0, 183, 255),
-            Color.fromARGB(255, 0, 183, 255),
-            Color.fromARGB(255, 255, 0, 115),
-            Color.fromARGB(255, 255, 0, 115),
-            Colors.yellow
-          ],
-          stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
-          begin: Alignment.bottomRight,
-          end: Alignment.topLeft,
-        )
-      ),
+          gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 232, 232, 232), //255, 232
+          Color.fromARGB(255, 0, 183, 255),
+          Color.fromARGB(255, 0, 183, 255),
+          Color.fromARGB(255, 255, 0, 115),
+          Color.fromARGB(255, 255, 0, 115),
+          Colors.yellow
+        ],
+        stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
+        begin: Alignment.bottomRight,
+        end: Alignment.topLeft,
+      )),
       child: Scaffold(
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
         appBar: PreferredSize(
           preferredSize: Size(MediaQuery.of(context).size.width, 55),
           child: ClipRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-              child: AppBar(
-                foregroundColor: Colors.white,
-                backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-                title: const Text('Statistiche complessive'),
-              ),
-            )
-          ),
+              child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: AppBar(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(100, 0, 0, 0),
+              title: const Text('Statistiche complessive'),
+            ),
+          )),
         ),
         body: Center(
           child: SingleChildScrollView(
@@ -238,9 +259,9 @@ class _CreateTotalStatsProjectScreenState extends State<CreateTotalStatsProjectS
                   return ConstrainedBox(
                     constraints: const BoxConstraints(
                       maxWidth: 350,
-                      minWidth: 350, 
-                      minHeight: 250, 
-                      maxHeight: 250, 
+                      minWidth: 350,
+                      minHeight: 250,
+                      maxHeight: 250,
                     ),
                     child: Container(
                       margin: const EdgeInsets.all(10),
@@ -258,30 +279,57 @@ class _CreateTotalStatsProjectScreenState extends State<CreateTotalStatsProjectS
                         ],
                       ),
                       child: Scrollbar(
-                        thickness: 6.0, // adjust the thickness of the scrollbar as needed
-                        radius: const Radius.circular(10), 
+                        thickness:
+                            6.0, // adjust the thickness of the scrollbar as needed
+                        radius: const Radius.circular(10),
                         child: SingleChildScrollView(
                           child: Column(
                             children: <Widget>[
-                              const Padding( 
+                              const Padding(
                                 padding: EdgeInsets.only(bottom: 11),
                               ),
-                              Text('Nome del progetto: ${project.name}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                              Text('Stato del progetto: ${project.status}', style: const TextStyle(fontSize: 16), 
-                                textAlign: TextAlign.center
+                              Text(
+                                'Nome del progetto: ${project.name}',
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
                               ),
-                              Text('Nome del team: ${project.team.teamName}', style: const TextStyle(fontSize: 16),
-                                textAlign: TextAlign.center
+                              Text(
+                                'Stato del progetto: ${project.status}',
+                                style: const TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center,
                               ),
-                              ...project.team.members.asMap().entries.map((entry) {
-                                  int idx = entry.key;
-                                  Member member = entry.value;
-                                  return Text('Membro ${idx + 1}: ${member.name}', style: const TextStyle(fontSize: 16),
-                                    textAlign: TextAlign.center
-                                  );
-                                }
+                              Text(
+                                'Nome del team: ${project.team!.getName()}',
+                                style: const TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center,
                               ),
-                              const Padding( 
+                              FutureBuilder<List<Member>>(
+                                future: _loadMembers(project.team!.getName()),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return CircularProgressIndicator();
+                                  } else if (snapshot.hasError) {
+                                    return Text('Errore: ${snapshot.error}');
+                                  } else {
+                                    return Column(
+                                      children: snapshot.data!
+                                          .asMap()
+                                          .entries
+                                          .map((entry) {
+                                        int idx = entry.key;
+                                        Member member = entry.value;
+                                        return Text(
+                                          'Membro ${idx + 1}: ${member.name}',
+                                          style: const TextStyle(fontSize: 16),
+                                          textAlign: TextAlign.center,
+                                        );
+                                      }).toList(),
+                                    );
+                                  }
+                                },
+                              ),
+                              const Padding(
                                 padding: EdgeInsets.only(bottom: 11),
                               ),
                             ],

@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/blurred_box.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
+import 'package:flutter_application/data/database_helper.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
 import '../../commonElements/tasks_checkbox_view.dart';
 import '../../data/project_list.dart';
@@ -37,7 +38,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   Widget build(BuildContext context) {
     TasksCheckboxView taskCheckboxList = TasksCheckboxView(tasks: cTasks);
     SelectableThumbnailGrid grid = SelectableThumbnailGrid();
-    ProjectItem projectItem;
+    Project projectItem;
     return Container(
         margin: EdgeInsets.symmetric(
             vertical: 10,
@@ -136,10 +137,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   controller: taskInputController,
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             
                             if(taskInputController.text.isNotEmpty) {
-                              cTasks.add(Task(taskInputController.text));
+                              cTasks.add(Task(name: taskInputController.text,project: await DatabaseHelper.instance.getProjectByName( projectNameController.text)));
                             }
                             
                             taskInputController.clear();
@@ -166,17 +167,18 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           taskCheckboxList,
           ElevatedButton(
             
-              onPressed: () { projectNameController.text.isEmpty || ProjectList.teamsList.isEmpty ? null : 
+              onPressed: () async { projectNameController.text.isEmpty || ProjectList.teamsList.isEmpty ? null : 
                 
-                {   projectItem = ProjectItem(
-                    projectNameController.text,
-                    projectDescriptionController.text,
-                    "Attivo",
-                    ProjectList.teamsList[selectedTeam]),
+                {   projectItem = Project(
+                    name: projectNameController.text,
+                    description: projectDescriptionController.text,
+                    status: "Attivo",
+                    team: ProjectList.teamsList[selectedTeam],
+                    thumbnail: ProjectList.thumbnailsList[grid.selectedThumbnail]
+                    ),
                 ProjectList.projectsList.add(projectItem),
                 
-                projectItem.tasks = cTasks,
-                projectItem.thumbnail = ProjectList.thumbnailsList[grid.selectedThumbnail] ,
+                cTasks = await DatabaseHelper.instance.getTasksByProjectName(projectItem.name) ,
                     
                     projectNameController.clear(),
                     projectDescriptionController.clear(),
@@ -236,7 +238,7 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
                     
                     selectedColor: Colors.pink,
                     iconTheme: const IconThemeData(color: Colors.white),
-                    label: Text(ProjectList.teamsList[index].teamName),
+                    label: Text(ProjectList.teamsList[index].getName()),
                     selected: selectedTeam == index,
                     onSelected: (bool selected) {
                       setState(() {

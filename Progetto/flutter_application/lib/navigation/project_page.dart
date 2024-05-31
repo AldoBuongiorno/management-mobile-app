@@ -14,7 +14,7 @@ class ProjectScreen extends StatefulWidget {
 }
 
 class _ProjectScreen extends State<ProjectScreen> {
-  List<ProjectItem> filteredList = [];
+  List<Project> filteredList = [];
   List<Widget> projectContainers = [];
   final filterProjectListController = TextEditingController();
   @override

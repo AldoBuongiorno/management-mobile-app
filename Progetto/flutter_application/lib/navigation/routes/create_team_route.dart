@@ -76,7 +76,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                 teamNameController.text.isEmpty
                     ? null
                     : {
-                        team = Team(teamNameController.text, selectedMembers),
+                        team = Team(name: teamNameController.text),
                         ProjectList.teamsList
                             .add(team),
 
@@ -89,7 +89,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                                       AlertDialog(
                                     title: const Text('Successo!'),
                                     content: Text(
-                                        ("Il team \"${team.teamName}\" è stato creato correttamente.\nPuoi creare altri team se ti va.")),
+                                        ("Il team \"${team.getName()}\" è stato creato correttamente.\nPuoi creare altri team se ti va.")),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () =>
