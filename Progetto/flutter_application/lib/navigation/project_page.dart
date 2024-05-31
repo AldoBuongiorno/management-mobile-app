@@ -77,6 +77,7 @@ class _ProjectScreen extends State<ProjectScreen> {
 Widget buildProjectContainer(list, context) {
   return Expanded(
     child: ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics().applyTo(const BouncingScrollPhysics()),
         itemCount: list.length,
         itemBuilder: ((context, index) {
           return GestureDetector(
