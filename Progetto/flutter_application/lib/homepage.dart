@@ -244,14 +244,6 @@ Widget addTeamsIfNotEmpty(List testList, BuildContext context) {
               },
 
           );
-        
-        
-        
-        
-        
-        
-        
-        
         });
   }
 }
