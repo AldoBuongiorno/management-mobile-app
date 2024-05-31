@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import '../commonElements/blurred_box.dart';
 import 'routes/create_member_route.dart';
 import 'routes/create_project_screen.dart';
 import 'package:input_quantity/input_quantity.dart';
@@ -27,6 +28,7 @@ class FirstRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
+            //physics: const AlwaysScrollableScrollPhysics().applyTo(const BouncingScrollPhysics()), // per evitare il bug della sfocatura
             child: Container(
                 margin: EdgeInsets.symmetric(
                     vertical: 10,
@@ -100,43 +102,110 @@ class FirstRoute extends StatelessWidget {
                             onQtyChanged: (value) =>
                                 ProjectList.teamOnHomepageNumber = value)
                       ]),
-                  ElevatedButton(
-                    child: const Text(
-                      'Aggiungi progetto',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SecondRoute()));
-                    },
-                  ),
-                  ElevatedButton(
-                    child: const Text(
-                      'Aggiungi membro',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ToAddMemberRoute()));
-                    },
-                  ),
-                  ElevatedButton(
-                    child: const Text(
-                      'Aggiungi team',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ToAddTeamRoute()));
-                    },
-                  ),
-
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: BlurredBox(
+                          borderRadius: BorderRadius.circular(10),
+                          sigma: 15,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(50, 0, 0, 0)),
+                                shadowColor: MaterialStateProperty.all(
+                                    Colors.transparent),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ))),
+                            child: const Row( mainAxisAlignment: MainAxisAlignment.center,children: [
+                            
+                            Icon(Icons.library_add_check),
+                            Text(
+                              'Aggiungi progetto',
+                              style: TextStyle(color: Colors.black),
+                              
+                            ),
+                            ]),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SecondRoute()));
+                            },
+                          ))),
+                          const SizedBox(height: 5),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: BlurredBox(
+                          borderRadius: BorderRadius.circular(10),
+                          sigma: 15,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(50, 0, 0, 0)),
+                                shadowColor: MaterialStateProperty.all(
+                                    Colors.transparent),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ))),
+                        child: const Row( mainAxisAlignment: MainAxisAlignment.center,children: [
+                            
+                            Icon(Icons.person_add),
+                            Text(
+                              'Aggiungi membro',
+                              style: TextStyle(color: Colors.black),
+                              
+                            ),
+                            ]),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ToAddMemberRoute()));
+                        },
+                      ))),
+                      const SizedBox(height: 5),
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: BlurredBox(
+                          borderRadius: BorderRadius.circular(10),
+                          sigma: 15,
+                          child: ElevatedButton(
+                            
+                            style: ButtonStyle(
+                              
+                              foregroundColor: MaterialStateProperty.all(Colors.white),
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(50, 0, 0, 0)),
+                                shadowColor: MaterialStateProperty.all(
+                                    Colors.transparent),
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ))),
+                        child: const Row( mainAxisAlignment: MainAxisAlignment.center,children: [
+                            
+                            Icon(Icons.group_add),
+                            Text(
+                              'Aggiungi team',
+                              style: TextStyle(color: Colors.black),
+                              
+                            ),
+                            ]),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ToAddTeamRoute()));
+                        },
+                      ))),
                 ]))));
   }
 }
@@ -184,6 +253,8 @@ class SecondRoute extends StatelessWidget {
                 title: const Text('Second Route'),
               ),*/
             body: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics().applyTo(
+                  const BouncingScrollPhysics()), // per evitare il bug della sfocatura
               child: Column(children: [
                 const CreateProjectScreen(),
                 ElevatedButton(
@@ -234,11 +305,11 @@ class ToAddMemberRoute extends StatelessWidget {
                 ),
               )),
             ),
-
             body: SingleChildScrollView(
-              child: Column(children: [
-                const CreateMemberScreen(),
-                
+              physics: const AlwaysScrollableScrollPhysics()
+                  .applyTo(const BouncingScrollPhysics()),
+              child: const Column(children: [
+                CreateMemberScreen(),
               ]),
             )));
   }
@@ -281,11 +352,11 @@ class ToAddTeamRoute extends StatelessWidget {
                 ),
               )),
             ),
-
             body: SingleChildScrollView(
-              child: Column(children: [
-                const CreateTeamScreen(),
-                
+              physics: const AlwaysScrollableScrollPhysics()
+                  .applyTo(const BouncingScrollPhysics()),
+              child: const Column(children: [
+                CreateTeamScreen(),
               ]),
             )));
   }

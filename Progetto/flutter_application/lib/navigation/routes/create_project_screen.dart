@@ -249,7 +249,7 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
                 },
               ).toList(),
             )
-    : const Text("Non ci sono team disponibili. Non è possibile creare un progetto senza team.");
+    : const Expanded(child: Text("Non ci sono team disponibili. Non è possibile creare un progetto senza team."));
   }
   
 }
