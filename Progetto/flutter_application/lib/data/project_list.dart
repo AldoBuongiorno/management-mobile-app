@@ -51,6 +51,9 @@ class ProjectList {
   }
 
   Future<void> loadSampleData() async {
+  await DatabaseHelper.instance.insertTeam(team1);
+  await DatabaseHelper.instance.insertTeam(team2);
+  await DatabaseHelper.instance.insertTeam(team3);
   await DatabaseHelper.instance.insertProject(project1);
   await DatabaseHelper.instance.insertProject(project2);
   await DatabaseHelper.instance.insertProject(project3);
@@ -59,9 +62,7 @@ class ProjectList {
   await DatabaseHelper.instance.insertMember(member1);
   await DatabaseHelper.instance.insertMember(member2);
   await DatabaseHelper.instance.insertMember(member3);
-  await DatabaseHelper.instance.insertTeam(team1);
-  await DatabaseHelper.instance.insertTeam(team2);
-  await DatabaseHelper.instance.insertTeam(team3);
+
 
   tasksList = await DatabaseHelper.instance.getTasks();
   teamsList = await DatabaseHelper.instance.getTeams();
