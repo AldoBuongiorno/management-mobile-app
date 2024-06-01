@@ -15,6 +15,7 @@ import 'package:flutter_application/classes/all.dart';
 int selectedTeam = 0;
 List<Task> cTasks = [];
 
+
 class CreateProjectScreen extends StatefulWidget {
   const CreateProjectScreen({super.key});
 
@@ -45,7 +46,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 MediaQuery.of(context).orientation == Orientation.portrait
                     ? 20
                     : 100),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.end ,children: [
           const SizedBox(height: 20),
           Row(children: [
             //SizedBox(width: 5),
@@ -101,14 +102,20 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           Row(children: [
             //SizedBox(width: 25),
             CustomHeadingTitle(titleText: "Team"),
-          ]),
+                      ]),
           const SizedBox(height: 5),
           const Padding(
               padding: EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+
+
                     SelectableTeamsList(),
+
+
+
+
                   ])),
           const SizedBox(height: 5),
           Row(children: [
@@ -119,7 +126,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           Row(children: [
             //SizedBox(width: 25),
             CustomHeadingTitle(titleText: "Task"),
-          ]),
+                      ]),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
             child: BlurredBox(
@@ -136,7 +143,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                   name: taskInputController.text,
                                   ));
                             }
-
+                            
                             taskInputController.clear();
                             setState(() {});
                           },
@@ -144,8 +151,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                             Icons.add,
                             color: Colors.white,
                           )),
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 15),
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       filled: true,
                       fillColor: const Color.fromARGB(100, 0, 0, 0),
                       border: const OutlineInputBorder(
@@ -198,16 +205,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         ),
                       };
               },
-              child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.add_task),
-                SizedBox(
-                  width: 5,
-                ),
-                Text("Aggiungi progetto")
-              ]))
+              child: const Row(mainAxisSize: MainAxisSize.min, children: [ Icon(Icons.add_task), SizedBox(width: 5,),Text("Aggiungi progetto") ]))
         ]));
   }
 }
+
+
 
 class SelectableTeamsList extends StatefulWidget {
   const SelectableTeamsList({super.key});
@@ -217,6 +220,7 @@ class SelectableTeamsList extends StatefulWidget {
 }
 
 class _SelectableTeamsListState extends State<SelectableTeamsList> {
+
   @override
   void initState() {
     super.initState();
@@ -224,28 +228,30 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
 
   @override
   Widget build(BuildContext context) {
-    return ProjectList.teamsList.isNotEmpty
-        ? Wrap(
-            spacing: 5.0,
-            children: List<Widget>.generate(
-              ProjectList.teamsList.length,
-              (int index) {
-                return ChoiceChip(
-                  selectedColor: Colors.pink,
-                  iconTheme: const IconThemeData(color: Colors.white),
-                  label: Text(ProjectList.teamsList[index].getName()),
-                  selected: selectedTeam == index,
-                  onSelected: (bool selected) {
-                    setState(() {
-                      selectedTeam = selected ? index : 0;
-                    });
-                  },
-                );
-              },
-            ).toList(),
-          )
-        : const Expanded(
-            child: Text(
-                "Non ci sono team disponibili. Non è possibile creare un progetto senza team."));
+    return ProjectList.teamsList.isNotEmpty ?
+    Wrap(
+              
+              spacing: 5.0,
+              children: List<Widget>.generate(
+                ProjectList.teamsList.length,
+                (int index) {
+                  return ChoiceChip(
+                    
+                    selectedColor: Colors.pink,
+                    iconTheme: const IconThemeData(color: Colors.white),
+                    label: Text(ProjectList.teamsList[index].getName()),
+                    selected: selectedTeam == index,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        selectedTeam = selected ? index : 0;
+                      });
+                    },
+                  );
+                },
+              ).toList(),
+            )
+    : const Expanded(child: Text("Non ci sono team disponibili. Non è possibile creare un progetto senza team."));
   }
+  
 }
+

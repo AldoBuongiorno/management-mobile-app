@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:flutter_application/navigation/routes/create_project_route.dart';
+import 'package:flutter_application/navigation/routes/create_project_screen.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
@@ -15,9 +15,9 @@ int selectedTeam = 0;
 List<Task> tasks = [];
 
 class EditProjectScreen extends StatefulWidget {
-  const EditProjectScreen({super.key, required this.project});
+  const EditProjectScreen({super.key, required this.index});
   
-  final Project project;
+  final int index;
 
   @override
   State<EditProjectScreen> createState() => _EditProjectScreenState();
@@ -28,13 +28,11 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   late TextEditingController projectDescriptionController;
   TextEditingController taskInputController = TextEditingController();
 
-  
-
   @override
   void initState() {
     super.initState();
-    projectNameController = TextEditingController(text: widget.project.name);
-    projectDescriptionController = TextEditingController(text: widget.project.description);
+    projectNameController = TextEditingController(text: ProjectList.projectsList[widget.index].name);
+    projectDescriptionController = TextEditingController(text: ProjectList.projectsList[widget.index].description);
   }
 
   @override
@@ -44,13 +42,13 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   }
 
   Future<TasksCheckboxView> _loadTasks() async {
-    List<Task> tasks = await DatabaseHelper.instance.getTasksByProjectName(widget.project.name);
+    List<Task> tasks = await DatabaseHelper.instance.getTasksByProjectName(ProjectList.projectsList[widget.index].getName());
     return TasksCheckboxView(tasks: tasks);
   }
 
   @override
   Widget build(BuildContext context) {
-    SelectableThumbnailGrid grid = SelectableThumbnailGrid(ProjectList.thumbnailsList.indexOf(widget.project.thumbnail));
+    SelectableThumbnailGrid grid = SelectableThumbnailGrid(ProjectList.thumbnailsList.indexOf(ProjectList.projectsList[widget.index].thumbnail));
 
 
     return Container(
@@ -78,7 +76,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                   foregroundColor: Colors.white,
                   //titleTextStyle: TextStyle(color: Colors.white),
                   backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-                  title: Text('Modifica ${widget.project.name}')),
+                  title: Text('Modifica ${ProjectList.projectsList[widget.index].name}')),
                 ),
               ),
             body: SingleChildScrollView(
@@ -108,7 +106,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                           //borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none),
                           
-                      hintText: widget.project.name,
+                      hintText: ProjectList.projectsList[widget.index].name,
                       hintStyle:
                           const TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
                 )),
@@ -180,8 +178,8 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                           onPressed: () async {
                             
                             if(taskInputController.text.isNotEmpty) {
-                              List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(widget.project.name);
-                              tasksList.add(Task(name: taskInputController.text, project: widget.project));
+                              List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(ProjectList.projectsList[widget.index].getName());
+                              tasksList.add(Task(name: taskInputController.text, project: ProjectList.projectsList[widget.index]));
                             }
                             
                             taskInputController.clear();
@@ -221,15 +219,10 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
             
               onPressed: () {  
                 
-                {   /*ProjectList.projectsList[widget.index].name = projectNameController.text;
+                {   ProjectList.projectsList[widget.index].name = projectNameController.text;
                     ProjectList.projectsList[widget.index].description = projectDescriptionController.text;
-                    ProjectList.projectsList[widget.index].thumbnail = ProjectList.thumbnailsList[grid.selectedThumbnail];*/
+                    ProjectList.projectsList[widget.index].thumbnail = ProjectList.thumbnailsList[grid.selectedThumbnail];
                     //ProjectList.projectsList[widget.index].tasks = projectDescriptionController.text,
-                    
-                    DatabaseHelper.instance.updateProjectName(widget.project.name, projectNameController.text);
-                    DatabaseHelper.instance.updateDescription(projectNameController.text, projectDescriptionController.text);
-                    DatabaseHelper.instance.updateThumbnail(projectNameController.text, ProjectList.thumbnailsList[grid.selectedThumbnail].assetName);
-
                     
                     showDialog<String>(
                                   context: context,
@@ -237,7 +230,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                       AlertDialog(
                                     title: const Text('Successo!'),
                                     content: Text(
-                                        ("Il progetto \"${widget.project.name}\" è stato modificato correttamente.")),
+                                        ("Il progetto \"${ProjectList.projectsList[widget.index].name}\" è stato modificato correttamente.")),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () =>

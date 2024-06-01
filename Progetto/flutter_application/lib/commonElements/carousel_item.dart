@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_application/classes/all.dart';
-import 'package:flutter_application/commonElements/tasks_checkbox_view.dart';
-import '../data/database_helper.dart';
-import '../navigation/routes/edit_project_route.dart';
 import 'blurred_box.dart';
 
 Widget smallInfoContainer(Color containerColor, Color textColor, String text,
@@ -70,7 +67,7 @@ Widget getProjectName(Project testItem) {
                   color: Colors.white))));
 }
 
-Widget buildCarousel(int index, Project testItem, context) => Container(
+Widget buildCarousel(int index, Project testItem) => Container(
       decoration: BoxDecoration(
           image: DecorationImage(image: testItem.thumbnail, fit: BoxFit.cover),
           borderRadius: const BorderRadius.all(Radius.circular(20))),
@@ -83,21 +80,9 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
           //SizedBox(height: 0),
           //Align(alignment: Alignment(-0.5, 0), child: Text("Progetti recenti", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22, color: Colors.white))),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //mainAxisAlignment: MainAxisAlignment.
             children: [
               statusCheck(testItem),
-              IconButton(
-                            onPressed: () async { List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(testItem.name);
-                            showDialog(context: context, builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Task'),
-                                content: SizedBox( width: double.maxFinite, child: TasksCheckboxView(tasks: tasksList),)
-                              );
-                            });},
-                            icon: const Icon(
-                              Icons.task_alt,
-                              color: Colors.white,
-            ))
             ],
           ),
           //SizedBox(height: 3),
@@ -111,7 +96,7 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: teamCheck(testItem)))
               ],
             ),

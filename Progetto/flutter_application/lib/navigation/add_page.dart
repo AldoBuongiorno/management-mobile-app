@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../commonElements/blurred_box.dart';
 import 'routes/create_member_route.dart';
-import 'routes/create_project_route.dart';
+import 'routes/create_project_screen.dart';
 import 'package:input_quantity/input_quantity.dart';
 import '../data/project_list.dart';
 import 'routes/create_team_route.dart';
