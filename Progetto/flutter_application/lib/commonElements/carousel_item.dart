@@ -15,7 +15,7 @@ Widget smallInfoContainer(Color containerColor, Color textColor, String text,
           color: containerColor,
           borderRadius: BorderRadius.circular(10)),
       child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(text,
               style: TextStyle(
                   color: textColor,
@@ -63,7 +63,7 @@ Widget getProjectName(Project testItem) {
   return Flexible(
       child: Container(
           child: Text(testItem.name,
-              overflow: TextOverflow.ellipsis,
+              overflow: TextOverflow.ellipsis, //e il testo è più lungo dello spazio disponibile nel widget, verrà visualizzato un segno di ellissi ("...") alla fine
               style: const TextStyle(
                   fontSize: 21,
                   fontWeight: FontWeight.bold,

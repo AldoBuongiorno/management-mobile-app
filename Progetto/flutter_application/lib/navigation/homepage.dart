@@ -41,14 +41,14 @@ class HomePageScreen extends StatelessWidget {
               Container(
                   margin: EdgeInsets.symmetric(
                       vertical: 10,
-                      horizontal: MediaQuery.of(context).orientation ==
+                      horizontal: MediaQuery.of(context).orientation == //il margine orizzontale dipende dall'orientamento del dispositivo
                               Orientation.portrait
                           ? 20
                           : 100),
                   child: Row(children: [
                     CustomHeadingTitle(titleText: 'Progetti recenti'),
                   ])),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20), 
               addCarouselIfNotEmpty(
                   snapshot.data?[0] as List<Project>, context),
               const SizedBox(

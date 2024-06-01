@@ -36,21 +36,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 0,
-          systemOverlayStyle: const SystemUiOverlayStyle(
+          systemOverlayStyle: const SystemUiOverlayStyle( //stile dell'area di sistema sopra l'applicazione
             statusBarColor: Color.fromARGB(56, 0, 0, 0),
           ),
         ),
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
             data: Group21App.navigationBarTheme, //in main.dart
-            child: ClipRect(
-                //I'm using BackdropFilter for the blurring effect
+            child: ClipRect( //serve per ritagliare il figlio in un rettangolo per garantire che l'effetto di sfocatura (BackdropFilter) venga applicato correttamente solo all'interno del rettangolo del widget.
                 child: BackdropFilter(
-                    filter: ImageFilter.blur(
+                    filter: ImageFilter.blur( //sfocatura allo sfondo della navbar
                       sigmaX: 20.0,
                       sigmaY: 20.0,
                     ),
-                    child: Opacity(
+                    child: Opacity( //opacità della navbar
                       //you can change the opacity to whatever suits you best
                       opacity: 1,
                       child: NavigationBar(
