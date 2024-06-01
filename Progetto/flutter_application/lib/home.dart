@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                       //you can change the opacity to whatever suits you best
                       opacity: 1,
                       child: NavigationBar(
-                        overlayColor: MaterialStateProperty.all<Color>(Colors.green),
+                        //overlayColor: MaterialStateProperty.all<Color>(Colors.green),
                         //animationDuration: Duration(seconds: 1),
                         selectedIndex: index,
                         onDestinationSelected: (index) =>
@@ -71,8 +71,8 @@ class _HomePageState extends State<HomePage> {
                               label: ''),
                           NavigationDestination(
                               icon:
-                                  Icon(Icons.add_outlined, color: Colors.white),
-                              selectedIcon: Icon(Icons.add),
+                                  Icon(Icons.settings_outlined, color: Colors.white),
+                              selectedIcon: Icon(Icons.settings),
                               label: ''),
                           NavigationDestination(
                               icon: Icon(Icons.group_outlined,

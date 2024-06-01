@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 
+import '../data/database_helper.dart';
+
 class Project {
 
   String name;
@@ -12,6 +14,19 @@ class Project {
   String? projectFailureReason;
   Team? team;
   AssetImage thumbnail;
+
+  Future<double> getProgress() async {
+    List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(name);
+    double progress = 0; int completedTasks = 0;
+    for(Task task in tasksList) {
+      if(task.completed!) completedTasks++;
+    }
+    // x : 100 = completedTasks : tasksList.length;
+    progress = (completedTasks * 100)/tasksList.length;
+
+    return progress;
+
+  }
 
   bool isActive() {
     return status == "Attivo" ? true : false;

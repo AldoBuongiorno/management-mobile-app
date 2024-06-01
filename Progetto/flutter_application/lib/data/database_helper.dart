@@ -229,7 +229,7 @@ class DatabaseHelper {
     final db = await database;
     await db.update('Task',{'completed': isCompleted ? 1 : 0},where: 'name = ?',whereArgs: [task],);
     final List<Map<String, dynamic>> result = await db.rawQuery('SELECT t.project AS project_name FROM Task t WHERE t.name = ?',[task],);
-    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String],);
+    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String?],);
   }
 
   Future<void> updateProgress(String task, double newProgress) async {

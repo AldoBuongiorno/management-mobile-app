@@ -63,11 +63,11 @@ class ProjectList {
   await DatabaseHelper.instance.insertMember(member2);
   await DatabaseHelper.instance.insertMember(member3);
 
-
+/*
   tasksList = await DatabaseHelper.instance.getTasks();
   teamsList = await DatabaseHelper.instance.getTeams();
   projectsList = await DatabaseHelper.instance.getProjects();
-  membersList = await DatabaseHelper.instance.getMembers();
+  membersList = await DatabaseHelper.instance.getMembers();*/
   }
 
 }

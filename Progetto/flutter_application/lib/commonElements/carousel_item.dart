@@ -55,7 +55,7 @@ Widget statusCheck(Project testItem) {
 }
 
 Widget teamCheck(Project testItem) {
-  return Text(testItem.getTeam()!.getName(), 
+  return Text(testItem.getTeam()!.getName(),
       style: const TextStyle(color: Colors.black, fontSize: 13));
 }
 
@@ -63,7 +63,8 @@ Widget getProjectName(Project testItem) {
   return Flexible(
       child: Container(
           child: Text(testItem.name,
-              overflow: TextOverflow.ellipsis, //e il testo è più lungo dello spazio disponibile nel widget, verrà visualizzato un segno di ellissi ("...") alla fine
+              overflow: TextOverflow
+                  .ellipsis, //e il testo è più lungo dello spazio disponibile nel widget, verrà visualizzato un segno di ellissi ("...") alla fine
               style: const TextStyle(
                   fontSize: 21,
                   fontWeight: FontWeight.bold,
@@ -87,17 +88,32 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
             children: [
               statusCheck(testItem),
               IconButton(
-                            onPressed: () async { List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(testItem.name);
-                            showDialog(context: context, builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Task'),
-                                content: SizedBox( width: double.maxFinite, child: TasksCheckboxView(tasks: tasksList),)
-                              );
-                            });},
-                            icon: const Icon(
-                              Icons.task_alt,
-                              color: Colors.white,
-            ))
+                  onPressed: () async {
+                    List<Task> tasksList = await DatabaseHelper.instance
+                        .getTasksByProjectName(testItem.name);
+                    //double progress = await testItem.getProgress();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Task'),
+                            content: SizedBox(
+                                width: double.maxFinite,
+                                child: TasksCheckboxViewForHomepage(
+                                    tasks: tasksList)),
+                            actions: [
+                              TextButton(
+                                child: Text('Conferma'),
+                                onPressed: () => Navigator.of(context).pop(),
+                              )
+                            ],
+                          );
+                        });
+                  },
+                  icon: const Icon(
+                    Icons.task_alt,
+                    color: Colors.white,
+                  ))
             ],
           ),
           //SizedBox(height: 3),
