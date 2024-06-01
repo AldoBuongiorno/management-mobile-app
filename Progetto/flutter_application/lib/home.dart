@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
                       //you can change the opacity to whatever suits you best
                       opacity: 1,
                       child: NavigationBar(
+                        overlayColor: MaterialStateProperty.all<Color>(Colors.green),
                         //animationDuration: Duration(seconds: 1),
                         selectedIndex: index,
                         onDestinationSelected: (index) =>

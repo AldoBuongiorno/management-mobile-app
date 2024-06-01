@@ -23,7 +23,7 @@ void main() async {
   //se tolgo non cambia niente
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      systemNavigationBarColor: Color.fromARGB(0, 0, 0, 0),
+      systemNavigationBarColor: Color.fromARGB(0, 20, 0, 0),
     ),
   );
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -32,7 +32,7 @@ void main() async {
 class Group21App extends StatelessWidget {
   const Group21App({super.key});
 
-  BoxDecoration getGradientDecoration() {
+  BoxDecoration getGradientDecoration() { //gradiente per lo sfondo degli screen dell'app
     return const BoxDecoration(
         gradient: LinearGradient(
       colors: [
@@ -50,7 +50,7 @@ class Group21App extends StatelessWidget {
   }
 
   static const NavigationBarThemeData navigationBarTheme =
-      NavigationBarThemeData(
+      NavigationBarThemeData( //tema barra di navigazione sotto
     height: 55,
     indicatorColor: Color.fromARGB(255, 235, 235, 235),
     labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
@@ -62,20 +62,20 @@ class Group21App extends StatelessWidget {
     return Container(
       decoration: getGradientDecoration(),
       child: MaterialApp(
-        debugShowCheckedModeBanner: false,
+        debugShowCheckedModeBanner: false, //non mostra il banner di debug in alto a destra
         title: 'Gruppo 21',
         theme: ThemeData(
-          textSelectionTheme: const TextSelectionThemeData(
-            selectionHandleColor: Colors.pink,
-            selectionColor: Colors.pinkAccent,
-            cursorColor: Colors.pink,
+          textSelectionTheme: const TextSelectionThemeData( //tema del cursore del testo e dello sfondo del testo selezionato
+            selectionHandleColor: Colors.green,
+            selectionColor: Colors.greenAccent,
+            cursorColor: Colors.green,
           ),
           scaffoldBackgroundColor: Colors.transparent,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Color.fromARGB(0, 0, 0, 0),
+          appBarTheme: const AppBarTheme( //tema barra superiore dell'applicazione
+            backgroundColor: Color.fromARGB(0, 0, 0, 0), 
             toolbarHeight: 50,
           ),
-          textTheme: Theme.of(context).textTheme.apply(
+          textTheme: Theme.of(context).textTheme.apply( //tema del testo
                 bodyColor: const Color.fromARGB(255, 0, 0, 0),
                 displayColor: const Color.fromARGB(255, 0, 0, 0),
                 fontFamily: 'Poppins',
