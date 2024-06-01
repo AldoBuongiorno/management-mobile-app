@@ -5,11 +5,11 @@ import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
 import 'package:flutter_application/classes/all.dart';
 
-import 'edit_project_screen.dart';
+import 'edit_project_route.dart';
 
 //List<ProjectItem> list = ProjectList().getList();
 
-Widget projectView(int index, context) {
+Widget projectView(Project project, context) {
   return Container(
     margin: EdgeInsets.symmetric(
         vertical: 10,
@@ -25,7 +25,7 @@ Widget projectView(int index, context) {
           decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
           child:
           Expanded( child: Row(
-          children: [ Expanded( child: Text(ProjectList.projectsList[index].description) ) ]),),
+          children: [ Expanded( child: Text(project.description) ) ]),),
         ),
       ],
     ),
@@ -33,8 +33,8 @@ Widget projectView(int index, context) {
 }
 
 class ProjectRoute extends StatefulWidget {
-  int index;
-  ProjectRoute(this.index);
+  Project project;
+  ProjectRoute(this.project);
 
   @override
   State<ProjectRoute> createState() => _ProjectRouteState();
@@ -63,7 +63,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
           end: Alignment.topLeft,
         )),
         child: Scaffold(
-            backgroundColor: Color.fromARGB(0, 0, 0, 0),
+            backgroundColor: const Color.fromARGB(0, 0, 0, 0),
             appBar: PreferredSize(
               
               preferredSize: Size(MediaQuery.of(context).size.width, 55),
@@ -76,16 +76,16 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => EditProjectScreen(
-                                          index: widget.index,
-                                        ))), icon: Icon(Icons.settings))
+                                          project: widget.project,
+                                        ))), icon: const Icon(Icons.settings))
                                 ],
               foregroundColor: Colors.white,
               //titleTextStyle: TextStyle(color: Colors.white),
               backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-              title: Text(ProjectList.projectsList[widget.index].name),
+              title: Text(widget.project.name),
                               ),
                             ),
             ),
-            body: SingleChildScrollView(child: projectView(widget.index, context))));
+            body: SingleChildScrollView(child: projectView(widget.project, context))));
   }
 }
