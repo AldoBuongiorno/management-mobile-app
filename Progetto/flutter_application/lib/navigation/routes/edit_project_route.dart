@@ -1,32 +1,41 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_application/commonElements/blurred_box.dart';
-import 'package:flutter_application/commonElements/headings_title.dart';
+import 'package:flutter_application/classes/all.dart';
+import 'package:flutter_application/commonElements/responsive_padding.dart';
 import 'package:flutter_application/data/database_helper.dart';
+import 'package:flutter_application/navigation/routes/create_project_route.dart';
+import '../../commonElements/blurred_box.dart';
+import '../../commonElements/headings_title.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
 import '../../commonElements/tasks_checkbox_view.dart';
 import '../../data/project_list.dart';
-import '../../commonElements/headings_title.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
-import 'package:flutter_application/classes/all.dart';
 
 int selectedTeam = 0;
-List<Task> cTasks = [];
+List<Task> tasks = [];
 
-
-class CreateProjectScreen extends StatefulWidget {
-  const CreateProjectScreen({super.key});
+class EditProjectScreen extends StatefulWidget {
+  const EditProjectScreen({super.key, required this.project});
+  
+  final Project project;
 
   @override
-  State<CreateProjectScreen> createState() => _CreateProjectScreenState();
+  State<EditProjectScreen> createState() => _EditProjectScreenState();
 }
 
-class _CreateProjectScreenState extends State<CreateProjectScreen> {
-  final projectNameController = TextEditingController();
-  final projectDescriptionController = TextEditingController();
+class _EditProjectScreenState extends State<EditProjectScreen> {
+  late TextEditingController projectNameController;
+  late TextEditingController projectDescriptionController;
   TextEditingController taskInputController = TextEditingController();
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+    projectNameController = TextEditingController(text: widget.project.name);
+    projectDescriptionController = TextEditingController(text: widget.project.description);
+  }
 
   @override
   void dispose() {
@@ -34,18 +43,47 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     super.dispose();
   }
 
+  Future<TasksCheckboxView> _loadTasks() async {
+    List<Task> tasks = await DatabaseHelper.instance.getTasksByProjectName(widget.project.name);
+    return TasksCheckboxView(tasks: tasks);
+  }
+
   @override
   Widget build(BuildContext context) {
-    TasksCheckboxView taskCheckboxList = TasksCheckboxView(tasks: cTasks);
-    SelectableThumbnailGrid grid = SelectableThumbnailGrid();
-    Project projectItem;
+    SelectableThumbnailGrid grid = SelectableThumbnailGrid(ProjectList.thumbnailsList.indexOf(widget.project.thumbnail));
+
+
     return Container(
-        margin: EdgeInsets.symmetric(
-            vertical: 10,
-            horizontal:
-                MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 20
-                    : 100),
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          colors: [
+            Color.fromARGB(255, 232, 232, 232), //255, 232
+            Color.fromARGB(255, 0, 183, 255),
+            Color.fromARGB(255, 0, 183, 255),
+            Color.fromARGB(255, 255, 0, 115),
+            Color.fromARGB(255, 255, 0, 115),
+            Colors.yellow
+          ],
+          stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
+          begin: Alignment.bottomRight,
+          end: Alignment.topLeft,
+
+          //stops: [0.6, 0.7, 0.8, 0.9]
+        )),
+        child: Scaffold(
+            backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+            appBar: PreferredSize(
+              preferredSize: Size(MediaQuery.of(context).size.width, 55),
+              child: BlurredBox( borderRadius: BorderRadius.zero ,sigma: 15 ,child: AppBar(
+                  foregroundColor: Colors.white,
+                  //titleTextStyle: TextStyle(color: Colors.white),
+                  backgroundColor: const Color.fromARGB(100, 0, 0, 0),
+                  title: Text('Modifica ${widget.project.name}')),
+                ),
+              ),
+            body: SingleChildScrollView(
+              child: Container(
+        margin: getResponsivePadding(context),
         child: Column(crossAxisAlignment: CrossAxisAlignment.end ,children: [
           const SizedBox(height: 20),
           Row(children: [
@@ -58,19 +96,21 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 borderRadius: BorderRadius.circular(30),
                 sigma: 15,
                 child: TextField(
+                  //initialValue: ProjectList.projectsList[widget.index].name,
                   style: const TextStyle(color: Colors.white),
                   controller: projectNameController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                          const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       filled: true,
-                      fillColor: Color.fromARGB(100, 0, 0, 0),
-                      border: OutlineInputBorder(
+                      fillColor: const Color.fromARGB(100, 0, 0, 0),
+                      border: const OutlineInputBorder(
                           //borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide.none),
-                      hintText: 'Inserisci il nome del progetto',
+                          
+                      hintText: widget.project.name,
                       hintStyle:
-                          TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
+                          const TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
                 )),
           ),
           const SizedBox(height: 5),
@@ -111,7 +151,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   children: [
 
 
-                    SelectableTeamsList(),
+                    //SelectableTeamsList(),
 
 
 
@@ -140,7 +180,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           onPressed: () async {
                             
                             if(taskInputController.text.isNotEmpty) {
-                              cTasks.add(Task(name: taskInputController.text,project: await DatabaseHelper.instance.getProjectByName( projectNameController.text)));
+                              List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(widget.project.name);
+                              tasksList.add(Task(name: taskInputController.text, project: widget.project));
                             }
                             
                             taskInputController.clear();
@@ -164,26 +205,31 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
 
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
           ),
-          taskCheckboxList,
+          FutureBuilder<TasksCheckboxView>(
+                    future: _loadTasks(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Errore: ${snapshot.error}'));
+                      } else {
+                        return snapshot.data!;
+                      }
+                    },
+                  ),
           ElevatedButton(
             
-              onPressed: () async { projectNameController.text.isEmpty || ProjectList.teamsList.isEmpty ? null : 
+              onPressed: () {  
                 
-                {   projectItem = Project(
-                    name: projectNameController.text,
-                    description: projectDescriptionController.text,
-                    status: "Attivo",
-                    team: ProjectList.teamsList[selectedTeam],
-                    thumbnail: ProjectList.thumbnailsList[grid.selectedThumbnail]
-                    ),
-                ProjectList.projectsList.add(projectItem),
-                
-                cTasks = await DatabaseHelper.instance.getTasksByProjectName(projectItem.name) ,
+                {   /*ProjectList.projectsList[widget.index].name = projectNameController.text;
+                    ProjectList.projectsList[widget.index].description = projectDescriptionController.text;
+                    ProjectList.projectsList[widget.index].thumbnail = ProjectList.thumbnailsList[grid.selectedThumbnail];*/
+                    //ProjectList.projectsList[widget.index].tasks = projectDescriptionController.text,
                     
-                    projectNameController.clear(),
-                    projectDescriptionController.clear(),
-                    grid.selectedThumbnail = 0,
-                    cTasks.clear(),
+                    DatabaseHelper.instance.updateProjectName(widget.project.name, projectNameController.text);
+                    DatabaseHelper.instance.updateDescription(projectNameController.text, projectDescriptionController.text);
+                    DatabaseHelper.instance.updateThumbnail(projectNameController.text, ProjectList.thumbnailsList[grid.selectedThumbnail].assetName);
+
                     
                     showDialog<String>(
                                   context: context,
@@ -191,7 +237,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                       AlertDialog(
                                     title: const Text('Successo!'),
                                     content: Text(
-                                        ("Il progetto \"${projectItem.name}\" è stato creato correttamente.\nPuoi creare altri progetti se ti va.")),
+                                        ("Il progetto \"${widget.project.name}\" è stato modificato correttamente.")),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () =>
@@ -199,58 +245,15 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                         child: const Text('Ok'),
                                       ),
                                     ],
-                                  ),
-                                ),
+                                  ));
+                                
                     
                     };
               },
-              child: const Row(mainAxisSize: MainAxisSize.min, children: [ Icon(Icons.add_task), SizedBox(width: 5,),Text("Aggiungi progetto") ]))
-        ]));
-  }
-}
+              child: const Row(mainAxisSize: MainAxisSize.min, children: [ Icon(Icons.save), SizedBox(width: 5,),Text("Modifica progetto") ]))
+        ])))));
 
-
-
-class SelectableTeamsList extends StatefulWidget {
-  const SelectableTeamsList({super.key});
-
-  @override
-  State<SelectableTeamsList> createState() => _SelectableTeamsListState();
-}
-
-class _SelectableTeamsListState extends State<SelectableTeamsList> {
-
-  @override
-  void initState() {
-    super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return ProjectList.teamsList.isNotEmpty ?
-    Wrap(
-              
-              spacing: 5.0,
-              children: List<Widget>.generate(
-                ProjectList.teamsList.length,
-                (int index) {
-                  return ChoiceChip(
-                    
-                    selectedColor: Colors.pink,
-                    iconTheme: const IconThemeData(color: Colors.white),
-                    label: Text(ProjectList.teamsList[index].getName()),
-                    selected: selectedTeam == index,
-                    onSelected: (bool selected) {
-                      setState(() {
-                        selectedTeam = selected ? index : 0;
-                      });
-                    },
-                  );
-                },
-              ).toList(),
-            )
-    : const Expanded(child: Text("Non ci sono team disponibili. Non è possibile creare un progetto senza team."));
-  }
-  
-}
 
+}
