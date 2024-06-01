@@ -113,8 +113,8 @@ class DatabaseHelper {
     final db = await database;
     final List<Map<String, Object?>> tasksMaps = await db.query('Task');
     return [
-      for (final {'name': name as String,'completationDate': completationDate as String,'completed': completed as int,'progress': progress as double,'project': project as String,} in tasksMaps)
-        Task(name: name,completationDate: DateTime.parse(completationDate),completed: (completed == 1 ? true : false),progress: progress,project: await getProjectByName(project)),
+      for (final {'name': name as String,'completationDate': completationDate as String?,'completed': completed as int?,'progress': progress as double?,'project': project as String,} in tasksMaps)
+        Task(name: name,completationDate: completationDate != null ? DateTime.parse(completationDate) : null,completed: (completed == 1 ? true : false),progress: progress,project: await getProjectByName(project)),
     ];
   }
 
@@ -142,7 +142,7 @@ class DatabaseHelper {
     if (result.isEmpty) {
       return null; }
     final projectMap = result.first;
-    return Project(name: projectMap['name'] as String, description: projectMap['description'] as String, creationDate: DateTime.parse(projectMap['creationDate'] as String), expirationDate: DateTime.parse(projectMap['expirationDate'] as String), lastModified: DateTime.parse(projectMap['lastModified'] as String), status: projectMap['status'] as String, projectFailureReason: projectMap['projectFailureReason'] as String,team: await getTeamByName(projectMap['team'] as String), thumbnail: AssetImage(projectMap['thumbnail'] as String),
+    return Project(name: projectMap['name'] as String, description: projectMap['description'] as String, creationDate: DateTime.parse(projectMap['creationDate'] as String), expirationDate: DateTime.parse(projectMap['expirationDate'] as String), lastModified: DateTime.parse(projectMap['lastModified'] as String), status: projectMap['status'] as String, projectFailureReason: projectMap['projectFailureReason'] as String?,team: await getTeamByName(projectMap['team'] as String), thumbnail: AssetImage(projectMap['thumbnail'] as String),
     );
   }
 

@@ -134,9 +134,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                             if (taskInputController.text.isNotEmpty) {
                               cTasks.add(Task(
                                   name: taskInputController.text,
-                                  project: await DatabaseHelper.instance
-                                      .getProjectByName(
-                                          projectNameController.text)));
+                                  ));
                             }
 
                             taskInputController.clear();
@@ -176,6 +174,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                 .thumbnailsList[grid.selectedThumbnail]),
                         DatabaseHelper.instance.insertProject(projectItem),
 
+                        for(Task task in cTasks) task.setProject(projectItem),
                         for(Task task in cTasks) DatabaseHelper.instance.insertTask(task),
                         
                         //cTasks = await DatabaseHelper.instance.getTasksByProjectName(projectItem.name),

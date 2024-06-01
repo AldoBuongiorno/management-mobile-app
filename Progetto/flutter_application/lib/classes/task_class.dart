@@ -20,12 +20,16 @@ class Task {
     return progress;
   }
 
+  void setProject(Project project) {
+    this.project = project;
+  }
+
   Task({
     required this.name,
     this.completationDate,
     this.completed,
     this.progress,
-    required this.project,
+    this.project,
   }) {
     completed ??= false;
     progress ??= 0;
