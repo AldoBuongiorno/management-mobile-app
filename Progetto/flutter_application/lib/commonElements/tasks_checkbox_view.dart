@@ -15,7 +15,7 @@ class _TasksCheckboxViewState extends State<TasksCheckboxView> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        shrinkWrap: true,
+        shrinkWrap: true, //serve a definire che ListView avrà dimensioni pari alla somma delle altezze dei suoi elementi figlio
         physics: const NeverScrollableScrollPhysics(),
         itemCount: widget.tasks.length,
         itemBuilder: (context, index) {
