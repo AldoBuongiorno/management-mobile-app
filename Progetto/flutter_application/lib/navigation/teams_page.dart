@@ -1,71 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/database_helper.dart';
+import 'package:flutter_application/navigation/routes/edit_team_route.dart';
 import '../commonElements/blurred_box.dart';
-import '../commonElements/headings_title.dart';
-import '../data/project_list.dart';
+import '../commonElements/responsive_padding.dart';
 import 'package:flutter_application/classes/all.dart';
-
-//List<Member> memberList = getMembersList(); //.add(Member("Mario", "Rossi", "Impiegato"));
-
-class MemberListView extends StatelessWidget {
-  MemberListView(this.memberList, {super.key});
-  List<Member> memberList;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: memberList.length,
-        itemBuilder: ((context, index) {
-          return Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            padding: const EdgeInsets.only(top: 8, bottom: 8, left: 10),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    /*Icon(Icons.person, size: 35,),
-                            SizedBox(width: 10,),*/
-                    const Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text('Nome:'),
-                        Text('Cognome:'),
-                        Text('Ruolo:')
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              memberList[index].name),
-                          Text(
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              memberList[index].surname),
-                          Text(
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              memberList[index].role)
-                        ])
-                  ],
-                )
-              ],
-            ),
-          );
-        }));
-  }
-}
 
 class TeamScreen extends StatefulWidget {
   const TeamScreen({super.key});
@@ -75,122 +13,121 @@ class TeamScreen extends StatefulWidget {
 }
 
 class _TeamScreenState extends State<TeamScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? 20
-                        : 100),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              CustomHeadingTitle(titleText: "Partecipanti"),
-              const SizedBox(height: 10),
-              const Text(
-                  "Per aggiungere partecipanti, recati nella schermata di aggiunta progetti e team."),
-              const SizedBox(
-                height: 5,
-              ),
-              ProjectList.membersList.isNotEmpty
-                  ? MemberListView(ProjectList.membersList)
-                  : const Text("Al momento non sono presenti partecipanti."),
-              const SizedBox(height: 10),
-              CustomHeadingTitle(titleText: "Team"),
-              const SizedBox(height: 10),
-              ProjectList.teamsList.isNotEmpty
-                  ? ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: ProjectList.teamsList.length,
-                      itemBuilder: (context, index) {
-                        return FutureBuilder<List<Member>>(
-                          future: _loadMembers(
-                              ProjectList.teamsList[index].getName()),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return CircularProgressIndicator();
-                            } else if (snapshot.hasError) {
-                              return Text('Errore: ${snapshot.error}');
-                            } else {
-                              return ExpandableTeamTile(ProjectList.teamsList[index].getName(),snapshot.data!, index);
-                            }
-                          },
-                        );
-                      })
-                  : const Text("Al momento non è presente alcun team."),
-            ])));
-  }
-  
-  Future<List<Member>> _loadMembers(String teamName) async {
-    return await DatabaseHelper.instance.getMembersByTeam(teamName);
-  }
-}
+  List<Team> teamList = [];
+  List<Team> filteredList = [];
 
-class ExpandableTeamTile extends StatefulWidget {
-  ExpandableTeamTile(this.teamName,this.memberList, this.index, {super.key});
-  String teamName;
-  List<Member> memberList;
-  int index;
+  Future<void> _loadTeams() async {
+    final teams = await DatabaseHelper.instance.getTeams();
+    setState(() {
+      teamList = teams;
+      filteredList = teams;
+    });
+  }
+
+  final filterTeamListController = TextEditingController();
 
   @override
-  State<ExpandableTeamTile> createState() => _ExpandableTeamTileState();
-}
+  void initState() {
+    super.initState();
+    _loadTeams();
+  }
 
-class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
-  bool _customTileExpanded = false;
+  void _filterTeams(String query) {
+    final filtered = teamList.where((team) {
+      final teamNameLower = team.name.toLowerCase();
+      final queryLower = query.toLowerCase();
+      return teamNameLower.contains(queryLower);
+    }).toList();
+
+    setState(() {
+      filteredList = filtered;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    //teamList[widget.index].members = memberList;
-    return Theme(
-        data: ThemeData().copyWith(
-          dividerColor: Colors.transparent,
-        ),
-        child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 5),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(25)),
-            child: Column(
-              children: <Widget>[
-                ExpansionTile(
-                  iconColor: Colors.lightBlue,
-                  collapsedIconColor: Colors.pink,
-                  expandedAlignment: Alignment.centerLeft,
-
-                  title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          widget.teamName,
-                          style: const TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                            ("(${widget.memberList.length} membri)"),
-                            style: const TextStyle(
-                                fontFamily: 'Poppins', fontSize: 14))
-                      ]),
-                  //subtitle: Text('Trailing expansion arrow icon'),
-                  children: [
-                    for (Member member 
-                        in widget.memberList)
-                      Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: 30, bottom: 5),
-                          child: Text('${member.name} ${member.surname}'))
-                  ]
+    return Container(
+      margin: getResponsivePadding(context),
+      child: Column(
+        children: [
+          BlurredBox(
+            borderRadius: BorderRadius.circular(30),
+            sigma: 5,
+            child: TextField(
+              style: const TextStyle(color: Colors.white),
+              controller: filterTeamListController,
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                filled: true,
+                fillColor: Color.fromARGB(100, 0, 0, 0),
+                suffixIcon: Icon(Icons.search, color: Colors.white),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
                 ),
-              ],
-            )));
+                hintText: 'Cerca team...',
+                hintStyle: TextStyle(color: Color.fromARGB(255, 192, 192, 192)),
+              ),
+              onChanged: _filterTeams,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: filteredList.isNotEmpty
+                ? GridView.builder(
+                    primary: false,
+                    padding: const EdgeInsets.all(20),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: filteredList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                          height: 200,
+                          padding: EdgeInsets.zero,
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [/*
+                                  IconButton(
+                                    onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditTeamScreen(
+                                          team: filteredList[index],
+                                        ),
+                                      ),
+                                    ).then((_) => _loadTeams()),
+                                    icon: const Icon(
+                                      Icons.settings,
+                                      color: Colors.white,
+                                    ),
+                                  ),*/
+                                ],
+                              ),
+                              
+                            ],
+                          )
+                        );
+                    },
+                  )
+                : const Center(child: Text("Nessun team trovato.")),
+          ),
+        ],
+      ),
+    );
   }
-
-  Future<List<Member>> _loadMembers(String teamName) async {
-    return await DatabaseHelper.instance.getMembersByTeam(teamName);
-  }
-  
 }
+
+
+
+
+
+
+
+
+

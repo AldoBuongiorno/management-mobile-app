@@ -154,3 +154,66 @@ class HomePageScreen extends StatelessWidget {
     }
   }
 }
+
+
+class ExpandableTeamTile extends StatefulWidget {
+  ExpandableTeamTile(this.teamName,this.memberList, this.index, {super.key});
+  String teamName;
+  List<Member> memberList;
+  int index;
+
+  @override
+  State<ExpandableTeamTile > createState() => _ExpandableTeamTileState();
+}
+
+
+class _ExpandableTeamTileState extends State<ExpandableTeamTile > {
+  bool _customTileExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    //teamList[widget.index].members = memberList;
+    return Theme(
+        data: ThemeData().copyWith(
+          dividerColor: Colors.transparent,
+        ),
+        child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(25)),
+            child: Column(
+              children: <Widget>[
+                ExpansionTile(
+                  iconColor: Colors.lightBlue,
+                  collapsedIconColor: Colors.pink,
+                  expandedAlignment: Alignment.centerLeft,
+
+                  title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.teamName,
+                          style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                            ("(${widget.memberList.length} membri)"),
+                            style: const TextStyle(
+                                fontFamily: 'Poppins', fontSize: 14))
+                      ]),
+                  //subtitle: Text('Trailing expansion arrow icon'),
+                  children: [
+                    for (Member member 
+                        in widget.memberList)
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(left: 30, bottom: 5),
+                          child: Text('${member.name} ${member.surname}'))
+                  ]
+                ),
+              ],
+            )));
+  }
+
+}
