@@ -91,7 +91,7 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
                             showDialog(context: context, builder: (BuildContext context) {
                               return AlertDialog(
                                 title: Text('Task'),
-                                content: SizedBox( width: double.maxFinite, child: TasksCheckboxView(tasks: tasksList),)
+                                content: SizedBox( width: double.maxFinite, child: TasksCheckboxViewForHomepage(tasks: tasksList),)
                               );
                             });},
                             icon: const Icon(

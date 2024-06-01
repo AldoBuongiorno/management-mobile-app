@@ -5,32 +5,9 @@ import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
 import 'package:flutter_application/classes/all.dart';
 
+import '../../commonElements/carousel_item.dart';
+import '../../data/database_helper.dart';
 import 'edit_project_route.dart';
-
-//List<ProjectItem> list = ProjectList().getList();
-
-Widget projectView(Project project, context) {
-  return Container(
-    margin: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: MediaQuery.of(context).orientation == Orientation.portrait
-            ? 20
-            : 100),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CustomHeadingTitle(titleText: "Descrizione"),
-        Container( 
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
-          child:
-          Expanded( child: Row(
-          children: [ Expanded( child: Text(project.description) ) ]),),
-        ),
-      ],
-    ),
-  );
-}
 
 class ProjectRoute extends StatefulWidget {
   Project project;
@@ -86,6 +63,64 @@ class _ProjectRouteState extends State<ProjectRoute> {
                               ),
                             ),
             ),
-            body: SingleChildScrollView(child: projectView(widget.project, context))));
+            body: SingleChildScrollView(child: 
+            
+            
+            Container(
+    margin: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: MediaQuery.of(context).orientation == Orientation.portrait
+            ? 20
+            : 100),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomHeadingTitle(titleText: "Descrizione"),
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          child: Expanded(
+            child: Row(children: [
+              Expanded(child: Text(widget.project.description))
+            ]),
+          ),
+        ),
+        Text('Attualmente al progetto sta lavorando il team "${widget.project.team}":'),
+        const Text('Puoi modificare lo stato del progetto (puoi archiviarlo, completarlo o anche eliminarlo se necessario), cliccando su uno dei seguenti pulsanti:'),
+        SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: [
+          ElevatedButton(onPressed: () async {
+            DatabaseHelper.instance.updateStatus(widget.project.name, "Fallito"); widget.project.status = 'Fallito'; setState(() {});//
+
+          }, child: const Row(children: [Icon(Icons.archive), SizedBox(width: 5), Text('Archivia come fallito')])),
+          const SizedBox(width: 5),
+          ElevatedButton(onPressed: () async {
+            DatabaseHelper.instance.updateStatus(widget.project.name, "Sospeso"); widget.project.status = 'Sospeso'; setState(() {});
+          }, child: const Row(children: [Icon(Icons.close), SizedBox(width: 5), Text('Sospendi')])),
+          const SizedBox(width: 5),
+          ElevatedButton(onPressed: () async {
+            DatabaseHelper.instance.updateStatus(widget.project.name, "Completato"); widget.project.status = 'Completato'; setState(() {});
+          }, child: const Row(children: [Icon(Icons.check_circle),  SizedBox(width: 5), Text('Archivia come completato')])),
+          const SizedBox(width: 5),
+          ElevatedButton(onPressed: () async {
+            DatabaseHelper.instance.deleteProject(widget.project.name); Navigator.of(context).pop();
+          }, child: const Row(children: [Icon(Icons.delete_forever), SizedBox(width: 5), Text('Elimina')])),
+
+        ],
+        
+        )),
+        Row(crossAxisAlignment: CrossAxisAlignment.center, children: [ const Text('Al momento il progetto risulta essere in stato '), statusCheck(widget.project) ]),
+        CustomHeadingTitle(titleText: 'Task'),
+        
+      
+      ],
+    ),
+  ),
+            
+            
+            
+            
+            
+            )));
   }
 }

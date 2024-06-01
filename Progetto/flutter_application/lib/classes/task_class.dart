@@ -8,6 +8,10 @@ class Task {
   double? progress;
   Project? project;
 
+  void setProject(Project newProject) {
+    project = newProject;
+  }
+
   String getName() {
     return name;
   }

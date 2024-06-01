@@ -43,9 +43,9 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
     super.dispose();
   }
 
-  Future<TasksCheckboxView> _loadTasks() async {
+  Future<TasksCheckboxViewForHomepage> _loadTasks() async {
     List<Task> tasks = await DatabaseHelper.instance.getTasksByProjectName(widget.project.name);
-    return TasksCheckboxView(tasks: tasks);
+    return TasksCheckboxViewForHomepage(tasks: tasks);
   }
 
   @override
@@ -205,7 +205,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
 
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
           ),
-          FutureBuilder<TasksCheckboxView>(
+          FutureBuilder<TasksCheckboxViewForHomepage>(
                     future: _loadTasks(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

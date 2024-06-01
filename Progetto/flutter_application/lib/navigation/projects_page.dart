@@ -155,14 +155,14 @@ class _ProjectScreen extends State<ProjectScreen> {
     
 
 
-  toFilteredList(String text) {
+  toFilteredList(String text) async {
     filteredList.clear();
     if (text.isEmpty) {
       setState(() {});
       return;
     }
 
-    for (var item in ProjectList.projectsList) {
+    for (var item in await _loadProjects()) {
       if (item.name.toLowerCase().contains(text.toLowerCase())) {
         filteredList.add(item);
       }

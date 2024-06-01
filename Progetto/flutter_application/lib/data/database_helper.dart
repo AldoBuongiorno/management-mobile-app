@@ -113,8 +113,8 @@ class DatabaseHelper {
     final db = await database;
     final List<Map<String, Object?>> tasksMaps = await db.query('Task');
     return [
-      for (final {'name': name as String,'completationDate': completationDate as String,'completed': completed as int,'progress': progress as double,'project': project as String,} in tasksMaps)
-        Task(name: name,completationDate: DateTime.parse(completationDate),completed: (completed == 1 ? true : false),progress: progress,project: await getProjectByName(project)),
+      for (final {'name': name as String,'completationDate': completationDate as String?,'completed': completed as int,'progress': progress as double,'project': project as String,} in tasksMaps)
+        Task(name: name,completationDate: completationDate != null ? DateTime.tryParse(completationDate) : DateTime.now(),completed: (completed == 1 ? true : false),progress: progress,project: await getProjectByName(project)),
     ];
   }
 
@@ -142,7 +142,7 @@ class DatabaseHelper {
     if (result.isEmpty) {
       return null; }
     final projectMap = result.first;
-    return Project(name: projectMap['name'] as String, description: projectMap['description'] as String, creationDate: DateTime.parse(projectMap['creationDate'] as String), expirationDate: DateTime.parse(projectMap['expirationDate'] as String), lastModified: DateTime.parse(projectMap['lastModified'] as String), status: projectMap['status'] as String, projectFailureReason: projectMap['projectFailureReason'] as String,team: await getTeamByName(projectMap['team'] as String), thumbnail: AssetImage(projectMap['thumbnail'] as String),
+    return Project(name: projectMap['name'] as String, description: projectMap['description'] as String, creationDate: DateTime.parse(projectMap['creationDate'] as String), expirationDate: DateTime.parse(projectMap['expirationDate'] as String), lastModified: DateTime.parse(projectMap['lastModified'] as String), status: projectMap['status'] as String, projectFailureReason: projectMap['projectFailureReason'] as String?,team: await getTeamByName(projectMap['team'] as String), thumbnail: AssetImage(projectMap['thumbnail'] as String),
     );
   }
 
@@ -229,7 +229,7 @@ class DatabaseHelper {
     final db = await database;
     await db.update('Task',{'completed': isCompleted ? 1 : 0},where: 'name = ?',whereArgs: [task],);
     final List<Map<String, dynamic>> result = await db.rawQuery('SELECT t.project AS project_name FROM Task t WHERE t.name = ?',[task],);
-    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String],);
+    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String?],);
   }
 
   Future<void> updateProgress(String task, double newProgress) async {
@@ -273,7 +273,7 @@ class DatabaseHelper {
     final List<Map<String, Object?>> tasksMaps = await db.query('Task',where: 'project = ?',whereArgs: [project],);
     return [
       for (final {'name': name as String,'completationDate': completationDate as String?,'completed': completed as int,'progress': progress as double,'project': project as String,} in tasksMaps)
-        Task(name: name,completationDate: completationDate != null ? DateTime.parse(completationDate) : null,completed: completed == 1,progress: progress,project: await getProjectByName(project),),
+        Task(name: name, completationDate: completationDate != null ? DateTime.parse(completationDate) : null, completed: completed == 1, progress: progress,project: await getProjectByName(project),),
     ];
   }
 

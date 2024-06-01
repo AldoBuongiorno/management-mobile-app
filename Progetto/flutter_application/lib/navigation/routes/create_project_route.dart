@@ -176,7 +176,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                 .thumbnailsList[grid.selectedThumbnail]),
                         DatabaseHelper.instance.insertProject(projectItem),
 
-                        for(Task task in cTasks) DatabaseHelper.instance.insertTask(task),
+                        for(Task task in cTasks) { task.setProject(projectItem), DatabaseHelper.instance.insertTask(task) },
                         
                         //cTasks = await DatabaseHelper.instance.getTasksByProjectName(projectItem.name),
                         projectNameController.clear(),
