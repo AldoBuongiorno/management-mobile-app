@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import 'routes/create_member_route.dart';
 import 'routes/create_project_route.dart';
@@ -16,7 +17,6 @@ class StatsPage extends StatefulWidget {
   State<StatsPage> createState() => _StatsPageState();
 }
 
-<<<<<<< Updated upstream
 @override
 class _StatsPageState extends State<StatsPage> {
    Future<List<Member>> _loadMembers(String teamName) async {
@@ -27,21 +27,6 @@ class _StatsPageState extends State<StatsPage> {
     return await DatabaseHelper.instance.getActiveProjectsOrderedByLastModified();
   } 
   
-=======
-Future<List<Member>> _loadMembers(String teamName) async {
-  return await DatabaseHelper.instance.getMembersByTeam(teamName);
-}
-
-Future<List<Project>> _loadProjects() async {
-  return await DatabaseHelper.instance.getProjects();
-}
-
-//List<Project> list = ProjectList().getProjectsList(); //utilizzo lista di prova
-
-@override
-class _StatsPageState extends State<StatsPage> {
-
->>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(future: _loadProjects(), builder: (BuildContext context, AsyncSnapshot<List<Project>> snapshot) {
@@ -53,16 +38,11 @@ class _StatsPageState extends State<StatsPage> {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Column(
               children: <Widget>[
                 SizedBox(height: 20),
-                Text('Statistiche progetti',
-                    style: TextStyle(
-                        fontFamily: 'SamsungSharpSans',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                        color: Color.fromARGB(255, 0, 0, 0))),
+                CustomHeadingTitle(titleText: 'Statistiche progetti'),
                 SizedBox(height: 20),
               ],
             ),
@@ -82,11 +62,7 @@ class _StatsPageState extends State<StatsPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-<<<<<<< Updated upstream
-                                  CreateTotalStatsProjectScreen(projects: StasPage._loadProjects()),
-=======
                                   CreateTotalStatsProjectScreen(projects: snapshot.data!),
->>>>>>> Stashed changes
                             ),
                           );
                         },
@@ -132,6 +108,9 @@ class CreateStatsProjectScreen extends StatefulWidget {
 }
 
 class _CreateStatsProjectScreenState extends State<CreateStatsProjectScreen> {
+  Future<List<Member>> _loadMembers(String teamName) async {
+    return await DatabaseHelper.instance.getMembersByTeam(teamName);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -246,6 +225,9 @@ class CreateTotalStatsProjectScreen extends StatefulWidget {
 
 class _CreateTotalStatsProjectScreenState
     extends State<CreateTotalStatsProjectScreen> {
+      Future<List<Member>> _loadMembers(String teamName) async {
+    return await DatabaseHelper.instance.getMembersByTeam(teamName);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
