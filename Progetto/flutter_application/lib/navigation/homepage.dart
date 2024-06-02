@@ -5,6 +5,7 @@ import 'package:flutter_application/classes/all.dart';
 import '../commonElements/carousel_item.dart';
 import '../commonElements/headings_title.dart';
 import '../data/database_helper.dart';
+import '../data/project_list.dart';
 import 'teams_page.dart';
 
 class HomePageScreen extends StatelessWidget {
@@ -95,8 +96,8 @@ class HomePageScreen extends StatelessWidget {
       );
     } else {
       return CarouselSlider.builder(
-        itemCount: testList
-            .length /*ProjectList.projectsList
+        itemCount: testList.length < ProjectList.projectOnHomepageNumber ? testList.length : ProjectList.teamOnHomepageNumber
+        /*ProjectList.projectsList
                   .where((element) => element.isActive())
                   .toList()
                   .length <
@@ -177,6 +178,7 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(25),
         ),
+<<<<<<< Updated upstream
         child: ExpansionTile(
           iconColor: Colors.lightBlue,
           collapsedIconColor: Colors.pink,
@@ -189,6 +191,42 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
                 style: const TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
+=======
+        child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(25)),
+            child: Column(
+              children: <Widget>[
+                ExpansionTile(
+                  iconColor: Colors.lightBlue,
+                  collapsedIconColor: Colors.pink,
+                  expandedAlignment: Alignment.centerRight,
+
+                  title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          widget.teamName,
+                          style: const TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                            ("(${widget.memberList.length} membri)"),
+                            style: const TextStyle(
+                                fontFamily: 'Poppins', fontSize: 14))
+                      ]),
+                  //subtitle: Text('Trailing expansion arrow icon'),
+                  children: [
+                    for (Member member 
+                        in widget.memberList)
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          margin: const EdgeInsets.only(left: 30, bottom: 5),
+                          child: Text('${member.name} ${member.surname}'))
+                  ]
+>>>>>>> Stashed changes
                 ),
               ),
               FutureBuilder<List<Member>>(

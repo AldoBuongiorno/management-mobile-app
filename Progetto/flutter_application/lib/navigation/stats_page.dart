@@ -12,19 +12,20 @@ import 'package:flutter_application/classes/all.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
-
   @override
   State<StatsPage> createState() => _StatsPageState();
 }
 
-Future<List<Member>> _loadMembers(String teamName) async {
-  return await DatabaseHelper.instance.getMembersByTeam(teamName);
-}
-
-List<Project> list = ProjectList().getProjectsList(); //utilizzo lista di prova
-
 @override
 class _StatsPageState extends State<StatsPage> {
+   Future<List<Member>> _loadMembers(String teamName) async {
+    return await DatabaseHelper.instance.getMembersByTeam(teamName);
+  }
+
+  Future<List<Project>> _loadProjects() async {
+    return await DatabaseHelper.instance.getActiveProjectsOrderedByLastModified();
+  } 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +60,7 @@ class _StatsPageState extends State<StatsPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  CreateTotalStatsProjectScreen(projects: list),
+                                  CreateTotalStatsProjectScreen(projects: StasPage._loadProjects()),
                             ),
                           );
                         },

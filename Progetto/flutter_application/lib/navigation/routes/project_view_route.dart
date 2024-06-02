@@ -5,7 +5,6 @@ import 'package:flutter_application/commonElements/tasks_checkbox_view.dart';
 import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
 import 'package:flutter_application/classes/all.dart';
-
 import '../../commonElements/carousel_item.dart';
 import '../../data/database_helper.dart';
 import 'edit_project_route.dart';
