@@ -16,6 +16,7 @@ class StatsPage extends StatefulWidget {
   State<StatsPage> createState() => _StatsPageState();
 }
 
+<<<<<<< Updated upstream
 @override
 class _StatsPageState extends State<StatsPage> {
    Future<List<Member>> _loadMembers(String teamName) async {
@@ -26,8 +27,29 @@ class _StatsPageState extends State<StatsPage> {
     return await DatabaseHelper.instance.getActiveProjectsOrderedByLastModified();
   } 
   
+=======
+Future<List<Member>> _loadMembers(String teamName) async {
+  return await DatabaseHelper.instance.getMembersByTeam(teamName);
+}
+
+Future<List<Project>> _loadProjects() async {
+  return await DatabaseHelper.instance.getProjects();
+}
+
+//List<Project> list = ProjectList().getProjectsList(); //utilizzo lista di prova
+
+@override
+class _StatsPageState extends State<StatsPage> {
+
+>>>>>>> Stashed changes
   @override
   Widget build(BuildContext context) {
+    return FutureBuilder(future: _loadProjects(), builder: (BuildContext context, AsyncSnapshot<List<Project>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -60,7 +82,11 @@ class _StatsPageState extends State<StatsPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
+<<<<<<< Updated upstream
                                   CreateTotalStatsProjectScreen(projects: StasPage._loadProjects()),
+=======
+                                  CreateTotalStatsProjectScreen(projects: snapshot.data!),
+>>>>>>> Stashed changes
                             ),
                           );
                         },
@@ -70,15 +96,15 @@ class _StatsPageState extends State<StatsPage> {
                     return Card(
                       margin: const EdgeInsets.only(bottom: 15),
                       child: ListTile(
-                        title: Text(list[--index]
+                        title: Text(snapshot.data![--index]
                             .name), //decrementa l'indice per accedere al primo elemento
-                        subtitle: Text(list[index].getStatus()!),
+                        subtitle: Text(snapshot.data![index].getStatus()!),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => CreateStatsProjectScreen(
-                                  project: list[index]),
+                                  project: snapshot.data![index]),
                             ),
                           );
                         },
@@ -86,7 +112,7 @@ class _StatsPageState extends State<StatsPage> {
                     );
                   }
                 },
-                childCount: list.length,
+                childCount: snapshot.data!.length,
               ),
             ),
           ),
@@ -94,7 +120,7 @@ class _StatsPageState extends State<StatsPage> {
       ),
     );
   }
-}
+} ); }}
 
 class CreateStatsProjectScreen extends StatefulWidget {
   final Project project;
