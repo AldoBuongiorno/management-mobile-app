@@ -74,12 +74,13 @@ class _TeamScreenState extends State<TeamScreen> {
           Expanded(
             child: filteredList.isNotEmpty
                 ? GridView.builder(
+                    physics: AlwaysScrollableScrollPhysics().applyTo(BouncingScrollPhysics()),
                     primary: false,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Aumenta il numero di colonne per rendere i riquadri più piccoli
-                      crossAxisSpacing: 20, // Aumenta lo spazio tra le colonne
-                      mainAxisSpacing: 20, // Aumenta lo spazio tra le righe
-                      childAspectRatio: 1.2, // Riduce l'altezza dei riquadri
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3, // Aumenta il numero di colonne per rendere i riquadri più piccoli
+                      crossAxisSpacing: 10, // Aumenta lo spazio tra le colonne
+                      mainAxisSpacing: 10, // Aumenta lo spazio tra le righe
+                      childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 1.2 : 2, // Riduce l'altezza dei riquadri
                     ),
                     itemCount: filteredList.length,
                     itemBuilder: (context, index) {
@@ -87,7 +88,7 @@ class _TeamScreenState extends State<TeamScreen> {
                         height: 150, // Regola l'altezza del contenitore se necessario
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('assets/images/teamPreview/istockphoto-1423677119-640x640.jpg'),
+                            image: AssetImage('assets/images/teamPreview/teamuno.jpeg'),
                             fit: BoxFit.cover,
                           ),
                           borderRadius: const BorderRadius.all(Radius.circular(15)),

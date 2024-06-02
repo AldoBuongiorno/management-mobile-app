@@ -108,8 +108,8 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                             title: const Text('Successo!'),
-                            content: Text(
-                                ("Il team ${teamNameController.text}")),
+                            content: const Text(
+                                ("Il team è stato creato.")),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () => Navigator.pop(context, 'Ok'),
@@ -118,7 +118,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                             ],
                           ),
                           
-                        ), teamNameController.clear(), selectedMembers.clear()
+                        ), teamNameController.clear(), //selectedMembers.clear(), setState(() {})
 
                           } : {
                             showDialog<String>(
@@ -146,38 +146,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
 
 
               };
-                /*Team team;
-                teamNameController.text.isEmpty
-                    ? null
-                    : {
-                        team = Team(name: teamNameController.text),
-                        //ProjectList.teamsList.add(team),
-                        DatabaseHelper.instance.insertTeam(team),
-
-                        for(Member member in selectedMembers) {
-                          if(member.mainTeam == null) { DatabaseHelper.instance.assignMainTeamToMember(team.name, member.code), member.mainTeam = team }
-                          else if(member.secondaryTeam == null) { DatabaseHelper.instance.assignSecondaryTeamToMember(team.name, member.code), member.secondaryTeam = team }
-                        },
-
-                        teamNameController.clear,
-                        selectedMembers.clear,
-
-                        showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Successo!'),
-                            content: Text(
-                                ("Il team \"${team.getName()}\" è stato creato correttamente.\nPuoi creare altri team se ti va.")),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, 'Ok'),
-                                child: const Text('Ok'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      };
-              },*/ },
+              },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(Icons.group_add),
                 SizedBox(

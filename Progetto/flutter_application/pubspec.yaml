@@ -29,6 +29,12 @@ flutter:
   - assets\images\projectPreview\engineering.jpg
   - assets\images\projectPreview\safety.jpg
   - assets\images\projectPreview\studying.jpg
+  - assets\images\teamPreview\teamuno.jpeg
+  - assets\images\teamPreview\teamtre.jpeg
+  - assets\images\teamPreview\teamsei.jpg
+  - assets\images\teamPreview\teamquattro.jpg
+  - assets\images\teamPreview\teamdue.jpeg
+  - assets\images\teamPreview\teamcinque.jpg
   
   uses-material-design: true
   fonts:
