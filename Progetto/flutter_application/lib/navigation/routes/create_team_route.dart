@@ -178,7 +178,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                     ),
                   ),
                   onConfirm: (results) {
-                    selectedMembers = results as List<Member>;
+                    selectedMembers = results;
                   },
                 ),
               ),

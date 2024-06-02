@@ -5,7 +5,6 @@ import 'package:flutter_application/classes/all.dart';
 
 import '../classes/setting_class.dart';
 
-
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -62,11 +61,6 @@ class DatabaseHelper {
         );
         await db.execute(
           '''
-          INSERT INTO Setting values('NumberOfProjectsOnHomepage', 5), ('NumberOfTeamsOnHomepage', 3);
-          ''',
-        );
-        await db.execute(
-          '''
           CREATE TABLE Member(
             code INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -79,6 +73,51 @@ class DatabaseHelper {
           )
           ''',
         );
+        await db.rawInsert(
+          '''
+          INSERT INTO Setting values('NumberOfProjectsOnHomepage', 5), ('NumberOfTeamsOnHomepage', 3);
+          ''',
+        );
+        await db.rawInsert(
+          '''
+          INSERT INTO Team (name) VALUES 
+          ('Development'), 
+          ('Marketing'), 
+          ('Design'), 
+          ('QA'), 
+          ('Sales');
+          '''
+        );
+        await db.rawInsert(
+          '''
+          INSERT INTO Project (name, description, creationDate, expirationDate, lastModified, status, projectFailureReason, team, thumbnail) VALUES
+            ('Project Alpha', 'First development project', '2023-01-01', '2023-12-31', '2023-06-01', 'Attivo', NULL, 'Development', 'assets/images/projectPreview/engineering.jpg'),
+            ('Project Beta', 'Marketing campaign for Q1', '2023-02-15', '2023-03-31', '2023-02-20', 'Completato', NULL, 'Marketing', 'assets/images/projectPreview/default.jpg'),
+            ('Project Gamma', 'Design new website', '2023-03-01', '2023-09-30', '2023-04-10', 'Attivo', NULL, 'Design', 'assets/images/projectPreview/architectural.jpg'),
+            ('Project Delta', 'Quality assurance for new release', '2023-04-01', '2023-06-30', '2023-05-15', 'Fallito', 'Insufficient resources', 'QA', 'assets/images/projectPreview/safety.jpg'),
+            ('Project Epsilon', 'Sales strategy for new product', '2023-05-01', '2023-11-30', '2023-05-25', 'Attivo', NULL, 'Sales', 'assets/images/projectPreview/baking.jpg');
+          '''
+        );
+        await db.rawInsert(
+          '''
+          INSERT INTO Task (name, completationDate, completed, progress, project) VALUES
+            ('Task 1', '2023-01-15', 1, 100.0, 'Project Alpha'),
+            ('Task 2', '2023-02-28', 1, 100.0, 'Project Beta'),
+            ('Task 3', '2023-04-30', 0, 50.0, 'Project Gamma'),
+            ('Task 4', '2023-05-31', 0, 25.0, 'Project Delta'),
+            ('Task 5', '2023-06-30', 0, 0.0, 'Project Epsilon');
+          '''
+        );
+        await db.rawInsert(
+          '''
+          INSERT INTO Member (name, surname, role, mainTeam, secondaryTeam) VALUES
+            ('Alice', 'Smith', 'Developer', 'Development', 'QA'),
+            ('Bob', 'Brown', 'Marketing Specialist', 'Marketing', NULL),
+            ('Charlie', 'Davis', 'Designer', 'Design', 'Marketing'),
+            ('Diana', 'Evans', 'QA Engineer', 'QA', 'Development'),
+            ('Eve', 'Foster', 'Sales Manager', 'Sales', NULL);
+          '''
+        );
       },
       version: 1,
     );
@@ -86,10 +125,8 @@ class DatabaseHelper {
 
   Future<void> insertProject(Project project) async {
     final db = await database;
-    await db.insert(
-      'Project', 
-      project.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('Project', project.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> insertTask(Task task) async {
@@ -100,8 +137,8 @@ class DatabaseHelper {
 
   Future<void> insertTeam(Team team) async {
     final db = await database;
-    await db.insert('Team',team.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace);
+    await db.insert('Team', team.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> insertMember(Member member) async {
@@ -110,37 +147,70 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  
-
   Future<void> addTeamToMember(int code, String team) async {
-  final db = await database;
-  await db.update('Member', {'mainTeam': team}, where: 'code = ?', whereArgs: [code]);
+    final db = await database;
+    await db.update('Member', {'mainTeam': team},
+        where: 'code = ?', whereArgs: [code]);
   }
 
   Future<List<Project>> getProjects() async {
     final db = await database;
     final List<Map<String, Object?>> projectsMaps = await db.query('Project');
     return [
-      for (final {'name': name as String,'description': description as String,'creationDate': creationDate as String,'expirationDate': expirationDate as String,'lastModified': lastModified as String,'status': status as String,'projectFailureReason': projectFailureReason as String?,'team': team as String,'thumbnail': thumbnail as String,} in projectsMaps)
-        Project(name: name, description: description, creationDate: DateTime.parse(creationDate), expirationDate: DateTime.parse(expirationDate), lastModified: DateTime.parse(lastModified), status: status, projectFailureReason: projectFailureReason,team: await getTeamByName(team), thumbnail: AssetImage(thumbnail)),
+      for (final {
+            'name': name as String,
+            'description': description as String,
+            'creationDate': creationDate as String,
+            'expirationDate': expirationDate as String,
+            'lastModified': lastModified as String,
+            'status': status as String,
+            'projectFailureReason': projectFailureReason as String?,
+            'team': team as String,
+            'thumbnail': thumbnail as String,
+          } in projectsMaps)
+        Project(
+            name: name,
+            description: description,
+            creationDate: DateTime.parse(creationDate),
+            expirationDate: DateTime.parse(expirationDate),
+            lastModified: DateTime.parse(lastModified),
+            status: status,
+            projectFailureReason: projectFailureReason,
+            team: await getTeamByName(team),
+            thumbnail: AssetImage(thumbnail)),
     ];
   }
 
-   Future<List<Task>> getTasks() async {
+  Future<List<Task>> getTasks() async {
     final db = await database;
     final List<Map<String, Object?>> tasksMaps = await db.query('Task');
     return [
-      for (final {'name': name as String,'completationDate': completationDate as String?,'completed': completed as int?,'progress': progress as double?,'project': project as String,} in tasksMaps)
-        Task(name: name,completationDate: completationDate != null ? DateTime.parse(completationDate) : null,completed: (completed == 1 ? true : false),progress: progress,project: await getProjectByName(project)),
+      for (final {
+            'name': name as String,
+            'completationDate': completationDate as String?,
+            'completed': completed as int?,
+            'progress': progress as double?,
+            'project': project as String,
+          } in tasksMaps)
+        Task(
+            name: name,
+            completationDate: completationDate != null
+                ? DateTime.parse(completationDate)
+                : null,
+            completed: (completed == 1 ? true : false),
+            progress: progress,
+            project: await getProjectByName(project)),
     ];
   }
 
-  Future<List<Team>> getTeams() async { 
-    final db = await database; 
-    final List<Map<String, Object?>> teamsMaps = await db.query('Team'); 
-    return [ 
-      for(final {'name': name as String, } in teamsMaps) 
-      Team(name: name),
+  Future<List<Team>> getTeams() async {
+    final db = await database;
+    final List<Map<String, Object?>> teamsMaps = await db.query('Team');
+    return [
+      for (final {
+            'name': name as String,
+          } in teamsMaps)
+        Team(name: name),
     ];
   }
 
@@ -148,8 +218,21 @@ class DatabaseHelper {
     final db = await database;
     final List<Map<String, Object?>> membersMaps = await db.query('Member');
     return [
-      for (final {'code': code as int,'name': name as String,'surname': surname as String,'role': role as String,'mainTeam': mainTeam as String?,'secondaryTeam': secondaryTeam as String?,} in membersMaps)
-        Member(code: code, name: name, surname: surname, role: role,mainTeam: await getTeamByName(mainTeam), secondaryTeam: await getTeamByName(secondaryTeam) ),
+      for (final {
+            'code': code as int,
+            'name': name as String,
+            'surname': surname as String,
+            'role': role as String,
+            'mainTeam': mainTeam as String?,
+            'secondaryTeam': secondaryTeam as String?,
+          } in membersMaps)
+        Member(
+            code: code,
+            name: name,
+            surname: surname,
+            role: role,
+            mainTeam: await getTeamByName(mainTeam),
+            secondaryTeam: await getTeamByName(secondaryTeam)),
     ];
   }
 
@@ -157,174 +240,387 @@ class DatabaseHelper {
     final db = await database;
     final List<Map<String, Object?>> settingsMaps = await db.query('Setting');
     return [
-      for (final {'name': name as String, 'number': number as int} in settingsMaps)
+      for (final {'name': name as String, 'number': number as int}
+          in settingsMaps)
         Setting(name: name, number: number),
     ];
   }
 
   Future<Project?> getProjectByName(String name) async {
     final db = await database;
-    final List<Map<String, Object?>> result = await db.query('Project',where: 'name = ?',whereArgs: [name],);
+    final List<Map<String, Object?>> result = await db.query(
+      'Project',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
     if (result.isEmpty) {
-      return null; }
+      return null;
+    }
     final projectMap = result.first;
-    return Project(name: projectMap['name'] as String, description: projectMap['description'] as String, creationDate: DateTime.parse(projectMap['creationDate'] as String), expirationDate: DateTime.parse(projectMap['expirationDate'] as String), lastModified: DateTime.parse(projectMap['lastModified'] as String), status: projectMap['status'] as String, projectFailureReason: projectMap['projectFailureReason'] as String?,team: await getTeamByName(projectMap['team'] as String), thumbnail: AssetImage(projectMap['thumbnail'] as String),
+    return Project(
+      name: projectMap['name'] as String,
+      description: projectMap['description'] as String,
+      creationDate: DateTime.parse(projectMap['creationDate'] as String),
+      expirationDate: DateTime.parse(projectMap['expirationDate'] as String),
+      lastModified: DateTime.parse(projectMap['lastModified'] as String),
+      status: projectMap['status'] as String,
+      projectFailureReason: projectMap['projectFailureReason'] as String?,
+      team: await getTeamByName(projectMap['team'] as String),
+      thumbnail: AssetImage(projectMap['thumbnail'] as String),
     );
   }
 
   Future<Task?> getTaskByName(String name) async {
     final db = await database;
-    final List<Map<String, Object?>> result = await db.query('Task',where: 'name = ?',whereArgs: [name],);
+    final List<Map<String, Object?>> result = await db.query(
+      'Task',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
     if (result.isEmpty) {
-      return null; }
+      return null;
+    }
     final taskMap = result.first;
-    return Task(name: taskMap['name'] as String,completationDate: DateTime.parse(taskMap['completationDate'] as String),completed: (taskMap['completed'] as int) == 1 ? true : false,progress: taskMap['progress'] as double,project: await getProjectByName(taskMap['project'] as String),
+    return Task(
+      name: taskMap['name'] as String,
+      completationDate: DateTime.parse(taskMap['completationDate'] as String),
+      completed: (taskMap['completed'] as int) == 1 ? true : false,
+      progress: taskMap['progress'] as double,
+      project: await getProjectByName(taskMap['project'] as String),
     );
   }
 
   Future<Team?> getTeamByName(String? name) async {
     final db = await database;
-    final List<Map<String, Object?>> result = await db.query('Team',where: 'name = ?',whereArgs: [name],);
+    final List<Map<String, Object?>> result = await db.query(
+      'Team',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
     if (result.isEmpty) {
-      return null; }
+      return null;
+    }
     final teamMap = result.first;
-    return Team(name: teamMap['name'] as String,
+    return Team(
+      name: teamMap['name'] as String,
     );
   }
 
   Future<Member?> getMemberByCode(int code) async {
     final db = await database;
-    final List<Map<String, Object?>> result = await db.query('Member',where: 'code = ?',whereArgs: [code],);
+    final List<Map<String, Object?>> result = await db.query(
+      'Member',
+      where: 'code = ?',
+      whereArgs: [code],
+    );
     if (result.isEmpty) {
-      return null; }
+      return null;
+    }
     final memberMap = result.first;
-    return Member(code: memberMap['code'] as int,name: memberMap['name'] as String,surname: memberMap['surname'] as String,role: memberMap['role'] as String,mainTeam: await getTeamByName(memberMap['mainTeam'] as String),secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String),
+    return Member(
+      code: memberMap['code'] as int,
+      name: memberMap['name'] as String,
+      surname: memberMap['surname'] as String,
+      role: memberMap['role'] as String,
+      mainTeam: await getTeamByName(memberMap['mainTeam'] as String),
+      secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String),
     );
   }
 
   Future<void> updateTeamName(String oldName, String newName) async {
     final db = await database;
-    await db.update('Project',{'team': newName,'lastModified': DateTime.now().toIso8601String()},where: 'team = ?',whereArgs: [oldName],);
+    await db.update(
+      'Project',
+      {'team': newName, 'lastModified': DateTime.now().toIso8601String()},
+      where: 'team = ?',
+      whereArgs: [oldName],
+    );
   }
 
   Future<void> updateSetting(String name, int number) async {
     final db = await database;
-    await db.update('Setting',{'number': number}, where: 'name = ?',whereArgs: [name],);
+    await db.update(
+      'Setting',
+      {'number': number},
+      where: 'name = ?',
+      whereArgs: [name],
+    );
   }
 
   Future<void> updateDescription(String project, String newDescription) async {
     final db = await database;
-    await db.update('Project',{'description': newDescription,'lastModified': DateTime.now().toIso8601String()},where: 'name = ?',whereArgs: [project],);
+    await db.update(
+      'Project',
+      {
+        'description': newDescription,
+        'lastModified': DateTime.now().toIso8601String()
+      },
+      where: 'name = ?',
+      whereArgs: [project],
+    );
   }
 
   Future<void> updateExpirationDate(String project, DateTime newDate) async {
     final db = await database;
-    await db.update('Project',{'expirationDate': newDate.toIso8601String(),'lastModified': DateTime.now().toIso8601String()},where: 'name = ?',whereArgs: [project],);
+    await db.update(
+      'Project',
+      {
+        'expirationDate': newDate.toIso8601String(),
+        'lastModified': DateTime.now().toIso8601String()
+      },
+      where: 'name = ?',
+      whereArgs: [project],
+    );
   }
 
   Future<void> updateStatus(String project, String newStatus) async {
     final db = await database;
-    await db.update('Project',{'status': newStatus,'lastModified': DateTime.now().toIso8601String()},where: 'name = ?',whereArgs: [project],);
+    await db.update(
+      'Project',
+      {'status': newStatus, 'lastModified': DateTime.now().toIso8601String()},
+      where: 'name = ?',
+      whereArgs: [project],
+    );
   }
 
   Future<void> updateTeam(String project, String newTeamName) async {
     final db = await database;
-    await db.update('Project',{'team': newTeamName,'lastModified': DateTime.now().toIso8601String()},where: 'name = ?',whereArgs: [project],);
+    await db.update(
+      'Project',
+      {'team': newTeamName, 'lastModified': DateTime.now().toIso8601String()},
+      where: 'name = ?',
+      whereArgs: [project],
+    );
   }
 
   Future<void> updateThumbnail(String project, String newThumbnail) async {
     final db = await database;
-    await db.update('Project',{'thumbnail': newThumbnail,'lastModified': DateTime.now().toIso8601String()},where: 'name = ?',whereArgs: [project],);
+    await db.update(
+      'Project',
+      {
+        'thumbnail': newThumbnail,
+        'lastModified': DateTime.now().toIso8601String()
+      },
+      where: 'name = ?',
+      whereArgs: [project],
+    );
   }
 
   Future<void> updateProjectName(String project, String newName) async {
     final db = await database;
-    await db.update('Project',{'name': newName,'lastModified': DateTime.now().toIso8601String()},where: 'name = ?',whereArgs: [project],);
+    await db.update(
+      'Project',
+      {'name': newName, 'lastModified': DateTime.now().toIso8601String()},
+      where: 'name = ?',
+      whereArgs: [project],
+    );
   }
 
   Future<void> updateTaskAsCompletedByProjectName(String projectName) async {
     final db = await database;
-    await db.update('Task', {'completed': 1}, where: 'project = ?', whereArgs: [projectName]);
+    await db.update('Task', {'completed': 1},
+        where: 'project = ?', whereArgs: [projectName]);
   }
-  
+
   Future<void> updateTaskName(String oldName, String newName) async {
     final db = await database;
-    final List<Map<String, dynamic>> result = await db.rawQuery('SELECT t.project AS project_name FROM Task t WHERE t.name = ?',[oldName],);
-    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String],);
-    await db.update('Task',{'name': newName},where: 'name = ?',whereArgs: [oldName],);
-   }
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+      'SELECT t.project AS project_name FROM Task t WHERE t.name = ?',
+      [oldName],
+    );
+    await db.rawUpdate(
+      'UPDATE Project SET lastModified = ? WHERE name = ?',
+      [DateTime.now().toIso8601String(), result.first['name'] as String],
+    );
+    await db.update(
+      'Task',
+      {'name': newName},
+      where: 'name = ?',
+      whereArgs: [oldName],
+    );
+  }
 
   Future<void> updateCompletationDate(String task, DateTime newDate) async {
     final db = await database;
-    await db.update('Task',{'completationDate': newDate.toIso8601String()},where: 'name = ?',whereArgs: [task],);
-    final List<Map<String, dynamic>> result = await db.rawQuery('SELECT t.project AS project_name FROM Task t WHERE t.name = ?',[task],);
-    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String],);
+    await db.update(
+      'Task',
+      {'completationDate': newDate.toIso8601String()},
+      where: 'name = ?',
+      whereArgs: [task],
+    );
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+      'SELECT t.project AS project_name FROM Task t WHERE t.name = ?',
+      [task],
+    );
+    await db.rawUpdate(
+      'UPDATE Project SET lastModified = ? WHERE name = ?',
+      [DateTime.now().toIso8601String(), result.first['name'] as String],
+    );
   }
 
   Future<void> updateCompleted(String task, bool isCompleted) async {
     final db = await database;
-    await db.update('Task',{'completed': isCompleted ? 1 : 0},where: 'name = ?',whereArgs: [task],);
-    final List<Map<String, dynamic>> result = await db.rawQuery('SELECT t.project AS project_name FROM Task t WHERE t.name = ?',[task],);
-    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String?],);
+    await db.update(
+      'Task',
+      {'completed': isCompleted ? 1 : 0},
+      where: 'name = ?',
+      whereArgs: [task],
+    );
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+      'SELECT t.project AS project_name FROM Task t WHERE t.name = ?',
+      [task],
+    );
+    await db.rawUpdate(
+      'UPDATE Project SET lastModified = ? WHERE name = ?',
+      [DateTime.now().toIso8601String(), result.first['name'] as String?],
+    );
   }
 
   Future<void> updateProgress(String task, double newProgress) async {
     final db = await database;
-    await db.update('Task',{'progress': newProgress},where: 'name = ?',whereArgs: [task],);
-    final List<Map<String, dynamic>> result = await db.rawQuery('SELECT t.project AS project_name FROM Task t WHERE t.name = ?',[task],);
-    await db.rawUpdate('UPDATE Project SET lastModified = ? WHERE name = ?',[DateTime.now().toIso8601String(), result.first['name'] as String],);
-  } 
+    await db.update(
+      'Task',
+      {'progress': newProgress},
+      where: 'name = ?',
+      whereArgs: [task],
+    );
+    final List<Map<String, dynamic>> result = await db.rawQuery(
+      'SELECT t.project AS project_name FROM Task t WHERE t.name = ?',
+      [task],
+    );
+    await db.rawUpdate(
+      'UPDATE Project SET lastModified = ? WHERE name = ?',
+      [DateTime.now().toIso8601String(), result.first['name'] as String],
+    );
+  }
 
   Future<void> deleteProject(String name) async {
     final db = await database;
-    await db.delete('Project',where: 'name = ?',whereArgs: [name],);
+    await db.delete(
+      'Project',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
   }
 
   Future<void> deleteTask(String name) async {
     final db = await database;
-    await db.delete('Task',where: 'name = ?',whereArgs: [name],);
+    await db.delete(
+      'Task',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
   }
 
   Future<void> deleteTeam(String name) async {
     final db = await database;
-    await db.delete('Team',where: 'name = ?',whereArgs: [name],);
+    await db.delete(
+      'Team',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
   }
 
   Future<void> deleteMember(int code) async {
     final db = await database;
-    await db.delete('Member',where: 'code = ?',whereArgs: [code],);
+    await db.delete(
+      'Member',
+      where: 'code = ?',
+      whereArgs: [code],
+    );
   }
 
   Future<void> removeTeamFromMember(int memberCode, String team) async {
-  final db = await database;
-  await db.rawUpdate('''UPDATE Member SET mainTeam = CASE WHEN mainTeam = ? THEN NULL ELSE mainTeam END,secondaryTeam = CASE WHEN secondaryTeam = ? THEN NULL ELSE secondaryTeam END WHERE code = ? ''', [team, team, memberCode]);
+    final db = await database;
+    await db.rawUpdate(
+        '''UPDATE Member SET mainTeam = CASE WHEN mainTeam = ? THEN NULL ELSE mainTeam END,secondaryTeam = CASE WHEN secondaryTeam = ? THEN NULL ELSE secondaryTeam END WHERE code = ? ''',
+        [team, team, memberCode]);
   }
-
 
   Future<List<Project>> getActiveProjectsOrderedByLastModified() async {
     final db = await database;
-    final List<Map<String, Object?>> projectsMaps = await db.query('Project',where: 'status = ?',whereArgs: ['Attivo'],orderBy: 'lastModified DESC',);
+    final List<Map<String, Object?>> projectsMaps = await db.query(
+      'Project',
+      where: 'status = ?',
+      whereArgs: ['Attivo'],
+      orderBy: 'lastModified DESC',
+    );
     return [
-      for (final {'name': name as String,'description': description as String,'creationDate': creationDate as String,'expirationDate': expirationDate as String,'lastModified': lastModified as String,'status': status as String,'projectFailureReason': projectFailureReason as String?,'team': team as String,'thumbnail': thumbnail as String,} in projectsMaps)
-        Project(name: name, description: description, creationDate: DateTime.parse(creationDate), expirationDate: DateTime.parse(expirationDate), lastModified: DateTime.parse(lastModified), status: status, projectFailureReason: projectFailureReason, team: await getTeamByName(team), thumbnail: AssetImage(thumbnail)),
+      for (final {
+            'name': name as String,
+            'description': description as String,
+            'creationDate': creationDate as String,
+            'expirationDate': expirationDate as String,
+            'lastModified': lastModified as String,
+            'status': status as String,
+            'projectFailureReason': projectFailureReason as String?,
+            'team': team as String,
+            'thumbnail': thumbnail as String,
+          } in projectsMaps)
+        Project(
+            name: name,
+            description: description,
+            creationDate: DateTime.parse(creationDate),
+            expirationDate: DateTime.parse(expirationDate),
+            lastModified: DateTime.parse(lastModified),
+            status: status,
+            projectFailureReason: projectFailureReason,
+            team: await getTeamByName(team),
+            thumbnail: AssetImage(thumbnail)),
     ];
   }
 
   Future<List<Task>> getTasksByProjectName(String project) async {
     final db = await database;
-    final List<Map<String, Object?>> tasksMaps = await db.query('Task',where: 'project = ?',whereArgs: [project],);
+    final List<Map<String, Object?>> tasksMaps = await db.query(
+      'Task',
+      where: 'project = ?',
+      whereArgs: [project],
+    );
     return [
-      for (final {'name': name as String,'completationDate': completationDate as String?,'completed': completed as int,'progress': progress as double,'project': project as String,} in tasksMaps)
-        Task(name: name,completationDate: completationDate != null ? DateTime.parse(completationDate) : null,completed: completed == 1,progress: progress,project: await getProjectByName(project),),
+      for (final {
+            'name': name as String,
+            'completationDate': completationDate as String?,
+            'completed': completed as int,
+            'progress': progress as double,
+            'project': project as String,
+          } in tasksMaps)
+        Task(
+          name: name,
+          completationDate: completationDate != null
+              ? DateTime.parse(completationDate)
+              : null,
+          completed: completed == 1,
+          progress: progress,
+          project: await getProjectByName(project),
+        ),
     ];
   }
 
   Future<List<Task>> getUncompletedTasksByProjectName(String project) async {
     final db = await database;
-    final List<Map<String, Object?>> tasksMaps = await db.query('Task',where: 'project = ? and completed = ?',whereArgs: [project, false],);
+    final List<Map<String, Object?>> tasksMaps = await db.query(
+      'Task',
+      where: 'project = ? and completed = ?',
+      whereArgs: [project, false],
+    );
     return [
-      for (final {'name': name as String,'completationDate': completationDate as String?,'completed': completed as int,'progress': progress as double,'project': project as String,} in tasksMaps)
-        Task(name: name,completationDate: completationDate != null ? DateTime.parse(completationDate) : null,completed: completed == 1,progress: progress,project: await getProjectByName(project),),
+      for (final {
+            'name': name as String,
+            'completationDate': completationDate as String?,
+            'completed': completed as int,
+            'progress': progress as double,
+            'project': project as String,
+          } in tasksMaps)
+        Task(
+          name: name,
+          completationDate: completationDate != null
+              ? DateTime.parse(completationDate)
+              : null,
+          completed: completed == 1,
+          progress: progress,
+          project: await getProjectByName(project),
+        ),
     ];
   }
 
@@ -337,17 +633,29 @@ class DatabaseHelper {
       GROUP BY Team.name
       ORDER BY memberCount DESC
     ''');
-    return [for (final row in result) Team(name: row['name'] as String),];
+    return [
+      for (final row in result) Team(name: row['name'] as String),
+    ];
   }
 
   Future<List<Member>> getMembersByTeam(String team) async {
     final db = await database;
-    final List<Map<String, Object?>> membersMaps = await db.query('Member',where: 'mainTeam = ? OR secondaryTeam = ?',whereArgs: [team, team],);
+    final List<Map<String, Object?>> membersMaps = await db.query(
+      'Member',
+      where: 'mainTeam = ? OR secondaryTeam = ?',
+      whereArgs: [team, team],
+    );
     return [
       for (final memberMap in membersMaps)
-        Member(code: memberMap['code'] as int,name: memberMap['name'] as String,surname: memberMap['surname'] as String,role: memberMap['role'] as String,mainTeam: await getTeamByName(memberMap['mainTeam'] as String?),secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String?),),
+        Member(
+          code: memberMap['code'] as int,
+          name: memberMap['name'] as String,
+          surname: memberMap['surname'] as String,
+          role: memberMap['role'] as String,
+          mainTeam: await getTeamByName(memberMap['mainTeam'] as String?),
+          secondaryTeam:
+              await getTeamByName(memberMap['secondaryTeam'] as String?),
+        ),
     ];
   }
-
-
 }

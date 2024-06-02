@@ -57,8 +57,7 @@ class _TeamScreenState extends State<TeamScreen> {
               style: const TextStyle(color: Colors.white),
               controller: filterTeamListController,
               decoration: const InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                 filled: true,
                 fillColor: Color.fromARGB(100, 0, 0, 0),
                 suffixIcon: Icon(Icons.search, color: Colors.white),
@@ -76,29 +75,30 @@ class _TeamScreenState extends State<TeamScreen> {
             child: filteredList.isNotEmpty
                 ? GridView.builder(
                     primary: false,
-                    padding: const EdgeInsets.all(20),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Aumenta il numero di colonne per rendere i riquadri più piccoli
+                      crossAxisSpacing: 20, // Aumenta lo spazio tra le colonne
+                      mainAxisSpacing: 20, // Aumenta lo spazio tra le righe
+                      childAspectRatio: 1.2, // Riduce l'altezza dei riquadri
                     ),
                     itemCount: filteredList.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        height: 200,
-                        padding: EdgeInsets.zero,
-                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        height: 150, // Regola l'altezza del contenitore se necessario
                         decoration: BoxDecoration(
-                          color: Colors.blue, // Specifica il colore di sfondo
-                          borderRadius: BorderRadius.circular(
-                              10), // Opzionale: aggiungi bordi arrotondati
+                          image: DecorationImage(
+                            image: AssetImage('assets/images/teamPreview/istockphoto-1423677119-640x640.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: const BorderRadius.all(Radius.circular(15)),
                         ),
+                        padding: EdgeInsets.zero,
+                        margin: const EdgeInsets.symmetric(vertical: 8),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
                                   onPressed: () => Navigator.push(
@@ -110,24 +110,44 @@ class _TeamScreenState extends State<TeamScreen> {
                                     ),
                                   ).then((_) => _loadTeams()),
                                   icon: const Icon(
-                                    Icons.settings,
+                                    Icons.people,
                                     color: Colors.white,
                                   ),
                                 ),
                               ],
                             ),
-                            // Aggiungi uno Spacer per distanziare l'IconButton dal Text
-                            const Spacer(),
-                            Text(
-                              filteredList[index].getName(),
-                              style: const TextStyle(
-                                color: Colors.white, // Colore del testo
-                                fontSize: 18, // Dimensione del testo
-                                fontWeight: FontWeight.bold, // Grassetto
-                              ),
+                            Column(
+                              children: [
+                                BlurredBox(
+                                  borderRadius: const BorderRadius.vertical(
+                                    bottom: Radius.circular(15),
+                                  ),
+                                  sigma: 15,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 3),
+                                    decoration: const BoxDecoration(
+                                      color: Color.fromARGB(100, 0, 0, 0),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        const SizedBox(width: 10),
+                                        Flexible(
+                                          child: Text(
+                                            filteredList[index].getName(),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 16, // Diminuisci la dimensione del testo
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            // Aggiungi uno Spacer per distanziare il Text dal fondo del Container
-                            const Spacer(),
                           ],
                         ),
                       );

@@ -11,7 +11,8 @@ class ProjectList {
   static List<Team> teamsList = [];
   static List<Project> projectsList = [];
   static List<Member> membersList = [];*/
-  static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg')]);
+  static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg'), const AssetImage('assets/images/teamPreview/istockphoto-1423677119-640x640.jpg')]);
+
 /*
   static Team team1 = Team(name: "Team 1");
   static Team team2 = Team(name: "Team 2");

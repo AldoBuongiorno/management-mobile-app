@@ -127,7 +127,6 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                     ? null
                     : {
                         member = Member(
-                            code: 1,
                             name: memberNameController.text,
                             surname: memberSurnameController.text,
                             role: memberRoleController.text),

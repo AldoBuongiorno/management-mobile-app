@@ -3,14 +3,14 @@ import 'package:flutter_application/classes/all.dart';
 
 class Member {
   
-  int code;
+  int? code;
   String name;
   String surname;
   String role;
   Team? mainTeam;
   Team? secondaryTeam;
 
-  int getCode() {
+  int? getCode() {
     return code;
   }
 
@@ -28,7 +28,7 @@ class Member {
 
 
   Member({
-    required this.code,
+    this.code,
     required this.name,
     required this.surname,
     required this.role,
