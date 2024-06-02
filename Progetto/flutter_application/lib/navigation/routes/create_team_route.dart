@@ -102,7 +102,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                           checkIfMembersAreFree() ? {
                             DatabaseHelper.instance.insertTeam(Team(name: teamNameController.text)),
                             for(Member member in selectedMembers) {
-                              DatabaseHelper.instance.assignTeamToMember(teamNameController.text, member.code)
+                              DatabaseHelper.instance.assignTeamToMember(teamNameController.text, member.code!)
                             },
                             showDialog<String>(
                           context: context,

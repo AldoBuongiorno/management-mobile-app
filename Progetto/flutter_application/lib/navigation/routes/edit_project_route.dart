@@ -51,7 +51,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   @override
   Widget build(BuildContext context) {
     SelectableThumbnailGrid grid = SelectableThumbnailGrid(
-        ProjectList.thumbnailsList.indexOf(widget.project.thumbnail));
+        ProjectList.thumbnailsListProject.indexOf(widget.project.thumbnail));
 
     return Container(
         decoration: const BoxDecoration(
@@ -272,7 +272,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                         DatabaseHelper.instance.updateThumbnail(
                                             projectNameController.text,
                                             ProjectList
-                                                .thumbnailsList[
+                                                .thumbnailsListProject[
                                                     grid.selectedThumbnail]
                                                 .assetName);
                                         //DatabaseHelper.instance.updateTas

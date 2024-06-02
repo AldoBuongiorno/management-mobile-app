@@ -48,6 +48,7 @@ class DatabaseHelper {
           '''
           CREATE TABLE Team(
             name TEXT PRIMARY KEY
+            thumbnail TEXT NOT NULL,
           )
           ''',
         );
@@ -80,12 +81,12 @@ class DatabaseHelper {
         );
         await db.rawInsert(
           '''
-          INSERT INTO Team (name) VALUES 
-          ('Development'), 
-          ('Marketing'), 
-          ('Design'), 
-          ('QA'), 
-          ('Sales');
+          INSERT INTO Team (name, thumbnail) VALUES 
+            ('Development', 'assets/images/teamPreview/istockphoto-1423677119-640x640.jpg'),
+            ('Marketing', 'assets/images/teamPreview/teamcinque.jpg'),
+            ('Design', 'assets/images/teamPreview/teamdue.jpeg'),
+            ('QA', 'assets/images/teamPreview/teamquattro.jpg'),
+            ('Sales', 'assets/images/teamPreview/teamtre.jpeg');
           '''
         );
         await db.rawInsert(
@@ -209,8 +210,9 @@ class DatabaseHelper {
     return [
       for (final {
             'name': name as String,
+            'thumbnail': thumbnail as String,
           } in teamsMaps)
-        Team(name: name),
+        Team(name: name, thumbnail: AssetImage(thumbnail)),
     ];
   }
 
@@ -302,7 +304,7 @@ class DatabaseHelper {
     }
     final teamMap = result.first;
     return Team(
-      name: teamMap['name'] as String,
+      name: teamMap['name'] as String, thumbnail: AssetImage(teamMap['thumbnail'] as String)
     );
   }
 
@@ -683,7 +685,7 @@ Future<void> assignSecondaryTeamToMember(String teamName, int code) async {
       ORDER BY memberCount DESC
     ''');
     return [
-      for (final row in result) Team(name: row['name'] as String),
+      for (final row in result) Team(name: row['name'] as String, thumbnail: AssetImage(row['thumbnail'] as String) ),
     ];
   }
 

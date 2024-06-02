@@ -26,7 +26,7 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            itemCount: ProjectList.thumbnailsList.length,
+            itemCount: ProjectList.thumbnailsListProject.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount:
                   MediaQuery.of(context).orientation == Orientation.portrait
@@ -46,7 +46,7 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
                       child: Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: ProjectList.thumbnailsList[index],
+                                  image: ProjectList.thumbnailsListProject[index],
                                   fit: BoxFit.cover),
                               borderRadius: BorderRadius.circular(10)),
                           height: 200,

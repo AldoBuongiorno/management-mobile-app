@@ -173,7 +173,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                             status: "Attivo",
                             team: teamsList[selectedTeam],
                             thumbnail: ProjectList
-                                .thumbnailsList[grid.selectedThumbnail]),
+                                .thumbnailsListProject[grid.selectedThumbnail]),
                         DatabaseHelper.instance.insertProject(projectItem),
 
                         for(Task task in cTasks) task.setProject(projectItem),
