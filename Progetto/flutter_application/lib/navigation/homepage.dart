@@ -27,8 +27,6 @@ class HomePageScreen extends StatelessWidget {
         DatabaseHelper.instance.getTeamsOrderedByMemberCount(),
         //DatabaseHelper.instance.getProjectsNumberOnHomepage(),
         //DatabaseHelper.instance.getTeamsNumberOnHomepage(),
-
-        
       ]),
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -45,16 +43,19 @@ class HomePageScreen extends StatelessWidget {
               Container(
                   margin: EdgeInsets.symmetric(
                       vertical: 10,
-                      horizontal: MediaQuery.of(context).orientation == //il margine orizzontale dipende dall'orientamento del dispositivo
+                      horizontal: MediaQuery.of(context)
+                                  .orientation == //il margine orizzontale dipende dall'orientamento del dispositivo
                               Orientation.portrait
                           ? 20
                           : 100),
                   child: Row(children: [
                     CustomHeadingTitle(titleText: 'Progetti recenti'),
                   ])),
-              const SizedBox(height: 20), 
+              const SizedBox(height: 20),
               addCarouselIfNotEmpty(
-                  snapshot.data?[0] as List<Project>, context,),
+                snapshot.data?[0] as List<Project>,
+                context,
+              ),
               const SizedBox(
                 height: 20,
               ),
@@ -77,7 +78,9 @@ class HomePageScreen extends StatelessWidget {
                           ? 20
                           : 100),
                   child: addTeamsIfNotEmpty(
-                      snapshot.data?[1] as List<Team>, context,))
+                    snapshot.data?[1] as List<Team>,
+                    context,
+                  ))
             ],
           )));
         }
@@ -99,7 +102,9 @@ class HomePageScreen extends StatelessWidget {
       );
     } else {
       return CarouselSlider.builder(
-        itemCount: testList.length < ProjectList.projectOnHomepageNumber ? testList.length : ProjectList.teamOnHomepageNumber
+        itemCount: testList.length < ProjectList.projectOnHomepageNumber
+            ? testList.length
+            : ProjectList.teamOnHomepageNumber
         /*ProjectList.projectsList
                   .where((element) => element.isActive())
                   .toList()
@@ -138,10 +143,8 @@ class HomePageScreen extends StatelessWidget {
             : ProjectList.projectOnHomepageNumber*/
           ,
           itemBuilder: (context, index) {
-Team testItem = testList[index];
-          return ExpandableTeamTile(testItem.getName(), index);
-
-            
+            Team testItem = testList[index];
+            return ExpandableTeamTile(testItem.getName(), index);
           });
     }
   }
@@ -151,10 +154,7 @@ class ExpandableTeamTile extends StatefulWidget {
   final String teamName;
   final int index;
 
-  const ExpandableTeamTile(
-    this.teamName,
-    this.index,
-  {super.key});
+  const ExpandableTeamTile(this.teamName, this.index, {super.key});
 
   @override
   State<ExpandableTeamTile> createState() => _ExpandableTeamTileState();
@@ -221,7 +221,8 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
             FutureBuilder<List<Member>>(
               future: _membersFuture,
               builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
                   return Column(
                     children: snapshot.data!.map((member) {
                       return Container(
@@ -242,5 +243,3 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
     );
   }
 }
-
-

@@ -68,7 +68,7 @@ class DatabaseHelper {
         await db.execute(
           '''
           CREATE TABLE Member(
-            code INTEGER PRIMARY KEY,
+            code INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             surname TEXT NOT NULL,
             role TEXT NOT NULL,

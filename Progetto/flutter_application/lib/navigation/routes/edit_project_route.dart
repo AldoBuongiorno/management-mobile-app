@@ -181,6 +181,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                             
                             if(taskInputController.text.isNotEmpty) {
                               List<Task> tasksList = await DatabaseHelper.instance.getTasksByProjectName(widget.project.name);
+                              DatabaseHelper.instance.insertTask(Task(name: taskInputController.text, project: widget.project));
                               tasksList.add(Task(name: taskInputController.text, project: widget.project));
                             }
                             
