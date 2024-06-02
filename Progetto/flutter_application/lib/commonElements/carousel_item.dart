@@ -90,22 +90,23 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
               IconButton(
                   onPressed: () async {
                     List<Task> tasksList = await DatabaseHelper.instance
-                        .getTasksByProjectName(testItem.name);
+                        .getUncompletedTasksByProjectName(testItem.name);
                     //double progress = await testItem.getProgress();
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Task'),
+                            title: Text('Task non complete'),
                             content: SizedBox(
                                 width: double.maxFinite,
                                 child: TasksCheckboxViewForHomepage(
-                                    tasks: tasksList)),
+                                    tasks: tasksList )),
                             actions: [
                               TextButton(
                                 child: Text('Conferma'),
                                 onPressed: () => Navigator.of(context).pop(),
-                              )
+                              ),
+                              
                             ],
                           );
                         });
