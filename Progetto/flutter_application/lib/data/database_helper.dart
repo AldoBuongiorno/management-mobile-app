@@ -317,6 +317,15 @@ class DatabaseHelper {
     ];
   }
 
+  Future<List<Task>> getUncompletedTasksByProjectName(String project) async {
+    final db = await database;
+    final List<Map<String, Object?>> tasksMaps = await db.query('Task',where: 'project = ? and completed = ?',whereArgs: [project, false],);
+    return [
+      for (final {'name': name as String,'completationDate': completationDate as String?,'completed': completed as int,'progress': progress as double,'project': project as String,} in tasksMaps)
+        Task(name: name,completationDate: completationDate != null ? DateTime.parse(completationDate) : null,completed: completed == 1,progress: progress,project: await getProjectByName(project),),
+    ];
+  }
+
   Future<List<Team>> getTeamsOrderedByMemberCount() async {
     final db = await database;
     final List<Map<String, Object?>> result = await db.rawQuery('''
