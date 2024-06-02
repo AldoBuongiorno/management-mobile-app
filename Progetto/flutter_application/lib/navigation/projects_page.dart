@@ -115,7 +115,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                                       ),
                                     ).then((_) => _loadProjects()),
                                     icon: const Icon(
-                                      Icons.settings,
+                                      Icons.draw,
                                       color: Colors.white,
                                     ),
                                   ),

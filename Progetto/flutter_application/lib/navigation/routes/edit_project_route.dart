@@ -227,6 +227,9 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                     ProjectList.projectsList[widget.index].thumbnail = ProjectList.thumbnailsList[grid.selectedThumbnail];*/
                     //ProjectList.projectsList[widget.index].tasks = projectDescriptionController.text,
                     
+                    widget.project.name = projectNameController.text;
+                    widget.project.description = projectDescriptionController.text;
+
                     DatabaseHelper.instance.updateProjectName(widget.project.name, projectNameController.text);
                     DatabaseHelper.instance.updateDescription(projectNameController.text, projectDescriptionController.text);
                     DatabaseHelper.instance.updateThumbnail(projectNameController.text, ProjectList.thumbnailsList[grid.selectedThumbnail].assetName);
