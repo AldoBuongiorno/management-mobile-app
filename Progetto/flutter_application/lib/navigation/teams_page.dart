@@ -88,7 +88,7 @@ class _TeamScreenState extends State<TeamScreen> {
                         height: 150, // Regola l'altezza del contenitore se necessario
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage('assets/images/teamPreview/teamuno.jpeg'),
+                            image: filteredList[index].thumbnail,
                             fit: BoxFit.cover,
                           ),
                           borderRadius: const BorderRadius.all(Radius.circular(15)),

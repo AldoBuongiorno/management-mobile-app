@@ -82,7 +82,7 @@ class DatabaseHelper {
         await db.rawInsert(
           '''
           INSERT INTO Team (name, thumbnail) VALUES 
-            ('Development', 'assets/images/teamPreview/istockphoto-1423677119-640x640.jpg'),
+            ('Development', 'assets/images/teamPreview/teamsei.jpg'),
             ('Marketing', 'assets/images/teamPreview/teamcinque.jpg'),
             ('Design', 'assets/images/teamPreview/teamdue.jpeg'),
             ('QA', 'assets/images/teamPreview/teamquattro.jpg'),
@@ -678,7 +678,7 @@ Future<void> assignSecondaryTeamToMember(String teamName, int code) async {
   Future<List<Team>> getTeamsOrderedByMemberCount() async {
     final db = await database;
     final List<Map<String, Object?>> result = await db.rawQuery('''
-      SELECT Team.name, COUNT(Member.code) as memberCount
+      SELECT Team.name, Team.thumbnail, COUNT(Member.code) as memberCount
       FROM Team
       JOIN Member ON Team.name = Member.mainTeam OR Team.name = Member.secondaryTeam
       GROUP BY Team.name
