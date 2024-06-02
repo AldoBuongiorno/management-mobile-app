@@ -67,7 +67,7 @@ class FirstRoute extends StatelessWidget {
                             minVal: 1,
                             maxVal: 15,
                             onQtyChanged: (value) =>
-                                DatabaseHelper.instance.updateProjectsNumberOnHomepage(value))
+                                DatabaseHelper.instance.updateSetting('NumberOfProjectsOnHomepage',value))
                                 
                       ]),
                   const SizedBox(
@@ -102,7 +102,7 @@ class FirstRoute extends StatelessWidget {
                             minVal: 1,
                             maxVal: 10,
                             onQtyChanged: (value) =>
-                                DatabaseHelper.instance.updateTeamsNumberOnHomepage(value))
+                                DatabaseHelper.instance.updateSetting('NumberOfTeamsOnHomepage',value))
                       ]),
                   SizedBox(
                       width: MediaQuery.of(context).size.width,

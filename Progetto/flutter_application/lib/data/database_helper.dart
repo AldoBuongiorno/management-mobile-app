@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_application/classes/all.dart';
 
-import '../classes/settings.dart';
+import '../classes/setting_class.dart';
 
 
 class DatabaseHelper {
@@ -206,15 +206,10 @@ class DatabaseHelper {
     final db = await database;
     await db.update('Project',{'team': newName,'lastModified': DateTime.now().toIso8601String()},where: 'team = ?',whereArgs: [oldName],);
   }
-  
-  Future<void> updateProjectsNumberOnHomepage(int number) async {
-    final db = await database;
-    await db.update('Setting',{'number': number},where: 'name = ?',whereArgs: ['NumberOfProjectsOnHomepage'],);
-  }
 
-  Future<void> updateTeamsNumberOnHomepage(int number) async {
+  Future<void> updateSetting(String name, int number) async {
     final db = await database;
-    await db.update('Setting',{'number': number},where: 'name = ?',whereArgs: ['NumberOfTeamsOnHomepage'],);
+    await db.update('Setting',{'number': number}, where: 'name = ?',whereArgs: [name],);
   }
 
   Future<void> updateDescription(String project, String newDescription) async {
