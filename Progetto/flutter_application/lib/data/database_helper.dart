@@ -56,13 +56,13 @@ class DatabaseHelper {
           '''
           CREATE TABLE Settings(
             name TEXT PRIMARY KEY,
-            number INTEGER NOT NULL default 5
+            number INTEGER NOT NULL
           )
           ''',
         );
         await db.execute(
           '''
-          INSERT INTO Settings values(NumberOfProjectsOnHomepage, 5), (NumberOfTeamsOnHomepage, 3);
+          INSERT INTO Settings values('NumberOfProjectsOnHomepage', 5), ('NumberOfTeamsOnHomepage', 3);
           ''',
         );
         await db.execute(
@@ -193,14 +193,14 @@ class DatabaseHelper {
 
   Future<Settings?> getProjectsNumberOnHomepage() async {
     final db = await database;
-    final List<Map<String, Object?>> result = await db.rawQuery('SELECT number FROM Settings WHERE name=?', ['NumberOfProjectsOnHomepage']);
+    final List<Map<String, Object?>> result = await db.query('Settings', where: 'name = ?', whereArgs: ['NumberOfProjectsOnHomepage']);
     final settingsMap = result.first;
     return Settings(setting: settingsMap['setting'] as String, number: settingsMap['number'] as int);
   }
 
   Future<Settings?> getTeamsNumberOnHomepage() async {
     final db = await database;
-    final List<Map<String, Object?>> result = await db.rawQuery('SELECT number FROM Settings WHERE name=?', ['NumberOfTeamsOnHomepage']);
+    final List<Map<String, Object?>> result = await db.query('Settings', where: 'name = ?', whereArgs: ['NumberOfTeamsOnHomepage']);
     final settingsMap = result.first;
     return Settings(setting: settingsMap['setting'] as String, number: settingsMap['number'] as int);
   }
