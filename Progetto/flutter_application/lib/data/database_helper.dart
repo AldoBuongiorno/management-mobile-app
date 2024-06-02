@@ -324,8 +324,8 @@ class DatabaseHelper {
       name: memberMap['name'] as String,
       surname: memberMap['surname'] as String,
       role: memberMap['role'] as String,
-      mainTeam: await getTeamByName(memberMap['mainTeam'] as String),
-      secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String),
+      mainTeam: await getTeamByName(memberMap['mainTeam'] as String?),
+      secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String?),
     );
   }
 
