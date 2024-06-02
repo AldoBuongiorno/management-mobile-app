@@ -259,6 +259,12 @@ class DatabaseHelper {
     await db.delete('Member',where: 'code = ?',whereArgs: [code],);
   }
 
+  Future<void> removeTeamFromMember(int memberCode, String team) async {
+  final db = await database;
+  await db.rawUpdate('''UPDATE Member SET mainTeam = CASE WHEN mainTeam = ? THEN NULL ELSE mainTeam END,secondaryTeam = CASE WHEN secondaryTeam = ? THEN NULL ELSE secondaryTeam END WHERE code = ? ''', [team, team, memberCode]);
+  }
+
+
   Future<List<Project>> getActiveProjectsOrderedByLastModified() async {
     final db = await database;
     final List<Map<String, Object?>> projectsMaps = await db.query('Project',where: 'status = ?',whereArgs: ['Attivo'],orderBy: 'lastModified DESC',);
