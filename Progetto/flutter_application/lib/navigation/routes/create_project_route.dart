@@ -183,7 +183,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         projectNameController.clear(),
                         projectDescriptionController.clear(),
                         grid.selectedThumbnail = 0,
-                        cTasks.clear(),
+                        cTasks.clear(), setState(() {}),
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(

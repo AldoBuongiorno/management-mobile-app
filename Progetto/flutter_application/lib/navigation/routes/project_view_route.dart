@@ -56,7 +56,9 @@ class _ProjectRouteState extends State<ProjectRoute> {
                             MaterialPageRoute(
                                 builder: (context) => EditProjectScreen(
                                       project: widget.project,
-                                    ))).then((_) => setState(() {},)),
+                                    ))).then((_) => setState(
+                              () {},
+                            )),
                         icon: const Icon(Icons.draw))
                   ],
                   foregroundColor: Colors.white,
@@ -114,84 +116,98 @@ class _ProjectRouteState extends State<ProjectRoute> {
                         'Puoi modificare lo stato del progetto (puoi archiviarlo, completarlo o anche eliminarlo se necessario), cliccando su uno dei seguenti pulsanti:'),
                     SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
-                        child: Padding(padding: EdgeInsets.symmetric(vertical: 10) ,child: Row(
-                          children: [
-                            ElevatedButton(
-                                onPressed: widget.project.status == 'Attivo'
-                                    ? null
-                                    : () async {
-                                        DatabaseHelper.instance.updateStatus(
-                                            widget.project.name, "Attivo");
-                                        widget.project.status = 'Attivo';
-                                        setState(() {});
-                                      },
-                                child: const Row(children: [
-                                  Icon(Icons.star),
-                                  SizedBox(width: 5),
-                                  Text('Rendi attivo')
-                                ])),
-                            const SizedBox(width: 5),
-                            ElevatedButton(
-                                onPressed: widget.project.status == 'Fallito'
-                                    ? null
-                                    : () async {
-                                        DatabaseHelper.instance.updateStatus(
-                                            widget.project.name, "Fallito");
-                                        widget.project.status = 'Fallito';
-                                        setState(() {}); //
-                                      },
-                                child: const Row(children: [
-                                  Icon(Icons.archive),
-                                  SizedBox(width: 5),
-                                  Text('Archivia come fallito')
-                                ])),
-                            const SizedBox(width: 5),
-                            ElevatedButton(
-                                onPressed: widget.project.status == 'Completato'
-                                    ? null
-                                    : () async {
-                                        DatabaseHelper.instance.updateStatus(
-                                            widget.project.name, "Completato");
-                                        widget.project.status = 'Completato';
-                                        DatabaseHelper.instance
-                                            .updateTaskAsCompletedByProjectName(
-                                                widget.project.name);
-                                        setState(() {});
-                                      },
-                                child: const Row(children: [
-                                  Icon(Icons.check_circle),
-                                  SizedBox(width: 5),
-                                  Text('Archivia come completato')
-                                ])),
-                            const SizedBox(width: 5),
-                            ElevatedButton(
-                                onPressed: widget.project.status == 'Sospeso'
-                                    ? null
-                                    : () async {
-                                        DatabaseHelper.instance.updateStatus(
-                                            widget.project.name, "Sospeso");
-                                        widget.project.status = 'Sospeso';
-                                        setState(() {});
-                                      },
-                                child: const Row(children: [
-                                  Icon(Icons.close),
-                                  SizedBox(width: 5),
-                                  Text('Sospendi')
-                                ])),
-                            const SizedBox(width: 5),
-                            ElevatedButton(
-                                onPressed: () async {
-                                  DatabaseHelper.instance
-                                      .deleteProject(widget.project.name);
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Row(children: [
-                                  Icon(Icons.delete_forever),
-                                  SizedBox(width: 5),
-                                  Text('Elimina')
-                                ])),
-                          ],
-                        ))),
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                              children: [
+                                ElevatedButton(
+                                    onPressed: widget.project.status == 'Attivo'
+                                        ? null
+                                        : () async {
+                                            DatabaseHelper.instance
+                                                .updateStatus(
+                                                    widget.project.name,
+                                                    "Attivo");
+                                            widget.project.status = 'Attivo';
+                                            setState(() {});
+                                          },
+                                    child: const Row(children: [
+                                      Icon(Icons.star),
+                                      SizedBox(width: 5),
+                                      Text('Rendi attivo')
+                                    ])),
+                                const SizedBox(width: 5),
+                                ElevatedButton(
+                                    onPressed: widget.project.status ==
+                                            'Fallito'
+                                        ? null
+                                        : () async {
+                                            DatabaseHelper.instance
+                                                .updateStatus(
+                                                    widget.project.name,
+                                                    "Fallito");
+                                            widget.project.status = 'Fallito';
+                                            setState(() {}); //
+                                          },
+                                    child: const Row(children: [
+                                      Icon(Icons.archive),
+                                      SizedBox(width: 5),
+                                      Text('Archivia come fallito')
+                                    ])),
+                                const SizedBox(width: 5),
+                                ElevatedButton(
+                                    onPressed:
+                                        widget.project.status == 'Completato'
+                                            ? null
+                                            : () async {
+                                                DatabaseHelper.instance
+                                                    .updateStatus(
+                                                        widget.project.name,
+                                                        "Completato");
+                                                widget.project.status =
+                                                    'Completato';
+                                                DatabaseHelper.instance
+                                                    .updateTaskAsCompletedByProjectName(
+                                                        widget.project.name);
+                                                setState(() {});
+                                              },
+                                    child: const Row(children: [
+                                      Icon(Icons.check_circle),
+                                      SizedBox(width: 5),
+                                      Text('Archivia come completato')
+                                    ])),
+                                const SizedBox(width: 5),
+                                ElevatedButton(
+                                    onPressed: widget.project.status ==
+                                            'Sospeso'
+                                        ? null
+                                        : () async {
+                                            DatabaseHelper.instance
+                                                .updateStatus(
+                                                    widget.project.name,
+                                                    "Sospeso");
+                                            widget.project.status = 'Sospeso';
+                                            setState(() {});
+                                          },
+                                    child: const Row(children: [
+                                      Icon(Icons.close),
+                                      SizedBox(width: 5),
+                                      Text('Sospendi')
+                                    ])),
+                                const SizedBox(width: 5),
+                                ElevatedButton(
+                                    onPressed: () async {
+                                      DatabaseHelper.instance
+                                          .deleteProject(widget.project.name);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Row(children: [
+                                      Icon(Icons.delete_forever),
+                                      SizedBox(width: 5),
+                                      Text('Elimina')
+                                    ])),
+                              ],
+                            ))),
                     /*Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [

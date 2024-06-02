@@ -121,7 +121,7 @@ class HomePageScreen extends StatelessWidget {
           Project testItem = testList[index];
           return buildCarousel(index, testItem, context);
         },
-        options: CarouselOptions(height: 200),
+        options: CarouselOptions(height: 200, enableInfiniteScroll: false),
       );
     }
   }
