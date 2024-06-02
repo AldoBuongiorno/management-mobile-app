@@ -156,6 +156,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                                   ),
                                 ),
                               }
+                            // ignore: dead_code
                             : {
                                 showDialog<String>(
                                   context: context,

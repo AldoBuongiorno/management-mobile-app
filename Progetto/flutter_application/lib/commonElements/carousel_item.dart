@@ -103,7 +103,20 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
                                     tasks: tasksList )),
                             actions: [
                               TextButton(
-                                child: Text('Conferma'),
+                                child: Text('Aggiungi task', style: TextStyle(color: Colors.lightBlue),),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditProjectScreen(
+                                          project: testItem,
+                                        ),
+                                      ),
+                                    ).then((_) => Navigator.of(context).pop());
+                                },
+                              ),
+                              TextButton(
+                                child: Text('Conferma', style: TextStyle(color: Colors.pink),),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
                               
