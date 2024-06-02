@@ -198,9 +198,58 @@ class DatabaseHelper {
     if (result.isEmpty) {
       return null; }
     final memberMap = result.first;
-    return Member(code: memberMap['code'] as int,name: memberMap['name'] as String,surname: memberMap['surname'] as String,role: memberMap['role'] as String,mainTeam: await getTeamByName(memberMap['mainTeam'] as String),secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String),
+    return Member(code: memberMap['code'] as int,name: memberMap['name'] as String,surname: memberMap['surname'] as String,role: memberMap['role'] as String,mainTeam: await getTeamByName(memberMap['mainTeam'] as String?),secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String?),
     );
   }
+
+  Future<bool> teamExists(String teamName) async {
+  final db = await database;
+  final List<Map<String, Object?>> result = await db.query(
+    'Team',
+    where: 'name = ?',
+    whereArgs: [teamName],
+  );
+  return result.isNotEmpty;
+}
+
+Future<void> assignTeamToMember(String teamName, int code) async {
+  final db = await database;
+  Member? member = await getMemberByCode(code);
+  if(member!.mainTeam == null) {
+    await db.update(
+    'Member',
+    {'mainTeam': teamName},
+    where: 'code = ?',
+    whereArgs: [code],
+  );
+  } else if (member!.secondaryTeam != null) await db.update(
+    'Member',
+    {'secondaryTeam': teamName},
+    where: 'code = ?',
+    whereArgs: [code],
+  );
+}
+
+  Future<void> assignMainTeamToMember(String teamName, int code) async {
+  final db = await database;
+  await db.update(
+    'Member',
+    {'mainTeam': teamName},
+    where: 'code = ?',
+    whereArgs: [code],
+  );
+}
+
+Future<void> assignSecondaryTeamToMember(String teamName, int code) async {
+  final db = await database;
+  await db.update(
+    'Member',
+    {'secondaryTeam': teamName},
+    where: 'code = ?',
+    whereArgs: [code],
+  );
+}
+
 
   Future<void> updateTeamName(String oldName, String newName) async {
     final db = await database;
