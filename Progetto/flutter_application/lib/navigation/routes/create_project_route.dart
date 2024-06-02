@@ -37,7 +37,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     TasksCheckboxView taskCheckboxList = TasksCheckboxView(tasks: cTasks);
-    SelectableThumbnailGrid grid = SelectableThumbnailGrid();
+    SelectableThumbnailGrid grid = SelectableThumbnailGrid(list: ProjectList.thumbnailsListProject);
     Project projectItem;
     return Container(
         margin: EdgeInsets.symmetric(

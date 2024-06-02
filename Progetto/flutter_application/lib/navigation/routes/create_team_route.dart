@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application/commonElements/selectable_thumbnail_grid.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
@@ -21,6 +22,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
   final teamNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    SelectableThumbnailGrid grid = SelectableThumbnailGrid(list: ProjectList.thumbnailsListTeam);
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: 10,
@@ -67,6 +69,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
             height: 10,
           ),
           const SelectableMembersList(),
+          grid,
           ElevatedButton(
               onPressed: teamNameController.text.isEmpty ? null : () async {  
                 await DatabaseHelper.instance.teamExists(teamNameController.text) ? 
@@ -100,7 +103,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                           ),
                         ) : {
                           checkIfMembersAreFree() ? {
-                            DatabaseHelper.instance.insertTeam(Team(name: teamNameController.text)),
+                            DatabaseHelper.instance.insertTeam(Team(name: teamNameController.text, thumbnail: ProjectList.thumbnailsListTeam[grid.selectedThumbnail])),
                             for(Member member in selectedMembers) {
                               DatabaseHelper.instance.assignTeamToMember(teamNameController.text, member.code!)
                             },
@@ -153,7 +156,10 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                   width: 5,
                 ),
                 Text("Aggiungi team")
-              ]))
+              ])),
+        
+        
+        
         ],
       ),
     );

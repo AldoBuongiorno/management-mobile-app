@@ -51,7 +51,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   @override
   Widget build(BuildContext context) {
     SelectableThumbnailGrid grid = SelectableThumbnailGrid(
-        ProjectList.thumbnailsListProject.indexOf(widget.project.thumbnail));
+        selectedThumbnail: ProjectList.thumbnailsListProject.indexOf(widget.project.thumbnail), list: ProjectList.thumbnailsListProject );
 
     return Container(
         decoration: const BoxDecoration(

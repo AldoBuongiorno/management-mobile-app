@@ -12,7 +12,7 @@ class ProjectList {
   static List<Project> projectsList = [];
   static List<Member> membersList = [];*/
   static List<AssetImage> thumbnailsListProject = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg')]);
-  static List<AssetImage> thumbnailsListTeam = List.from(<AssetImage>[const AssetImage('assets\images\teamPreview\istockphoto-1423677119-640x640.jpg'), const AssetImage('assets\images\teamPreview\teamcinque.jpg'), const AssetImage('assets\images\teamPreview\teamdue.jpeg'), const AssetImage('assets\images\teamPreview\teamquattro.jpg'), const AssetImage('assets\images\teamPreview\teamtre.jpeg'), const AssetImage('assets\images\teamPreview\teamuno.jpeg')]);
+  static List<AssetImage> thumbnailsListTeam = List.from(<AssetImage>[const AssetImage('assets/images/teamPreview/teamsei.jpg'), const AssetImage('assets/images/teamPreview/teamcinque.jpg'), const AssetImage('assets/images/teamPreview/teamdue.jpeg'), const AssetImage('assets/images/teamPreview/teamquattro.jpg'), const AssetImage('assets/images/teamPreview/teamtre.jpeg'), const AssetImage('assets/images/teamPreview/teamuno.jpeg')]);
 
 /*
   static Team team1 = Team(name: "Team 1");

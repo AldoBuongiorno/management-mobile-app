@@ -4,9 +4,9 @@ import '../data/project_list.dart';
 import 'blurred_box.dart';
 
 class SelectableThumbnailGrid extends StatefulWidget {
-  SelectableThumbnailGrid([this.selectedThumbnail = 0]);
+  SelectableThumbnailGrid({this.selectedThumbnail = 0, required this.list });
 
-  int selectedThumbnail;
+  int selectedThumbnail; List<AssetImage> list;
 
   int getThumbnail() {
     return selectedThumbnail;
@@ -26,7 +26,7 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
-            itemCount: ProjectList.thumbnailsListProject.length,
+            itemCount: widget.list.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount:
                   MediaQuery.of(context).orientation == Orientation.portrait
@@ -46,7 +46,7 @@ class _SelectableThumbnailGridState extends State<SelectableThumbnailGrid> {
                       child: Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: ProjectList.thumbnailsListProject[index],
+                                  image: widget.list[index],
                                   fit: BoxFit.cover),
                               borderRadius: BorderRadius.circular(10)),
                           height: 200,

@@ -47,8 +47,8 @@ class DatabaseHelper {
         await db.execute(
           '''
           CREATE TABLE Team(
-            name TEXT PRIMARY KEY
-            thumbnail TEXT NOT NULL,
+            name TEXT PRIMARY KEY,
+            thumbnail TEXT NOT NULL
           )
           ''',
         );
