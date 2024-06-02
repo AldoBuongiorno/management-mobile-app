@@ -29,8 +29,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Future<void> _loadProjects() async {
     final projects = await DatabaseHelper.instance.getProjects();
     setState(() {
-      projectList = projects;
-      filteredList = projects;
+      this.projectList = projects;
+      this.filteredList = projects;
     });
   }
 

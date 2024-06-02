@@ -25,6 +25,9 @@ class HomePageScreen extends StatelessWidget {
       future: Future.wait([
         DatabaseHelper.instance.getActiveProjectsOrderedByLastModified(),
         DatabaseHelper.instance.getTeamsOrderedByMemberCount(),
+        DatabaseHelper.instance.getProjectsNumberOnHomepage(),
+        DatabaseHelper.instance.getTeamsNumberOnHomepage(),
+
         
       ]),
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
@@ -51,7 +54,7 @@ class HomePageScreen extends StatelessWidget {
                   ])),
               const SizedBox(height: 20), 
               addCarouselIfNotEmpty(
-                  snapshot.data?[0] as List<Project>, context),
+                  snapshot.data?[0] as List<Project>, context,),
               const SizedBox(
                 height: 20,
               ),
@@ -74,7 +77,7 @@ class HomePageScreen extends StatelessWidget {
                           ? 20
                           : 100),
                   child: addTeamsIfNotEmpty(
-                      snapshot.data?[1] as List<Team>, context))
+                      snapshot.data?[1] as List<Team>, context,))
             ],
           )));
         }

@@ -7,12 +7,12 @@ class ProjectList {
 
   static int projectOnHomepageNumber = 5;
   static int teamOnHomepageNumber = 5;
-  static List<Task> tasksList = [];
+  /*static List<Task> tasksList = [];
   static List<Team> teamsList = [];
   static List<Project> projectsList = [];
-  static List<Member> membersList = [];
+  static List<Member> membersList = [];*/
   static List<AssetImage> thumbnailsList = List.from(<AssetImage>[const AssetImage('assets/images/projectPreview/default.jpg'), const AssetImage('assets/images/projectPreview/architectural.jpg'), const AssetImage('assets/images/projectPreview/baking.jpg'), const AssetImage('assets/images/projectPreview/engineering.jpg'), const AssetImage('assets/images/projectPreview/safety.jpg'), const AssetImage('assets/images/projectPreview/studying.jpg')]);
-
+/*
   static Team team1 = Team(name: "Team 1");
   static Team team2 = Team(name: "Team 2");
   static Team team3 = Team(name: "Team 3");
@@ -24,8 +24,8 @@ class ProjectList {
   static Project project2 = Project(name: "Basi di Dati",description: "Boh",team: team2, thumbnail: const AssetImage('assets/images/projectPreview/engineering.jpg'));
   static Project project3 = Project(name: "Statistica",description: "Boh",team: team2, thumbnail: const AssetImage('assets/images/projectPreview/safety.jpg'));
   static Project project4 = Project(name: "IOT",description: "Boh",team: team3, thumbnail: const AssetImage('assets/images/projectPreview/baking.jpg'));
-  static Project project5 = Project(name: "Intelligenza Artificiale",description: "Boh",team: team3, thumbnail: const AssetImage('assets/images/projectPreview/default.jpg'));
-
+  static Project project5 = Project(name: "Intelligenza Artificiale",description: "Boh",team: team3, thumbnail: const AssetImage('assets/images/projectPreview/default.jpg'));*/
+/*
   List<Team> getTeam() {
     return teamsList;
   }
@@ -61,14 +61,14 @@ class ProjectList {
   await DatabaseHelper.instance.insertProject(project5);
   await DatabaseHelper.instance.insertMember(member1);
   await DatabaseHelper.instance.insertMember(member2);
-  await DatabaseHelper.instance.insertMember(member3);
+  await DatabaseHelper.instance.insertMember(member3); */
 
 /*
   tasksList = await DatabaseHelper.instance.getTasks();
   teamsList = await DatabaseHelper.instance.getTeams();
   projectsList = await DatabaseHelper.instance.getProjects();
-  membersList = await DatabaseHelper.instance.getMembers();*/
+  membersList = await DatabaseHelper.instance.getMembers();
   }
 
+}*/
 }
-

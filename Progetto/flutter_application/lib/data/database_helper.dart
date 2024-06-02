@@ -3,6 +3,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:flutter_application/classes/all.dart';
 
+import '../classes/settings.dart';
+
 
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
@@ -48,6 +50,19 @@ class DatabaseHelper {
           CREATE TABLE Team(
             name TEXT PRIMARY KEY
           )
+          ''',
+        );
+        await db.execute(
+          '''
+          CREATE TABLE Settings(
+            name TEXT PRIMARY KEY,
+            number INTEGER NOT NULL default 5
+          )
+          ''',
+        );
+        await db.execute(
+          '''
+          INSERT INTO Settings values(NumberOfProjectsOnHomepage, 5), (NumberOfTeamsOnHomepage, 3);
           ''',
         );
         await db.execute(
@@ -176,9 +191,33 @@ class DatabaseHelper {
     );
   }
 
+  Future<Settings?> getProjectsNumberOnHomepage() async {
+    final db = await database;
+    final List<Map<String, Object?>> result = await db.rawQuery('SELECT number FROM Settings WHERE name=?', ['NumberOfProjectsOnHomepage']);
+    final settingsMap = result.first;
+    return Settings(setting: settingsMap['setting'] as String, number: settingsMap['number'] as int);
+  }
+
+  Future<Settings?> getTeamsNumberOnHomepage() async {
+    final db = await database;
+    final List<Map<String, Object?>> result = await db.rawQuery('SELECT number FROM Settings WHERE name=?', ['NumberOfTeamsOnHomepage']);
+    final settingsMap = result.first;
+    return Settings(setting: settingsMap['setting'] as String, number: settingsMap['number'] as int);
+  }
+
   Future<void> updateTeamName(String oldName, String newName) async {
     final db = await database;
     await db.update('Project',{'team': newName,'lastModified': DateTime.now().toIso8601String()},where: 'team = ?',whereArgs: [oldName],);
+  }
+  
+  Future<void> updateProjectsNumberOnHomepage(int number) async {
+    final db = await database;
+    await db.update('Settings',{'number': number},where: 'name = ?',whereArgs: ['NumberOfProjectsOnHomepage'],);
+  }
+
+  Future<void> updateTeamsNumberOnHomepage(int number) async {
+    final db = await database;
+    await db.update('Settings',{'number': number},where: 'name = ?',whereArgs: ['NumberOfTeamsOnHomepage'],);
   }
 
   Future<void> updateDescription(String project, String newDescription) async {

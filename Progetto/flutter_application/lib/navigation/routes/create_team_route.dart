@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
@@ -8,10 +9,6 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:flutter_application/classes/all.dart';
 
 List<Member> selectedMembers = [];
-var _items = ProjectList.membersList
-    .map((member) =>
-        MultiSelectItem<Member>(member, ("${member.name} ${member.surname}")))
-    .toList();
 
 class CreateTeamScreen extends StatefulWidget {
   const CreateTeamScreen({super.key});
@@ -77,28 +74,26 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                     ? null
                     : {
                         team = Team(name: teamNameController.text),
-                        ProjectList.teamsList
-                            .add(team),
+                        //ProjectList.teamsList.add(team),
+                        DatabaseHelper.instance.insertTeam(team),
 
-                            teamNameController.clear,
-                            selectedMembers.clear,
+                        teamNameController.clear,
+                        selectedMembers.clear,
 
-                            showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Successo!'),
-                                    content: Text(
-                                        ("Il team \"${team.getName()}\" è stato creato correttamente.\nPuoi creare altri team se ti va.")),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Ok'),
-                                        child: const Text('Ok'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Successo!'),
+                            content: Text(
+                                ("Il team \"${team.getName()}\" è stato creato correttamente.\nPuoi creare altri team se ti va.")),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Ok'),
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          ),
+                        ),
                       };
               },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [
@@ -127,58 +122,71 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
     super.initState();
   }
 
+  Future<List<Member>> _loadMembers() async {
+    return await DatabaseHelper.instance.getMembers();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlurredBox(
-      borderRadius: BorderRadius.circular(10),
-      sigma: 15,
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Color.fromARGB(100, 0, 0, 0),
-        ),
-        child: MultiSelectDialogField(
-          listType: MultiSelectListType.CHIP,
-          items: ProjectList.membersList
-              .map((member) => MultiSelectItem<Member>(
-                  member, ("${member.name} ${member.surname}")))
-              .toList(),
-          title: const Text("Aggiungi membri"),
-          selectedColor: Colors.pink,
-          backgroundColor: Colors.white,
-          cancelText: const Text(
-            "Annulla",
-            style: TextStyle(color: Colors.lightBlue),
-          ),
-          confirmText: const Text(
-            "Conferma",
-            style: TextStyle(color: Colors.pink),
-          ),
-          checkColor: Colors.white,
-          selectedItemsTextStyle: const TextStyle(color: Colors.black),
-          decoration: const BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-          ),
-          buttonIcon: const Icon(
-            Icons.person,
-            color: Colors.white,
-          ),
-          buttonText: const Text(
-            "Partecipanti al progetto",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-            ),
-          ),
-          onConfirm: (results) {
-            selectedMembers = results;
-          },
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: _loadMembers(),
+        builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return BlurredBox(
+              borderRadius: BorderRadius.circular(10),
+              sigma: 15,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(100, 0, 0, 0),
+                ),
+                child: MultiSelectDialogField(
+                  listType: MultiSelectListType.CHIP,
+                  items: snapshot.data!
+                      .map((member) => MultiSelectItem<Member>(
+                          member, ("${member.name} ${member.surname}")))
+                      .toList(),
+                  title: const Text("Aggiungi membri"),
+                  selectedColor: Colors.pink,
+                  backgroundColor: Colors.white,
+                  cancelText: const Text(
+                    "Annulla",
+                    style: TextStyle(color: Colors.lightBlue),
+                  ),
+                  confirmText: const Text(
+                    "Conferma",
+                    style: TextStyle(color: Colors.pink),
+                  ),
+                  checkColor: Colors.white,
+                  selectedItemsTextStyle: const TextStyle(color: Colors.black),
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.all(Radius.circular(40)),
+                  ),
+                  buttonIcon: const Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  buttonText: const Text(
+                    "Partecipanti al progetto",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                  onConfirm: (results) {
+                    selectedMembers = results as List<Member>;
+                  },
+                ),
+              ),
+            );
+          }
+        });
   }
 }
- 
 
 /*Widget buildMembersGrid() {
   return GridView.builder(

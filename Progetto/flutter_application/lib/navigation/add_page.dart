@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/database_helper.dart';
 import '../commonElements/blurred_box.dart';
 import 'routes/create_member_route.dart';
 import 'routes/create_project_route.dart';
@@ -66,7 +67,8 @@ class FirstRoute extends StatelessWidget {
                             minVal: 1,
                             maxVal: 15,
                             onQtyChanged: (value) =>
-                                ProjectList.projectOnHomepageNumber = value)
+                                DatabaseHelper.instance.updateProjectsNumberOnHomepage(value))
+                                
                       ]),
                   const SizedBox(
                     height: 10,
@@ -100,7 +102,7 @@ class FirstRoute extends StatelessWidget {
                             minVal: 1,
                             maxVal: 10,
                             onQtyChanged: (value) =>
-                                ProjectList.teamOnHomepageNumber = value)
+                                DatabaseHelper.instance.updateTeamsNumberOnHomepage(value))
                       ]),
                   SizedBox(
                       width: MediaQuery.of(context).size.width,

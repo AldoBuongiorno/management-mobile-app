@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/blurred_box.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
+import '../../commonElements/selectable_team_list.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
 import '../../commonElements/tasks_checkbox_view.dart';
 import '../../data/project_list.dart';
@@ -103,7 +104,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             CustomHeadingTitle(titleText: "Team"),
           ]),
           const SizedBox(height: 5),
-          const Padding(
+          Padding(
               padding: EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,15 +162,16 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           taskCheckboxList,
           ElevatedButton(
               onPressed: () async {
+                List<Team> teamsList = await DatabaseHelper.instance.getTeams();
                 projectNameController.text.isEmpty ||
-                        ProjectList.teamsList.isEmpty
+                        teamsList.isEmpty
                     ? null
                     : {
                         projectItem = Project(
                             name: projectNameController.text,
                             description: projectDescriptionController.text,
                             status: "Attivo",
-                            team: ProjectList.teamsList[selectedTeam],
+                            team: teamsList[selectedTeam],
                             thumbnail: ProjectList
                                 .thumbnailsList[grid.selectedThumbnail]),
                         DatabaseHelper.instance.insertProject(projectItem),
@@ -208,7 +210,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         ]));
   }
 }
-
+/*
 class SelectableTeamsList extends StatefulWidget {
   const SelectableTeamsList({super.key});
 
@@ -248,4 +250,4 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
             child: Text(
                 "Non ci sono team disponibili. Non è possibile creare un progetto senza team."));
   }
-}
+}*/

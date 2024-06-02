@@ -16,7 +16,7 @@ void main() async {
   final db = DatabaseHelper.instance;
   await db.database;
   DatabaseHelper.instance.database.then((_) {
-    ProjectList().loadSampleData();
+    //ProjectList().loadSampleData();
     runApp(const Group21App());
   });
 

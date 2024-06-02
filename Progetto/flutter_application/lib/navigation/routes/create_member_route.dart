@@ -5,6 +5,8 @@ import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 import 'package:flutter_application/classes/all.dart';
 
+import '../../data/database_helper.dart';
+
 class CreateMemberScreen extends StatefulWidget {
   const CreateMemberScreen({super.key});
   @override
@@ -131,7 +133,8 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                             role: memberRoleController.text),
                           true
                             ? {
-                                ProjectList.membersList.add(member),
+                                DatabaseHelper.instance.insertMember(member),
+                                //ProjectList.membersList.add(member),
                                 memberNameController.clear(),
                                 memberSurnameController.clear(),
                                 memberRoleController.clear(),
