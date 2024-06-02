@@ -26,6 +26,10 @@ class Member {
     return role;
   }
 
+  bool isFree() {
+    return mainTeam == null || secondaryTeam == null;
+  }
+
 
   Member({
     this.code,

@@ -25,8 +25,8 @@ class HomePageScreen extends StatelessWidget {
       future: Future.wait([
         DatabaseHelper.instance.getActiveProjectsOrderedByLastModified(),
         DatabaseHelper.instance.getTeamsOrderedByMemberCount(),
-        //DatabaseHelper.instance.getProjectsNumberOnHomepage(),
-        //DatabaseHelper.instance.getTeamsNumberOnHomepage(),
+        DatabaseHelper.instance.getSettings(),
+        
       ]),
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

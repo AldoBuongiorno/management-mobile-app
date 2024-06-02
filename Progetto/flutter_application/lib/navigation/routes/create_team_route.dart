@@ -68,14 +68,96 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
           ),
           const SelectableMembersList(),
           ElevatedButton(
-              onPressed: () {
-                Team team;
+              onPressed: teamNameController.text.isEmpty ? null : () async {  
+                await DatabaseHelper.instance.teamExists(teamNameController.text) ? 
+                showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Errore'),
+                            content: Text(
+                                ("Il team \"${teamNameController.text}\" esiste già.")),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Ok'),
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          ),
+                        )
+              : {
+                selectedMembers.length < 2 ? showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Errore'),
+                            content: const Text(
+                                ("Il team deve essere composto da almeno due membri.")),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Ok'),
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          ),
+                        ) : {
+                          checkIfMembersAreFree() ? {
+                            DatabaseHelper.instance.insertTeam(Team(name: teamNameController.text)),
+                            for(Member member in selectedMembers) {
+                              DatabaseHelper.instance.assignTeamToMember(teamNameController.text, member.code)
+                            },
+                            showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Successo!'),
+                            content: Text(
+                                ("Il team ${teamNameController.text}")),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Ok'),
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          ),
+                          
+                        ), teamNameController.clear(), selectedMembers.clear()
+
+                          } : {
+                            showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Errore'),
+                            content: const Text(
+                                ("Almeno uno dei membri del team è occupato.")),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Ok'),
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          ),
+                        )
+
+                          }
+                          
+                          
+                        }
+              
+              
+
+
+
+              };
+                /*Team team;
                 teamNameController.text.isEmpty
                     ? null
                     : {
                         team = Team(name: teamNameController.text),
                         //ProjectList.teamsList.add(team),
                         DatabaseHelper.instance.insertTeam(team),
+
+                        for(Member member in selectedMembers) {
+                          if(member.mainTeam == null) { DatabaseHelper.instance.assignMainTeamToMember(team.name, member.code), member.mainTeam = team }
+                          else if(member.secondaryTeam == null) { DatabaseHelper.instance.assignSecondaryTeamToMember(team.name, member.code), member.secondaryTeam = team }
+                        },
 
                         teamNameController.clear,
                         selectedMembers.clear,
@@ -95,7 +177,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                           ),
                         ),
                       };
-              },
+              },*/ },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(Icons.group_add),
                 SizedBox(
@@ -107,6 +189,14 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
       ),
     );
   }
+}
+
+bool checkIfMembersAreFree() {
+  bool valid = true;
+  for(Member member in selectedMembers) {
+    valid = valid && member.isFree();
+  }
+  return valid;
 }
 
 class SelectableMembersList extends StatefulWidget {
@@ -132,7 +222,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
         future: _loadMembers(),
         builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
