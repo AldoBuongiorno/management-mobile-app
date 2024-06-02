@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
+import 'package:flutter_application/commonElements/responsive_padding.dart';
 import 'package:flutter_application/commonElements/tasks_checkbox_view.dart';
 import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
@@ -70,11 +71,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
             
             
             Container(
-    margin: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: MediaQuery.of(context).orientation == Orientation.portrait
-            ? 20
-            : 100),
+    margin: getResponsivePadding(context),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,10 +90,12 @@ class _ProjectRouteState extends State<ProjectRoute> {
         CustomHeadingTitle(titleText: "Stato"),
         const Text('Puoi modificare lo stato del progetto (puoi archiviarlo, completarlo o anche eliminarlo se necessario), cliccando su uno dei seguenti pulsanti:'),
         SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: [
-          ElevatedButton(onPressed: () async {
+          ElevatedButton(onPressed: widget.project.status == 'Fallito' ? null : 
+          () async { 
             DatabaseHelper.instance.updateStatus(widget.project.name, "Fallito"); widget.project.status = 'Fallito'; setState(() {});//
 
-          }, child: const Row(children: [Icon(Icons.archive), SizedBox(width: 5), Text('Archivia come fallito')])),
+          }, 
+          child: const Row(children: [Icon(Icons.archive), SizedBox(width: 5), Text('Archivia come fallito')])),
           const SizedBox(width: 5),
           ElevatedButton(onPressed: () async {
             DatabaseHelper.instance.updateStatus(widget.project.name, "Sospeso"); widget.project.status = 'Sospeso'; setState(() {});

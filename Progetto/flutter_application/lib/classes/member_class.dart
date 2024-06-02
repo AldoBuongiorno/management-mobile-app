@@ -38,7 +38,7 @@ class Member {
 
   Map<String, dynamic> toMap() {
     return {
-      'code': code,
+      //'code': code,
       'name': name,
       'surname': surname,
       'role': role,

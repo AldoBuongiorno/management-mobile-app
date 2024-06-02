@@ -110,6 +110,8 @@ class DatabaseHelper {
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  
+
   Future<void> addTeamToMember(int code, String team) async {
   final db = await database;
   await db.update('Member', {'mainTeam': team}, where: 'code = ?', whereArgs: [code]);
