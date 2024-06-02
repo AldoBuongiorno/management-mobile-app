@@ -85,6 +85,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
               ),
             ),
             body: SingleChildScrollView(
+              physics: BouncingScrollPhysics().applyTo(AlwaysScrollableScrollPhysics()),
                 child: Container(
                     margin: getResponsivePadding(context),
                     child: Column(
