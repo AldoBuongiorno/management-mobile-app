@@ -246,6 +246,11 @@ class DatabaseHelper {
     final db = await database;
     await db.update('Project',{'name': newName,'lastModified': DateTime.now().toIso8601String()},where: 'name = ?',whereArgs: [project],);
   }
+
+  Future<void> updateTaskAsCompletedByProjectName(String projectName) async {
+    final db = await database;
+    await db.update('Task', {'completed': 1}, where: 'project = ?', whereArgs: [projectName]);
+  }
   
   Future<void> updateTaskName(String oldName, String newName) async {
     final db = await database;

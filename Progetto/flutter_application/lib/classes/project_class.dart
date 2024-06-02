@@ -24,7 +24,7 @@ class Project {
     // x : 100 = completedTasks : tasksList.length;
     progress = (completedTasks * 100)/tasksList.length;
 
-    return progress;
+    return !progress.isNaN ? progress : 0.0;
 
   }
 

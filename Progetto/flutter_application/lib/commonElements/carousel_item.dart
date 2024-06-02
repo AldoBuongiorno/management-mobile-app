@@ -9,7 +9,7 @@ import 'blurred_box.dart';
 Widget smallInfoContainer(Color containerColor, Color textColor, String text,
     LinearGradient? gradient) {
   return Container(
-      margin: const EdgeInsets.only(top: 10, left: 15),
+      margin: const EdgeInsets.only(left: 15),
       decoration: BoxDecoration(
           gradient: gradient,
           color: containerColor,
@@ -36,7 +36,7 @@ Widget statusCheck(Project testItem) {
     case 'Completato':
       LinearGradient gradient = const LinearGradient(
         colors: [
-          Color.fromARGB(255, 232, 232, 232),
+          Color.fromARGB(255, 199, 199, 199),
           Color.fromARGB(255, 0, 183, 255),
           Color.fromARGB(255, 0, 183, 255),
           Color.fromARGB(255, 255, 0, 115),
