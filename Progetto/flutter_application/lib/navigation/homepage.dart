@@ -25,8 +25,7 @@ class HomePageScreen extends StatelessWidget {
       future: Future.wait([
         DatabaseHelper.instance.getActiveProjectsOrderedByLastModified(),
         DatabaseHelper.instance.getTeamsOrderedByMemberCount(),
-        DatabaseHelper.instance.getProjectsNumberOnHomepage(),
-        DatabaseHelper.instance.getTeamsNumberOnHomepage(),
+        DatabaseHelper.instance.getSettings(),
 
         
       ]),

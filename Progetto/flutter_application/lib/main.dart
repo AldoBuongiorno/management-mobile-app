@@ -79,8 +79,7 @@ class Group21App extends StatelessWidget {
                 bodyColor: const Color.fromARGB(255, 0, 0, 0),
                 displayColor: const Color.fromARGB(255, 0, 0, 0),
                 fontFamily: 'Poppins',
-              ),
-          navigationBarTheme: navigationBarTheme,
+              )
         ),
         home: const HomePage(),
       ),

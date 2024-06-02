@@ -54,7 +54,7 @@ class DatabaseHelper {
         );
         await db.execute(
           '''
-          CREATE TABLE Settings(
+          CREATE TABLE Setting(
             name TEXT PRIMARY KEY,
             number INTEGER NOT NULL
           )
@@ -62,7 +62,7 @@ class DatabaseHelper {
         );
         await db.execute(
           '''
-          INSERT INTO Settings values('NumberOfProjectsOnHomepage', 5), ('NumberOfTeamsOnHomepage', 3);
+          INSERT INTO Setting values('NumberOfProjectsOnHomepage', 5), ('NumberOfTeamsOnHomepage', 3);
           ''',
         );
         await db.execute(
@@ -151,6 +151,15 @@ class DatabaseHelper {
     ];
   }
 
+  Future<List<Setting>> getSettings() async {
+    final db = await database;
+    final List<Map<String, Object?>> settingsMaps = await db.query('Setting');
+    return [
+      for (final {'name': name as String, 'number': number as int} in settingsMaps)
+        Setting(name: name, number: number),
+    ];
+  }
+
   Future<Project?> getProjectByName(String name) async {
     final db = await database;
     final List<Map<String, Object?>> result = await db.query('Project',where: 'name = ?',whereArgs: [name],);
@@ -189,20 +198,6 @@ class DatabaseHelper {
     final memberMap = result.first;
     return Member(code: memberMap['code'] as int,name: memberMap['name'] as String,surname: memberMap['surname'] as String,role: memberMap['role'] as String,mainTeam: await getTeamByName(memberMap['mainTeam'] as String),secondaryTeam: await getTeamByName(memberMap['secondaryTeam'] as String),
     );
-  }
-
-  Future<Settings?> getProjectsNumberOnHomepage() async {
-    final db = await database;
-    final List<Map<String, Object?>> result = await db.query('Settings', where: 'name = ?', whereArgs: ['NumberOfProjectsOnHomepage']);
-    final settingsMap = result.first;
-    return Settings(setting: settingsMap['setting'] as String, number: settingsMap['number'] as int);
-  }
-
-  Future<Settings?> getTeamsNumberOnHomepage() async {
-    final db = await database;
-    final List<Map<String, Object?>> result = await db.query('Settings', where: 'name = ?', whereArgs: ['NumberOfTeamsOnHomepage']);
-    final settingsMap = result.first;
-    return Settings(setting: settingsMap['setting'] as String, number: settingsMap['number'] as int);
   }
 
   Future<void> updateTeamName(String oldName, String newName) async {

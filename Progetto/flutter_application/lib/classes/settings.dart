@@ -1,12 +1,20 @@
-class Settings {
-  String setting;
+class Setting {
+  String name;
   int number;
 
-  Settings({required this.setting, required this.number});
+  String getName(){
+    return name;
+  }
+
+  int getNumber(){
+    return number;
+  }
+
+  Setting({required this.name, required this.number});
 
   Map<String, dynamic> toMap() {
     return {
-      'setting': setting,
+      'name': name,
       'number': number,
     };
   }
