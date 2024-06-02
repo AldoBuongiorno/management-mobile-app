@@ -207,12 +207,12 @@ class DatabaseHelper {
   
   Future<void> updateProjectsNumberOnHomepage(int number) async {
     final db = await database;
-    await db.update('Settings',{'number': number},where: 'name = ?',whereArgs: ['NumberOfProjectsOnHomepage'],);
+    await db.update('Setting',{'number': number},where: 'name = ?',whereArgs: ['NumberOfProjectsOnHomepage'],);
   }
 
   Future<void> updateTeamsNumberOnHomepage(int number) async {
     final db = await database;
-    await db.update('Settings',{'number': number},where: 'name = ?',whereArgs: ['NumberOfTeamsOnHomepage'],);
+    await db.update('Setting',{'number': number},where: 'name = ?',whereArgs: ['NumberOfTeamsOnHomepage'],);
   }
 
   Future<void> updateDescription(String project, String newDescription) async {
