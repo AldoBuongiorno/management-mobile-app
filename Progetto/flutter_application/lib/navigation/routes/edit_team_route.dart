@@ -22,6 +22,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
   late TextEditingController teamNameController;
   // late TextEditingController projectDescriptionController;
   // TextEditingController taskInputController = TextEditingController();
+  List<int> membersToDelete = [];
 
   @override
   void initState() {
@@ -34,6 +35,26 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
   void dispose() {
     teamNameController.dispose();
     super.dispose();
+  }
+
+  void _toggleDeleteMember(int? memberId) {
+    if (memberId == null) return; 
+    setState(() {
+      if (membersToDelete.contains(memberId)) {
+        membersToDelete.remove(memberId);
+      } else {
+        membersToDelete.add(memberId);
+      }
+    });
+  }
+
+  void _deleteMembersFromTeam(List <int?> members, String team) async{
+    for(final member in members){
+      if (member != null){
+        await DatabaseHelper.instance.removeTeamFromMember(member, team);
+      }
+    }
+    setState(() {});
   }
 
   Future<List<Member>> _loadMembersByTeam(String team) async {
@@ -104,7 +125,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(
+                          return const Center(
                             child: CircularProgressIndicator(),
                           );
                         } else if (snapshot.hasError) {
@@ -117,88 +138,105 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                             shrinkWrap: true,
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 8,
-                                  left: 10,
+                              final member = snapshot.data![index];
+                              final memberId = member.getCode();
+                              final isMarkedForDeletion = memberId != null &&
+                                  membersToDelete.contains(memberId);
+                              return Stack(children: [
+                                Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  padding: const EdgeInsets.only(
+                                    top: 8,
+                                    bottom: 8,
+                                    left: 10,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              const Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Text('Matricola:'),
+                                                  Text('Nome:'),
+                                                  Text('Cognome:'),
+                                                  Text('Ruolo:'),
+                                                ],
+                                              ),
+                                              const SizedBox(width: 10),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    snapshot.data![index]
+                                                        .getCode()
+                                                        .toString(),
+                                                  ),
+                                                  Text(
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    snapshot.data![index]
+                                                        .getMemberName(),
+                                                  ),
+                                                  Text(
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    snapshot.data![index]
+                                                        .getMemberSurname(),
+                                                  ),
+                                                  Text(
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    snapshot.data![index]
+                                                        .getMemberRole(),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () {
+                                              _toggleDeleteMember(memberId);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            const Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Text('Matricola:'),
-                                                Text('Nome:'),
-                                                Text('Cognome:'),
-                                                Text('Ruolo:'),
-                                              ],
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  snapshot.data![index]
-                                                      .getCode()
-                                                      .toString(),
-                                                ),
-                                                Text(
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  snapshot.data![index]
-                                                      .getMemberName(),
-                                                ),
-                                                Text(
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  snapshot.data![index]
-                                                      .getMemberSurname(),
-                                                ),
-                                                Text(
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                  snapshot.data![index]
-                                                      .getMemberRole(),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete),
-                                          onPressed: () {
-                                            // Logica per cancellare un membro (attualmente non fa nulla)
-                                          },
-                                        ),
-                                      ],
+                                if (isMarkedForDeletion)
+                                  Positioned(
+                                    top: 0,
+                                    left: 0,
+                                    right: 35,
+                                    child: Container(
+                                      height: 100,
+                                      color: Colors.red,
                                     ),
-                                  ],
-                                ),
-                              );
+                                  ),
+                              ]);
                             },
                           );
                         }
@@ -208,10 +246,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    DatabaseHelper.instance.updateTeamName(
-                      widget.team.getName(),
-                      teamNameController.text,
-                    );
+                    _deleteMembersFromTeam(membersToDelete,widget.team.getName().toString());
                     showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
