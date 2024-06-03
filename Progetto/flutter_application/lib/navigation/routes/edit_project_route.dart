@@ -84,7 +84,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
               ),
             ),
             body: SingleChildScrollView(
-              physics: BouncingScrollPhysics().applyTo(AlwaysScrollableScrollPhysics()),
+              physics: const BouncingScrollPhysics().applyTo(AlwaysScrollableScrollPhysics()),
                 child: Container(
                     margin: getResponsivePadding(context),
                     child: Column(
@@ -233,7 +233,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
+                                return const Center(
                                     child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
                                 return Center(
@@ -244,12 +244,16 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                             },
                           ),
 
-
+                          Row(children: [
+                          const Icon(Icons.auto_awesome),
+                          const SizedBox(width: 15),
+                          const Expanded(child: Text('Le task aggiunte o rimosse vengono salvate automaticamente.', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13 ),)),
                           ElevatedButton(
                               onPressed: (widget.project.name ==
                                           projectNameController.text &&
                                       widget.project.description ==
-                                          projectDescriptionController.text)
+                                          projectDescriptionController.text &&
+                                          widget.project.thumbnail == ProjectList.thumbnailsListProject[grid.selectedThumbnail])
                                   ? null
                                   : () {
                                       {
@@ -299,12 +303,13 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                               child: const Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    
                                     Icon(Icons.save),
                                     SizedBox(
                                       width: 5,
                                     ),
                                     Text("Modifica progetto")
                                   ]))
-                        ])))));
+                        ])])))));
   }
 }
