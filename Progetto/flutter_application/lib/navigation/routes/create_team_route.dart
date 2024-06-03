@@ -75,7 +75,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
             CustomHeadingTitle(titleText: "Copertina"),
           ]),
           grid,
-          ElevatedButton(
+          ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: Colors.pink),
               onPressed: teamNameController.text.isEmpty
                   ? null
                   : () async {
@@ -142,16 +142,17 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                                                       ("Il team è stato creato.")),
                                                   actions: <Widget>[
                                                     TextButton(
-                                                      onPressed: () =>
+                                                      onPressed: () {
+                                                        teamNameController
+                                                  .clear(); selectedMembers.clear(); setState(() {});
                                                           Navigator.pop(
-                                                              context, 'Ok'),
-                                                      child: const Text('Ok'),
+                                                              context, 'Ok'); },
+                                                      child: const Text('Ok')
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              teamNameController
-                                                  .clear(), //selectedMembers.clear(), setState(() {})
+                                              
                                             }
                                           : {
                                               showDialog<String>(
@@ -183,6 +184,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                 ),
                 Text("Aggiungi team")
               ])),
+              const SizedBox(height: 30)
         ],
       ),
     );

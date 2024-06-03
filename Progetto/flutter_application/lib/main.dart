@@ -62,9 +62,9 @@ class Group21App extends StatelessWidget {
         title: 'Gruppo 21',
         theme: ThemeData(
           textSelectionTheme: const TextSelectionThemeData( //tema del cursore del testo e dello sfondo del testo selezionato
-            selectionHandleColor: Colors.green,
-            selectionColor: Colors.greenAccent,
-            cursorColor: Colors.green,
+            selectionHandleColor: Colors.pink,
+            selectionColor: Colors.pinkAccent,
+            cursorColor: Colors.pink,
           ),
           scaffoldBackgroundColor: Colors.transparent,
           appBarTheme: const AppBarTheme( //tema barra superiore dell'applicazione

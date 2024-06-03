@@ -47,7 +47,7 @@ Widget statusCheck(Project testItem) {
         end: Alignment.bottomRight,
       );
       return smallInfoContainer(
-          Colors.red, Colors.black, "Completato", gradient);
+          Colors.blue, Colors.white, "Completato", null);
     default:
       return smallInfoContainer(Colors.grey, Colors.white, "Sconosciuto", null);
   }

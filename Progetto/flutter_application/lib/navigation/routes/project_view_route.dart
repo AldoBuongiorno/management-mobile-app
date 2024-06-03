@@ -8,6 +8,7 @@ import 'package:flutter_application/classes/all.dart';
 import '../../commonElements/carousel_item.dart';
 import '../../data/database_helper.dart';
 import 'edit_project_route.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
 class ProjectRoute extends StatefulWidget {
@@ -118,7 +119,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                             Flexible(
                                 child: Text(
                                     overflow: TextOverflow.ellipsis,
-                                    'Data creazione:\t${widget.project.creationDate}'))
+                                    'Data creazione:\t${DateFormat('dd-MM-yyyy').format(widget.project.creationDate!)}'))
                           ],
                         ),
                         Row(
@@ -128,7 +129,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                             Flexible(
                                 child: Text(
                                     overflow: TextOverflow.ellipsis,
-                                    'Ultima modifica:\t ${widget.project.lastModified}'))
+                                    'Ultima modifica:\t ${DateFormat('dd-MM-yyyy hh:mm:ss').format(widget.project.lastModified!)}'))
                           ],
                         ),
                         Row(
@@ -138,7 +139,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                             Flexible(
                                 child: Text(
                                     overflow: TextOverflow.ellipsis,
-                                    'Data scadenza:\t${widget.project.expirationDate}'))
+                                    'Data scadenza:\t${DateFormat('dd-MM-yyyy').format(widget.project.expirationDate!)}'))
                           ],
                         ),
                         TextButton(
@@ -187,7 +188,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               children: [
-                                ElevatedButton(
+                                ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.green),
                                     onPressed: widget.project.status == 'Attivo'
                                         ? null
                                         : () async {
@@ -204,7 +205,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                       Text('Rendi attivo')
                                     ])),
                                 const SizedBox(width: 5),
-                                ElevatedButton(
+                                ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
                                     onPressed: widget.project.status ==
                                             'Fallito'
                                         ? null
@@ -302,7 +303,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                       Text('Archivia come fallito')
                                     ])),
                                 const SizedBox(width: 5),
-                                ElevatedButton(
+                                ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.blue),
                                     onPressed:
                                         widget.project.status == 'Completato'
                                             ? null
@@ -324,7 +325,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                       Text('Archivia come completato')
                                     ])),
                                 const SizedBox(width: 5),
-                                ElevatedButton(
+                                ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.orange),
                                     onPressed: widget.project.status ==
                                             'Sospeso'
                                         ? null
@@ -342,7 +343,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                       Text('Sospendi')
                                     ])),
                                 const SizedBox(width: 5),
-                                ElevatedButton(
+                                ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: Colors.red),
                                     onPressed: () async {
                                       DatabaseHelper.instance
                                           .deleteProject(widget.project.name);
