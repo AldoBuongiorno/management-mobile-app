@@ -20,6 +20,16 @@ class _StatsPageState extends State<StatsPage> {
     return numTeams;
   }
 
+  Future<int> _loadAvgNumMembersPerTeam() async {
+    final List<int> numMembersPerTeam = await DatabaseHelper.instance.getAvgNumMembersPerTeam();
+    int sum = 0;
+    for(final num in numMembersPerTeam){
+      sum += num;
+      print(num);
+    }
+    return (sum / numMembersPerTeam.length).round();
+  }
+
   Future<int> _loadNumProjects() async {
     final int numProjects = await DatabaseHelper.instance.getNumProjects();
     return numProjects;
@@ -69,7 +79,20 @@ class _StatsPageState extends State<StatsPage> {
                     }
                   },
                 ),
-                Text('Numero medio membri team: 456'),
+                FutureBuilder<int>(
+                  future: _loadAvgNumMembersPerTeam(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Errore: ${snapshot.error}'));
+                    } else if (snapshot.hasData) {
+                      return Text('Numero medio di membri per team: ${snapshot.data}');
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
               ],
             ),
           ),

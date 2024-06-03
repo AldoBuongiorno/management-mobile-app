@@ -79,46 +79,38 @@ class DatabaseHelper {
           INSERT INTO Setting values('NumberOfProjectsOnHomepage', 5), ('NumberOfTeamsOnHomepage', 3);
           ''',
         );
-        await db.rawInsert(
-          '''
+        await db.rawInsert('''
           INSERT INTO Team (name, thumbnail) VALUES 
             ('Development', 'assets/images/teamPreview/teamsei.jpg'),
             ('Marketing', 'assets/images/teamPreview/teamcinque.jpg'),
             ('Design', 'assets/images/teamPreview/teamdue.jpeg'),
             ('QA', 'assets/images/teamPreview/teamquattro.jpg'),
             ('Sales', 'assets/images/teamPreview/teamtre.jpeg');
-          '''
-        );
-        await db.rawInsert(
-          '''
+          ''');
+        await db.rawInsert('''
           INSERT INTO Project (name, description, creationDate, expirationDate, lastModified, status, projectFailureReason, team, thumbnail) VALUES
             ('Project Alpha', 'First development project', '2023-01-01', '2023-12-31', '2023-06-01', 'Attivo', NULL, 'Development', 'assets/images/projectPreview/engineering.jpg'),
             ('Project Beta', 'Marketing campaign for Q1', '2023-02-15', '2023-03-31', '2023-02-20', 'Completato', NULL, 'Marketing', 'assets/images/projectPreview/default.jpg'),
             ('Project Gamma', 'Design new website', '2023-03-01', '2023-09-30', '2023-04-10', 'Attivo', NULL, 'Design', 'assets/images/projectPreview/architectural.jpg'),
             ('Project Delta', 'Quality assurance for new release', '2023-04-01', '2023-06-30', '2023-05-15', 'Fallito', 'Insufficient resources', 'QA', 'assets/images/projectPreview/safety.jpg'),
             ('Project Epsilon', 'Sales strategy for new product', '2023-05-01', '2023-11-30', '2023-05-25', 'Attivo', NULL, 'Sales', 'assets/images/projectPreview/baking.jpg');
-          '''
-        );
-        await db.rawInsert(
-          '''
+          ''');
+        await db.rawInsert('''
           INSERT INTO Task (name, completationDate, completed, progress, project) VALUES
             ('Task 1', '2023-01-15', 1, 100.0, 'Project Alpha'),
             ('Task 2', '2023-02-28', 1, 100.0, 'Project Beta'),
             ('Task 3', '2023-04-30', 0, 50.0, 'Project Gamma'),
             ('Task 4', '2023-05-31', 0, 25.0, 'Project Delta'),
             ('Task 5', '2023-06-30', 0, 0.0, 'Project Epsilon');
-          '''
-        );
-        await db.rawInsert(
-          '''
+          ''');
+        await db.rawInsert('''
           INSERT INTO Member (name, surname, role, mainTeam, secondaryTeam) VALUES
             ('Alice', 'Smith', 'Developer', 'Development', 'QA'),
             ('Bob', 'Brown', 'Marketing Specialist', 'Marketing', NULL),
             ('Charlie', 'Davis', 'Designer', 'Design', 'Marketing'),
             ('Diana', 'Evans', 'QA Engineer', 'QA', 'Development'),
             ('Eve', 'Foster', 'Sales Manager', 'Sales', NULL);
-          '''
-        );
+          ''');
       },
       version: 1,
     );
@@ -304,8 +296,8 @@ class DatabaseHelper {
     }
     final teamMap = result.first;
     return Team(
-      name: teamMap['name'] as String, thumbnail: AssetImage(teamMap['thumbnail'] as String)
-    );
+        name: teamMap['name'] as String,
+        thumbnail: AssetImage(teamMap['thumbnail'] as String));
   }
 
   Future<Member?> getMemberByCode(int code) async {
@@ -329,80 +321,95 @@ class DatabaseHelper {
     );
   }
 
-Future<int> getNumTeams() async {
-  final db = await database;
-  final List<Map<String, dynamic>> result = await db.rawQuery(
-    'SELECT COUNT(*) as count FROM Team'
-  );
+  Future<int> getNumTeams() async {
+    final db = await database;
+    final List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT COUNT(*) as count FROM Team');
 
-  if (result.isNotEmpty) {
-    return result.first['count'] as int;
-  } else {
-    return 0; 
+    if (result.isNotEmpty) {
+      return result.first['count'] as int;
+    } else {
+      return 0;
+    }
   }
-}
 
-Future<int> getNumProjects() async {
-  final db = await database;
-  final List<Map<String, dynamic>> result = await db.rawQuery(
-    'SELECT COUNT(*) as count FROM Project'
-  );
-
-  if (result.isNotEmpty) {
-    return result.first['count'] as int;
-  } else {
-    return 0; 
+  Future<List<int>> getAvgNumMembersPerTeam() async {
+    List<Team> teams = await getTeams();
+    List<int> numMembersPerTeam = [];
+    for (final team in teams) {
+      final db = await database;
+      final List<Map<String, dynamic>> result = await db.rawQuery(
+        'SELECT COUNT(*) as count FROM Member where mainTeam = ? or secondaryTeam = ?',
+        [team.name, team.name],
+      );
+      if (result.isNotEmpty) {
+        numMembersPerTeam.add(result.first['count']);
+      }
+    }
+    return numMembersPerTeam;
   }
-}
+
+  Future<int> getNumProjects() async {
+    final db = await database;
+    final List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT COUNT(*) as count FROM Project');
+
+    if (result.isNotEmpty) {
+      return result.first['count'] as int;
+    } else {
+      return 0;
+    }
+  }
 
   Future<bool> teamExists(String teamName) async {
-  final db = await database;
-  final List<Map<String, Object?>> result = await db.query(
-    'Team',
-    where: 'name = ?',
-    whereArgs: [teamName],
-  );
-  return result.isNotEmpty;
-}
+    final db = await database;
+    final List<Map<String, Object?>> result = await db.query(
+      'Team',
+      where: 'name = ?',
+      whereArgs: [teamName],
+    );
+    return result.isNotEmpty;
+  }
 
-Future<void> assignTeamToMember(String teamName, int code) async {
-  final db = await database;
-  Member? member = await getMemberByCode(code);
-  if(member!.mainTeam == null) {
-    await db.update(
-    'Member',
-    {'mainTeam': teamName},
-    where: 'code = ?',
-    whereArgs: [code],
-  );
-  } else if(member.secondaryTeam == null) { await db.update(
-    'Member',
-    {'secondaryTeam': teamName},
-    where: 'code = ?',
-    whereArgs: [code],
-  );}
-}
+  Future<void> assignTeamToMember(String teamName, int code) async {
+    final db = await database;
+    Member? member = await getMemberByCode(code);
+    if (member!.mainTeam == null) {
+      await db.update(
+        'Member',
+        {'mainTeam': teamName},
+        where: 'code = ?',
+        whereArgs: [code],
+      );
+    } else if (member.secondaryTeam == null) {
+      await db.update(
+        'Member',
+        {'secondaryTeam': teamName},
+        where: 'code = ?',
+        whereArgs: [code],
+      );
+    }
+  }
 
   Future<void> assignMainTeamToMember(String teamName, int code) async {
-  final db = await database;
-  await db.update(
-    'Member',
-    {'mainTeam': teamName},
-    where: 'code = ?',
-    whereArgs: [code],
-  );
-}
+    final db = await database;
+    await db.update(
+      'Member',
+      {'mainTeam': teamName},
+      where: 'code = ?',
+      whereArgs: [code],
+    );
+  }
 
-Future<void> assignSecondaryTeamToMember(String teamName, int code) async {
-  final db = await database;
-  await db.update(
-    'Member',
-    {'secondaryTeam': teamName},
-    where: 'code = ?',
-    whereArgs: [code],
-  );
-}
-
+  Future<void> assignSecondaryTeamToMember(String teamName, int code) async {
+    final db = await database;
+    await db.update(
+      'Member',
+      {'secondaryTeam': teamName},
+      where: 'code = ?',
+      whereArgs: [code],
+    );
+  }
 
   Future<void> updateTeamName(String oldName, String newName) async {
     final db = await database;
@@ -711,7 +718,10 @@ Future<void> assignSecondaryTeamToMember(String teamName, int code) async {
       ORDER BY memberCount DESC
     ''');
     return [
-      for (final row in result) Team(name: row['name'] as String, thumbnail: AssetImage(row['thumbnail'] as String) ),
+      for (final row in result)
+        Team(
+            name: row['name'] as String,
+            thumbnail: AssetImage(row['thumbnail'] as String)),
     ];
   }
 
