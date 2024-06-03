@@ -2,12 +2,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
+import 'package:flutter_application/commonElements/selectable_thumbnail_grid.dart';
 import 'package:flutter_application/data/database_helper.dart';
+import 'package:flutter_application/data/thumbnail_list.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 
 List<Member> selectedMembers = [];
-List<Member> initialMembers = [];
 
 class EditTeamScreen extends StatefulWidget {
   const EditTeamScreen({Key? key, required this.team}) : super(key: key);
@@ -20,6 +21,7 @@ class EditTeamScreen extends StatefulWidget {
 
 class _EditTeamScreenState extends State<EditTeamScreen> {
   late TextEditingController teamNameController;
+  List<Member> initialMembers = [];
 
   @override
   void initState() {
@@ -40,6 +42,11 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SelectableThumbnailGrid grid = SelectableThumbnailGrid(
+        selectedThumbnail:
+            ProjectList.thumbnailsListTeam.indexOf(widget.team.thumbnail),
+        list: ProjectList.thumbnailsListTeam);
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -105,7 +112,6 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -131,131 +137,110 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                     }
                   },
                 ),
+                const SizedBox(height: 5),
+                Row(children: [
+                  //SizedBox(width: 25),
+                  CustomHeadingTitle(titleText: "Copertina"),
+                ]),
+                grid,
                 ElevatedButton(
-                  onPressed: (widget.team.name == teamNameController.text /*||
-                          areListsEqual()*/ ||
-                          teamNameController.text.isEmpty)
+                  onPressed: ((widget.team.name == teamNameController.text ||
+                              teamNameController.text.isEmpty) &&
+                          areListsEqual())
                       ? null
                       : () async {
-                          await DatabaseHelper.instance
-                                  .teamExists(teamNameController.text)
-                              ? showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Errore'),
-                                    content: Text(
-                                        ("Il team \"${teamNameController.text}\" esiste già.")),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Ok'),
-                                        child: const Text('Ok'),
-                                      ),
-                                    ],
+                          if (widget.team.name != teamNameController.text) {
+                            if (await DatabaseHelper.instance
+                                .teamExists(teamNameController.text)) {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Errore'),
+                                  content: Text(
+                                      ("Il team \"${teamNameController.text}\" esiste già.")),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'Ok'),
+                                      child: const Text('Ok'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              return; // Termina la funzione se il nome del team esiste già
+                            }
+                          }
+
+                          if (selectedMembers.length < 2) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Errore'),
+                                content: const Text(
+                                    "Il team deve essere composto da almeno due membri."),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
                                   ),
-                                )
-                              : {
-                                  selectedMembers.length < 2
-                                      ? showDialog<String>(
-                                          context: context,
-                                          builder: (BuildContext context) =>
-                                              AlertDialog(
-                                            title: const Text('Errore'),
-                                            content: const Text(
-                                                ("Il team deve essere composto da almeno due membri.")),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                onPressed: () => Navigator.pop(
-                                                    context, 'Ok'),
-                                                child: const Text('Ok'),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      : {
-                                          checkIfMembersAreFree()
-                                              ? {
-                                                  for (Member member
-                                                      in selectedMembers
-                                                          .where((member) =>
-                                                              !initialMembers
-                                                                  .contains(
-                                                                      member))
-                                                          .toList())
-                                                    {
-                                                      DatabaseHelper.instance
-                                                          .assignTeamToMember(
-                                                              teamNameController
-                                                                  .text,
-                                                              member.code!),
-                                                    },
-                                                  for (Member member
-                                                      in initialMembers
-                                                          .where((member) =>
-                                                              !selectedMembers
-                                                                  .contains(
-                                                                      member))
-                                                          .toList())
-                                                    {
-                                                      DatabaseHelper.instance
-                                                          .removeTeamFromMember(
-                                                              member.getCode()!,
-                                                              widget.team.name),
-                                                    },
-                                                  DatabaseHelper.instance
-                                                      .updateTeamName(
-                                                    widget.team.getName(),
-                                                    teamNameController.text,
-                                                  ),
-                                                  showDialog<String>(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        AlertDialog(
-                                                      title: const Text(
-                                                          'Successo!'),
-                                                      content: const Text(
-                                                          ("Il team è stato modificato correttamente.")),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context,
-                                                                  'Ok'),
-                                                          child:
-                                                              const Text('Ok'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  teamNameController.clear(),
-                                                }
-                                              : {
-                                                  showDialog<String>(
-                                                    context: context,
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        AlertDialog(
-                                                      title:
-                                                          const Text('Errore'),
-                                                      content: const Text(
-                                                          ("Almeno uno dei membri del team è occupato.")),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context,
-                                                                  'Ok'),
-                                                          child:
-                                                              const Text('Ok'),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                },
-                                        },
-                                };
+                                ],
+                              ),
+                            );
+                            return; // Termina la funzione se non ci sono abbastanza membri
+                          }
+
+                          if (!checkIfMembersAreFree()) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Errore'),
+                                content: const Text(
+                                    "Almeno uno dei membri del team è occupato."),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            return; // Termina la funzione se almeno un membro è occupato
+                          }
+
+                          // Altrimenti, procedi con l'aggiornamento del team
+                          for (Member member in selectedMembers.where(
+                              (member) => !initialMembers.contains(member))) {
+                            await DatabaseHelper.instance.assignTeamToMember(
+                                teamNameController.text, member.code!);
+                          }
+
+                          for (Member member in initialMembers.where(
+                              (member) => !selectedMembers.contains(member))) {
+                            await DatabaseHelper.instance.removeTeamFromMember(
+                                member.getCode()!, widget.team.name);
+                          }
+
+                          await DatabaseHelper.instance.updateTeamName(
+                              widget.team.getName(), teamNameController.text);
+
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Successo!'),
+                              content: const Text(
+                                  "Il team è stato modificato correttamente."),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: const Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          teamNameController.clear();
                         },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
@@ -302,25 +287,24 @@ class SelectableMembersList extends StatefulWidget {
 }
 
 class _SelectableMembersListState extends State<SelectableMembersList> {
-  List<Member> selectedMembers = [];
   List<Member> allMembers = [];
 
   @override
   void initState() {
     super.initState();
-    _loadMembers();
+    //_loadMembers();
     if (widget.initialSelectedMembers != null) {
       selectedMembers.addAll(widget.initialSelectedMembers!);
     }
   }
-
+/*
   Future<void> _loadMembers() async {
     List<Member> loadedMembers = await DatabaseHelper.instance.getMembers();
     setState(() {
       allMembers = loadedMembers;
     });
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Column(
