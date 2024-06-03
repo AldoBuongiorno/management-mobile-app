@@ -30,7 +30,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
           Row(children: [
             CustomHeadingTitle(titleText: "Nome membro"),
           ]),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           BlurredBox(
@@ -54,13 +54,13 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                     hintStyle:
                         TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(children: [
             CustomHeadingTitle(titleText: "Cognome membro"),
           ]),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           BlurredBox(
@@ -84,13 +84,13 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                     hintStyle:
                         TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(children: [
             CustomHeadingTitle(titleText: "Ruolo membro"),
           ]),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           BlurredBox(
@@ -114,74 +114,56 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                     hintStyle:
                         TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
               )),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ElevatedButton(
-              onPressed: () {
-                Member member;
-                (memberNameController.text.isEmpty ||
-                        memberSurnameController.text.isEmpty ||
-                        memberRoleController.text.isEmpty)
-                    ? null
-                    : {
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.pink),
+              onPressed: (memberNameController.text.isEmpty ||
+                      memberSurnameController.text.isEmpty ||
+                      memberRoleController.text.isEmpty)
+                  ? null
+                  : () {
+                      Member member;
+
+                      {
                         member = Member(
                             name: memberNameController.text,
                             surname: memberSurnameController.text,
-                            role: memberRoleController.text),
-                          true
-                            ? {
-                                DatabaseHelper.instance.insertMember(member),
-                                //ProjectList.membersList.add(member),
-                                memberNameController.clear(),
-                                memberSurnameController.clear(),
-                                memberRoleController.clear(),
-                                //Navigator.pop(context),
-                                showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Successo!'),
-                                    content: Text(
-                                        ("${member.name} ${member.surname} è stato inserito correttamente.\nPuoi inserire altri membri se ti va.")),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Ok'),
-                                        child: const Text('Ok'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              }
-                            // ignore: dead_code
-                            : {
-                                showDialog<String>(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    title: const Text('Errore.'),
-                                    content: Text(
-                                        "${member.name} ${member.surname} è già presente."),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Riprova'),
-                                        child: const Text('Riprova'),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              }
-                      };
-              },
+                            role: memberRoleController.text);
+
+                        DatabaseHelper.instance.insertMember(member);
+                        //ProjectList.membersList.add(member),
+                        memberNameController.clear();
+                        memberSurnameController.clear();
+                        memberRoleController.clear();
+                        setState(() {});
+                        //Navigator.pop(context),
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Successo!'),
+                            content: Text(
+                                ("${member.name} ${member.surname} è stato inserito correttamente.\nPuoi inserire altri membri se ti va.")),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'Ok'),
+                                child: const Text('Ok'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(Icons.group_add),
                 SizedBox(
                   width: 5,
                 ),
-                Text("Aggiungi team")
-              ]))
+                Text("Aggiungi membro")
+              ])),
+          const SizedBox(height: 30)
         ],
       ),
     );

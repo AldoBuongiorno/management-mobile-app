@@ -106,7 +106,30 @@ class HomePageScreenState extends State<HomePageScreen> {
                 MediaQuery.of(context).orientation == Orientation.portrait
                     ? 20
                     : 100),
-        child: const Text('Non ci sono progetti recenti.'),
+        child: GestureDetector(
+                onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SecondRoute(),
+                      ),
+                    ).then((_) => setState(() {})),
+                child: Container( height: 200,
+                    decoration: BoxDecoration(
+                      
+                        //color: Colors.transparent,
+                        border: Border.all(
+                            width: 4,
+                            color: Colors.white), //155
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20))),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    child: const Center(
+                        child: Icon(
+                      Icons.add_circle_outline_sharp,
+                      size: 75,
+                      color: Colors.white,
+                    ))))
+        //const Text('Non ci sono progetti recenti.'),
       );
     } else {
       return CarouselSlider.builder(

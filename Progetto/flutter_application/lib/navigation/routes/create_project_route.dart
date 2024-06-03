@@ -158,7 +158,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
           ),
           taskCheckboxList,
-          ElevatedButton(
+          ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: Colors.pink),
               onPressed: () async {
                 List<Team> teamsList = await DatabaseHelper.instance.getTeams();
                 projectNameController.text.isEmpty ||
@@ -204,7 +204,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   width: 5,
                 ),
                 Text("Aggiungi progetto")
-              ]))
+              ])),
+              const SizedBox(height: 30)
         ]));
   }
 }
