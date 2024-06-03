@@ -37,6 +37,12 @@ class _StatsPageState extends State<StatsPage> {
     return numProjects;
   }
 
+  Future<List<double>> _loadProjectsStatus() async {
+    final List<double> projectsStatus =
+        await DatabaseHelper.instance.getStatusProjects();
+    return projectsStatus;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -138,37 +144,52 @@ class _StatsPageState extends State<StatsPage> {
                       },
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 25),
-                      height: 200,
-                      width: 300,
-                      child: PieChart(
-                        PieChartData(
-                          sections: [
-                            PieChartSectionData(
-                              color: Colors.blue,
-                              value: 40, 
-                              title: 'Attivi', 
+                    FutureBuilder<List<double>>(
+                      future: _loadProjectsStatus(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Errore: ${snapshot.error}'));
+                        } else if (snapshot.hasData) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(horizontal: 25),
+                            height: 200,
+                            width: 300,
+                            child: PieChart(
+                              PieChartData(
+                                sections: [
+                                  PieChartSectionData(
+                                    color: Colors.blue,
+                                    value: snapshot.data?[0],
+                                    title: 'Attivi',
+                                  ),
+                                  PieChartSectionData(
+                                    color: Colors.green,
+                                    value: snapshot.data?[1],
+                                    title: 'Completati',
+                                  ),
+                                  PieChartSectionData(
+                                    color: Colors.red,
+                                    value: snapshot.data?[2],
+                                    title: 'Falliti',
+                                  ),
+                                  PieChartSectionData(
+                                    color: Colors.orange,
+                                    value: snapshot.data?[3],
+                                    title: 'Sospesi',
+                                  ),
+                                ],
+                              ),
                             ),
-                            PieChartSectionData(
-                              color: Colors.green,
-                              value: 30, 
-                              title:
-                                  'Completati', 
-                            ),
-                            PieChartSectionData(
-                              color: Colors.red,
-                              value: 20, 
-                              title: 'Falliti', 
-                            ),
-                            PieChartSectionData(
-                              color: Colors.orange,
-                              value: 10, 
-                              title: 'Sospesi', 
-                            ),
-                          ],
-                        ),
-                      ),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
                     ),
                   ],
                 ),

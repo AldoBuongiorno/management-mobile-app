@@ -361,6 +361,23 @@ class DatabaseHelper {
     }
   }
 
+  Future<List<double>> getStatusProjects() async{
+    List<Project> projects = await getProjects();
+    List<double> status = [0,0,0,0]; //attivi-completati-falliti-sospesi
+    for (final project in projects){
+        if (project.status == "Attivo"){
+          status[0] ++;
+        }else if(project.status == "Completato"){
+          status[1] ++;
+        }else if(project.status == "Fallito"){
+          status[2] ++;
+        }else {
+          status[3] ++;
+        }
+    }
+    return status;
+  }
+
   Future<bool> teamExists(String teamName) async {
     final db = await database;
     final List<Map<String, Object?>> result = await db.query(
