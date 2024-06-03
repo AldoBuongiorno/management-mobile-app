@@ -44,15 +44,17 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Widget _buildLegendItem({required Color color, required String text}) {
-    return Row(
+    return Row(mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 10,
-          height: 10,
-          color: color,
-          margin: EdgeInsets.only(right: 5),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(10)),
+          width: 20,
+          height: 20,
+          //color: color,
+          margin: const EdgeInsets.only(right: 5),
         ),
-        Text(text),
+        //Flexible(child: 
+        Text(text, overflow: TextOverflow.ellipsis,),
       ],
     );
   }
@@ -61,26 +63,20 @@ class _StatsPageState extends State<StatsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics().applyTo(BouncingScrollPhysics()),
       child: Container(
         margin: getResponsivePadding(context),
-        child: Column(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-                margin: EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: MediaQuery.of(context).orientation ==
-                            Orientation.portrait
-                        ? 20
-                        : 100),
-                child: Row(children: [
+            
                   CustomHeadingTitle(titleText: 'Statistiche generali'),
-                ])),
+                
             const SizedBox(height: 10),
-            Container(
+            BlurredBox(borderRadius: BorderRadius.circular(20), sigma: 15 ,child:Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              color: Colors.grey[350], // Sfondo grigio chiaro
+              padding: const EdgeInsets.all(20),
+              //margin: const EdgeInsets.symmetric(vertical: 10),
+              color: const Color.fromARGB(50, 0, 0, 0), // Sfondo grigio chiaro
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -120,12 +116,13 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                 ],
               ),
-            ),
-            Container(
+            )),
+            const SizedBox(height: 10),
+            BlurredBox(borderRadius: BorderRadius.circular(20), sigma: 15 ,child: Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              color: Colors.grey[350], // Sfondo grigio chiaro
+              padding: const EdgeInsets.all(20),
+              //margin: const EdgeInsets.symmetric(vertical: 10),
+              color: const Color.fromARGB(50, 0, 0, 0), // Sfondo grigio chiaro
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -138,7 +135,7 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -160,8 +157,10 @@ class _StatsPageState extends State<StatsPage> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Wrap(
+                        spacing: 5,
+                        direction: Axis.vertical,
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           _buildLegendItem(
                             color: Colors.green,
@@ -171,11 +170,7 @@ class _StatsPageState extends State<StatsPage> {
                             color: Colors.blue,
                             text: 'Completati',
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                      
                           _buildLegendItem(
                             color: Colors.red,
                             text: 'Falliti',
@@ -243,7 +238,7 @@ class _StatsPageState extends State<StatsPage> {
                   ),
                 ],
               ),
-            ),
+            )),
           ],
         ),
       ),

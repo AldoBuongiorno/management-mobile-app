@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
 import 'package:flutter_application/commonElements/tasks_checkbox_view.dart';
@@ -106,8 +107,74 @@ class _ProjectRouteState extends State<ProjectRoute> {
                               color: Colors.black, fontFamily: 'Poppins'),
                           text: '.'),
                     ])),
+                    const SizedBox(height: 15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.punch_clock),
+                            const SizedBox(width: 10),
+                            Flexible(
+                                child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    'Data creazione:\t${widget.project.creationDate}'))
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.calendar_today),
+                            const SizedBox(width: 10),
+                            Flexible(
+                                child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    'Ultima modifica:\t ${widget.project.lastModified}'))
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.calendar_month),
+                            const SizedBox(width: 10),
+                            Flexible(
+                                child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    'Data scadenza:\t${widget.project.expirationDate}'))
+                          ],
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return DatePickerDialog(
+                                      
+                                        currentDate:
+                                            widget.project.expirationDate,
+                                        cancelText: 'Annulla',
+                                        confirmText: 'Conferma',
+                                        firstDate: DateTime.now(),
+                                        lastDate: DateTime.now()
+                                            .add(const Duration(days: 500)));
+                                  }).then((selectedDate) {
+                                selectedDate != null
+                                    ? {
+                                        DatabaseHelper.instance
+                                            .updateExpirationDate(
+                                                widget.project.name,
+                                                selectedDate),
+                                        setState(() {
+                                          widget.project.expirationDate =
+                                              selectedDate;
+                                        })
+                                      }
+                                    : null;
+                              });
+                            },
+                            child: const Text('Aggiorna data scadenza'))
+                      ],
+                    ),
                     Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
                         child: Row(children: [
                           CustomHeadingTitle(titleText: "Stato"),
                           statusCheck(widget.project)
@@ -117,7 +184,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                     SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               children: [
                                 ElevatedButton(
@@ -142,31 +209,92 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                             'Fallito'
                                         ? null
                                         : () async {
-                                            showDialog(context: context, builder: ((context) {
-                                              return AlertDialog(
-                                                
-                                                title: Text('Motivazione fallimento'),
-                                                content: TextField(
-                                                  maxLines: 4,
-                                                  controller: failureReasonController,
-
-                                                ),
-                                                actions: [TextButton(onPressed: () {
-                                                  DatabaseHelper.instance.updateFailureReason(widget.project.name, failureReasonController.text);
-                                                  DatabaseHelper.instance.updateStatus(widget.project.name, 'Fallito');
-                                                  setState(() {});
-
-                                                }, child: Text('Conferma'))],
-                                              );
-
-                                            }));
-
-                                            /*DatabaseHelper.instance
-                                                .updateStatus(
-                                                    widget.project.name,
-                                                    "Fallito");
-                                            widget.project.status = 'Fallito';
-                                            setState(() {}); *///
+                                            showDialog(
+                                                context: context,
+                                                builder: ((context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        'Motivazione fallimento'),
+                                                    content: BlurredBox(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        sigma: 0,
+                                                        child: TextField(
+                                                          maxLength: 300,
+                                                          maxLengthEnforcement:
+                                                              MaxLengthEnforcement
+                                                                  .enforced,
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    100,
+                                                                    0,
+                                                                    0,
+                                                                    0),
+                                                            filled: true,
+                                                            border: OutlineInputBorder(
+                                                                borderSide:
+                                                                    BorderSide
+                                                                        .none),
+                                                            hintText:
+                                                                'Inserisci il nome del progetto',
+                                                            hintStyle: TextStyle(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        192,
+                                                                        192,
+                                                                        192)),
+                                                          ),
+                                                          maxLines: 4,
+                                                          controller:
+                                                              failureReasonController,
+                                                        )),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            widget.project
+                                                                    .status =
+                                                                'Fallito';
+                                                            DatabaseHelper
+                                                                .instance
+                                                                .updateFailureReason(
+                                                                    widget
+                                                                        .project
+                                                                        .name,
+                                                                    failureReasonController
+                                                                        .text);
+                                                            DatabaseHelper
+                                                                .instance
+                                                                .updateStatus(
+                                                                    widget
+                                                                        .project
+                                                                        .name,
+                                                                    'Fallito');
+                                                            widget.project
+                                                                    .projectFailureReason =
+                                                                failureReasonController
+                                                                    .text;
+                                                            setState(() {});
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          child: const Text(
+                                                            'Conferma',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .pink),
+                                                          ))
+                                                    ],
+                                                  );
+                                                }));
                                           },
                                     child: const Row(children: [
                                       Icon(Icons.archive),
@@ -227,24 +355,11 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                     ])),
                               ],
                             ))),
-                    /*Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          //const Text('Al momento il progetto risulta essere in stato ', overflow: TextOverflow.ellipsis,),
-                          statusCheck(widget.project),
-                          /*FutureBuilder(
-                              future: widget.project.getProgress(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Text('con un progresso del ??%.');
-                                } else if (snapshot.hasError) {
-                                  return const Text('.');
-                                } else { 
-                                  return Text('con un progresso del ${snapshot.data!}%.');
-                                }
-                              })*/
-                        ]),*/
+                    widget.project.isFailed()
+                        ? Text(
+                            'Il progetto è archiviato come fallito per la seguente motivazione: "${widget.project.projectFailureReason}".')
+                        : const SizedBox(),
+                    const SizedBox(height: 5),
                     CustomHeadingTitle(titleText: 'Task'),
                     FutureBuilder(
                         future: _loadTasks(),
@@ -260,7 +375,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                 tasks: snapshot.data as List<Task>);
                           }
                         }),
-                    Text(
+                    const Text(
                         'Per aggiungere task modifica il progetto cliccando in alto a destra.')
                   ],
                 ),

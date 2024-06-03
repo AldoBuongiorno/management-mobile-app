@@ -55,6 +55,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 borderRadius: BorderRadius.circular(30),
                 sigma: 15,
                 child: TextField(
+                  
                   style: const TextStyle(color: Colors.white),
                   controller: projectNameController,
                   decoration: const InputDecoration(
