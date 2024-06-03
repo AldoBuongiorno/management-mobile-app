@@ -512,6 +512,18 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> updateThumbnailTeam(String team, String newThumbnail) async {
+    final db = await database;
+    await db.update(
+      'Team',
+      {
+        'thumbnail': newThumbnail,
+      },
+      where: 'name = ?',
+      whereArgs: [team],
+    );
+  }
+
   Future<void> updateProjectName(String project, String newName) async {
     final db = await database;
     await db.update(

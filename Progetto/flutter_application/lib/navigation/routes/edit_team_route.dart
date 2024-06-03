@@ -2,15 +2,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
+import 'package:flutter_application/commonElements/selectable_thumbnail_grid.dart';
 import 'package:flutter_application/data/database_helper.dart';
+import 'package:flutter_application/data/thumbnail_list.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 
-// int selectedTeam = 0;
-// List<Task> tasks = [];
+List<Member> selectedMembers = [];
 
 class EditTeamScreen extends StatefulWidget {
-  const EditTeamScreen({super.key, required this.team});
+  const EditTeamScreen({Key? key, required this.team}) : super(key: key);
 
   final Team team;
 
@@ -20,41 +21,18 @@ class EditTeamScreen extends StatefulWidget {
 
 class _EditTeamScreenState extends State<EditTeamScreen> {
   late TextEditingController teamNameController;
-  // late TextEditingController projectDescriptionController;
-  // TextEditingController taskInputController = TextEditingController();
-  List<int> membersToDelete = [];
+  List<Member> initialMembers = [];
 
   @override
   void initState() {
     super.initState();
     teamNameController = TextEditingController(text: widget.team.getName());
-    // teamDescriptionController = TextEditingController(text: widget.project.description);
   }
 
   @override
   void dispose() {
     teamNameController.dispose();
     super.dispose();
-  }
-
-  void _toggleDeleteMember(int? memberId) {
-    if (memberId == null) return; 
-    setState(() {
-      if (membersToDelete.contains(memberId)) {
-        membersToDelete.remove(memberId);
-      } else {
-        membersToDelete.add(memberId);
-      }
-    });
-  }
-
-  void _deleteMembersFromTeam(List <int?> members, String team) async{
-    for(final member in members){
-      if (member != null){
-        await DatabaseHelper.instance.removeTeamFromMember(member, team);
-      }
-    }
-    setState(() {});
   }
 
   Future<List<Member>> _loadMembersByTeam(String team) async {
@@ -64,6 +42,11 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
 
   @override
   Widget build(BuildContext context) {
+    SelectableThumbnailGrid grid = SelectableThumbnailGrid(
+        selectedThumbnail:
+            ProjectList.thumbnailsListTeam.indexOf(widget.team.thumbnail),
+        list: ProjectList.thumbnailsListTeam);
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -101,168 +84,164 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomHeadingTitle(titleText: "Membri"),
-                    IconButton(
-                      icon: const Icon(Icons.add),
-                      color: Colors.black,
-                      iconSize: 30,
-                      onPressed: () {
-                        // Logica per aggiungere un membro (attualmente non fa nulla)
-                      },
-                    ),
+                    CustomHeadingTitle(titleText: "Nome"),
                   ],
                 ),
-                const SizedBox(height: 5),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                   child: BlurredBox(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(30),
                     sigma: 15,
-                    child: FutureBuilder<List<Member>>(
-                      future: _loadMembersByTeam(widget.team.getName()),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text('Errore: ${snapshot.error}'),
-                          );
-                        } else {
-                          return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              final member = snapshot.data![index];
-                              final memberId = member.getCode();
-                              final isMarkedForDeletion = memberId != null &&
-                                  membersToDelete.contains(memberId);
-                              return Stack(children: [
-                                Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 5),
-                                  padding: const EdgeInsets.only(
-                                    top: 8,
-                                    bottom: 8,
-                                    left: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text('Matricola:'),
-                                                  Text('Nome:'),
-                                                  Text('Cognome:'),
-                                                  Text('Ruolo:'),
-                                                ],
-                                              ),
-                                              const SizedBox(width: 10),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    snapshot.data![index]
-                                                        .getCode()
-                                                        .toString(),
-                                                  ),
-                                                  Text(
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    snapshot.data![index]
-                                                        .getMemberName(),
-                                                  ),
-                                                  Text(
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    snapshot.data![index]
-                                                        .getMemberSurname(),
-                                                  ),
-                                                  Text(
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    snapshot.data![index]
-                                                        .getMemberRole(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(Icons.delete),
-                                            onPressed: () {
-                                              _toggleDeleteMember(memberId);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (isMarkedForDeletion)
-                                  Positioned(
-                                    top: 0,
-                                    left: 0,
-                                    right: 35,
-                                    child: Container(
-                                      height: 100,
-                                      color: Colors.red,
-                                    ),
-                                  ),
-                              ]);
-                            },
-                          );
-                        }
-                      },
+                    child: TextField(
+                      style: const TextStyle(color: Colors.white),
+                      controller: teamNameController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 15),
+                        filled: true,
+                        fillColor: const Color.fromARGB(100, 0, 0, 0),
+                        border: const OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: widget.team.name,
+                        hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 192, 192, 192)),
+                      ),
                     ),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    _deleteMembersFromTeam(membersToDelete,widget.team.getName().toString());
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Successo!'),
-                        content: Text(
-                          'Il team "${widget.team.name}" è stato modificato correttamente.',
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Ok'),
-                            child: const Text('Ok'),
-                          ),
-                        ],
-                      ),
-                    );
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomHeadingTitle(titleText: "Membri"),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                FutureBuilder<List<Member>>(
+                  future: _loadMembersByTeam(widget.team.getName()),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('Errore: ${snapshot.error}'),
+                      );
+                    } else {
+                      initialMembers = snapshot.data!;
+                      return SelectableMembersList(
+                          initialSelectedMembers: snapshot.data!);
+                    }
                   },
+                ),
+                const SizedBox(height: 5),
+                Row(children: [
+                  //SizedBox(width: 25),
+                  CustomHeadingTitle(titleText: "Copertina"),
+                ]),
+                grid,
+                ElevatedButton(
+                  onPressed: ((widget.team.name == teamNameController.text ||
+                              teamNameController.text.isEmpty) &&
+                          areListsEqual())
+                      ? null
+                      : () async {
+                          if (widget.team.name != teamNameController.text) {
+                            if (await DatabaseHelper.instance
+                                .teamExists(teamNameController.text)) {
+                              showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Errore'),
+                                  content: Text(
+                                      ("Il team \"${teamNameController.text}\" esiste già.")),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'Ok'),
+                                      child: const Text('Ok'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                              return; // Termina la funzione se il nome del team esiste già
+                            }
+                          }
+
+                          if (selectedMembers.length < 2) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Errore'),
+                                content: const Text(
+                                    "Il team deve essere composto da almeno due membri."),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            return; // Termina la funzione se non ci sono abbastanza membri
+                          }
+
+                          if (!checkIfMembersAreFree()) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Errore'),
+                                content: const Text(
+                                    "Almeno uno dei membri del team è occupato."),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Ok'),
+                                    child: const Text('Ok'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            return; // Termina la funzione se almeno un membro è occupato
+                          }
+
+                          // Altrimenti, procedi con l'aggiornamento del team
+                          for (Member member in selectedMembers.where(
+                              (member) => !initialMembers.contains(member))) {
+                            await DatabaseHelper.instance.assignTeamToMember(
+                                teamNameController.text, member.code!);
+                          }
+
+                          for (Member member in initialMembers.where(
+                              (member) => !selectedMembers.contains(member))) {
+                            await DatabaseHelper.instance.removeTeamFromMember(
+                                member.getCode()!, widget.team.name);
+                          }
+
+                          await DatabaseHelper.instance.updateTeamName(
+                              widget.team.getName(), teamNameController.text);
+
+                          showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Successo!'),
+                              content: const Text(
+                                  "Il team è stato modificato correttamente."),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: const Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          teamNameController.clear();
+                        },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -277,6 +256,278 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  bool checkIfMembersAreFree() {
+    bool valid = true;
+    for (Member member in selectedMembers
+        .where((member) => !initialMembers.contains(member))
+        .toList()) {
+      valid = valid && member.isFree();
+    }
+    return valid;
+  }
+
+  bool areListsEqual() {
+    var set1 = selectedMembers.toSet();
+    var set2 = initialMembers.toSet();
+    return set1.length == set2.length && set1.containsAll(set2);
+  }
+}
+
+class SelectableMembersList extends StatefulWidget {
+  final List<Member>? initialSelectedMembers;
+
+  const SelectableMembersList({Key? key, this.initialSelectedMembers})
+      : super(key: key);
+
+  @override
+  State<SelectableMembersList> createState() => _SelectableMembersListState();
+}
+
+class _SelectableMembersListState extends State<SelectableMembersList> {
+  List<Member> allMembers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    //_loadMembers();
+    if (widget.initialSelectedMembers != null) {
+      selectedMembers.addAll(widget.initialSelectedMembers!);
+    }
+  }
+/*
+  Future<void> _loadMembers() async {
+    List<Member> loadedMembers = await DatabaseHelper.instance.getMembers();
+    setState(() {
+      allMembers = loadedMembers;
+    });
+  }
+*/
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        BlurredBox(
+          borderRadius: BorderRadius.circular(15),
+          sigma: 15,
+          child: Container(
+            height: 40,
+            color: const Color.fromARGB(120, 0, 0, 0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                shadowColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                elevation: 0,
+                backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide.none,
+                ),
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: const Text("Aggiungi membri"),
+                      content: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return SizedBox(
+                            width: double.maxFinite,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: allMembers.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      if (selectedMembers
+                                          .contains(allMembers[index])) {
+                                        selectedMembers
+                                            .remove(allMembers[index]);
+                                      } else {
+                                        selectedMembers.add(allMembers[index]);
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(vertical: 7),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                          color: Colors.black,
+                                          width: 1,
+                                        ),
+                                        color: selectedMembers
+                                                .contains(allMembers[index])
+                                            ? Color.fromARGB(255, 207, 28, 79)
+                                            : Color.fromARGB(
+                                                255, 239, 212, 221)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "${allMembers[index].code}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  ": ${allMembers[index].name} ${allMembers[index].surname}",
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  " (${allMembers[index].role})",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text(
+                            'Annulla',
+                            style: TextStyle(color: Colors.lightBlue),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text(
+                            'Conferma',
+                            style: TextStyle(color: Colors.pink),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Partecipanti al progetto",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17.5,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 23,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: selectedMembers.length,
+          itemBuilder: (context, index) {
+            Member member = selectedMembers[index];
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.only(
+                top: 8,
+                bottom: 8,
+                left: 10,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text('Matricola:'),
+                              Text('Nome:'),
+                              Text('Cognome:'),
+                              Text('Ruolo:'),
+                            ],
+                          ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                member.getCode().toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                member.getMemberName(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                member.getMemberSurname(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                member.getMemberRole(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.cancel),
+                        onPressed: () {
+                          setState(() {
+                            selectedMembers.remove(member);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
