@@ -70,7 +70,6 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
             height: 10,
           ),
           const SelectableMembersList(),
-          const SizedBox(height: 10),
           Row(children: [
             //SizedBox(width: 25),
             CustomHeadingTitle(titleText: "Copertina"),
@@ -206,7 +205,7 @@ class SelectableMembersList extends StatefulWidget {
 }
 
 class _SelectableMembersListState extends State<SelectableMembersList> {
-  //List<Member> selectedMembers = [];
+  List<Member> selectedMembers = [];
   List<Member> allMembers = [];
 
   @override
@@ -227,95 +226,135 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
     return Column(
       children: [
         BlurredBox(
-            borderRadius: BorderRadius.circular(10),
-            sigma: 15,
-            child: Container(
-              color: const Color.fromARGB(100, 0, 0, 0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shadowColor: Colors.transparent,
-                  surfaceTintColor: Colors.transparent,
-                  elevation: 0,
-                  backgroundColor: const Color.fromARGB(0, 0, 0, 0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: BorderSide.none),
-                ),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        backgroundColor:
-                            Colors.white, // Imposta lo sfondo bianco
-                        title: const Text("Aggiungi membri"),
-                        content: StatefulBuilder(
-                          builder:
-                              (BuildContext context, StateSetter setState) {
-                            return SizedBox(
-                              width: double.maxFinite,
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: allMembers.length,
-                                itemBuilder: (context, index) {
-                                  return CheckboxListTile(
-                                    title: Text(
-                                        "${allMembers[index].name} ${allMembers[index].surname}"),
-                                    value: selectedMembers
-                                        .contains(allMembers[index]),
-                                    onChanged: (bool? value) {
-                                      if (value == true) {
-                                        selectedMembers.add(allMembers[index]);
-                                      } else {
-                                        selectedMembers
-                                            .remove(allMembers[index]);
-                                      }
-                                      setState(() {});
-                                    },
-                                  );
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Annulla'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('Conferma'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              setState(() {});
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: const Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Partecipanti al progetto",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                    Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                  ],
+          borderRadius: BorderRadius.circular(15),
+          sigma: 15,
+          child: Container(
+            height: 40,
+            color: const Color.fromARGB(120, 0, 0, 0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                shadowColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                elevation: 0,
+                backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide.none,
                 ),
               ),
-            )),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      backgroundColor: Colors.white,
+                      title: const Text("Aggiungi membri"),
+                      content: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return SizedBox(
+                            width: double.maxFinite,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: allMembers.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      if (selectedMembers.contains(allMembers[index])) {
+                                        selectedMembers.remove(allMembers[index]);
+                                      } else {
+                                        selectedMembers.add(allMembers[index]);
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(vertical: 7),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      color: selectedMembers.contains(allMembers[index])
+                                          ? Color.fromARGB(255, 207, 28, 79)
+                                          : Color.fromARGB(255, 239, 212, 221)
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "${allMembers[index].code}",
+                                              style: TextStyle(fontWeight: FontWeight.bold),
+                                            ),
+                                            TextSpan(
+                                              text: ": ${allMembers[index].name} ${allMembers[index].surname}",
+                                            ),
+                                            TextSpan(
+                                              text: " (${allMembers[index].role})",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text(
+                            'Annulla',
+                            style: TextStyle(color: Colors.lightBlue),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text(
+                            'Conferma',
+                            style: TextStyle(color: Colors.pink),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            setState(() {});
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Partecipanti al progetto",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17.5,
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 23,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -384,7 +423,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                         ],
                       ),
                       IconButton(
-                        icon: const Icon(Icons.remove),
+                        icon: const Icon(Icons.cancel),
                         onPressed: () {
                           setState(() {
                             selectedMembers.remove(member);
@@ -402,6 +441,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
     );
   }
 }
+
 
 
 

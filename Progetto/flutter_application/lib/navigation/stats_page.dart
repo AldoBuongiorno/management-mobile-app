@@ -6,7 +6,7 @@ import 'package:flutter_application/data/database_helper.dart';
 import '../commonElements/responsive_padding.dart';
 import '../commonElements/blurred_box.dart';
 import 'package:flutter_application/classes/all.dart';
-import 'package:fl_chart/fl_chart.dart';
+//import 'package:fl_chart/fl_chart.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -221,7 +221,7 @@ class _StatsPageState extends State<StatsPage> {
                                               : 100),
                                   height: 200,
                                   width: 300,
-                                  child: PieChart(
+                                  /*child: PieChart(
                                     PieChartData(
                                       sections: [
                                         PieChartSectionData(
@@ -246,7 +246,7 @@ class _StatsPageState extends State<StatsPage> {
                                         ),
                                       ],
                                     ),
-                                  ),
+                                  ),*/
                                 );
                               } else {
                                 return const SizedBox();
