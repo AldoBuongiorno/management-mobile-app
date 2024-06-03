@@ -29,6 +29,14 @@ class Member {
     return mainTeam == null || secondaryTeam == null;
   }
 
+  @override
+  bool operator == (Object other) {
+    if (other is Member) {
+      return code == other.code;
+    }
+    return false;
+  }
+
 
   Member({
     this.code,

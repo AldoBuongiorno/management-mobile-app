@@ -9,6 +9,7 @@ import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 
 List<Member> selectedMembers = [];
+List<Member> initialMembers = [];
 
 class EditTeamScreen extends StatefulWidget {
   const EditTeamScreen({Key? key, required this.team}) : super(key: key);
@@ -21,7 +22,7 @@ class EditTeamScreen extends StatefulWidget {
 
 class _EditTeamScreenState extends State<EditTeamScreen> {
   late TextEditingController teamNameController;
-  List<Member> initialMembers = [];
+  
 
   @override
   void initState() {
@@ -33,11 +34,6 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
   void dispose() {
     teamNameController.dispose();
     super.dispose();
-  }
-
-  Future<List<Member>> _loadMembersByTeam(String team) async {
-    final membersTeam = await DatabaseHelper.instance.getMembersByTeam(team);
-    return membersTeam;
   }
 
   @override
@@ -119,24 +115,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                FutureBuilder<List<Member>>(
-                  future: _loadMembersByTeam(widget.team.getName()),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Errore: ${snapshot.error}'),
-                      );
-                    } else {
-                      initialMembers = snapshot.data!;
-                      return SelectableMembersList(
-                          initialSelectedMembers: snapshot.data!);
-                    }
-                  },
-                ),
+                SelectableMembersList(team: widget.team),
+              
                 const SizedBox(height: 5),
                 Row(children: [
                   //SizedBox(width: 25),
@@ -277,10 +257,9 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
 }
 
 class SelectableMembersList extends StatefulWidget {
-  final List<Member>? initialSelectedMembers;
+  final Team? team;
 
-  const SelectableMembersList({Key? key, this.initialSelectedMembers})
-      : super(key: key);
+  const SelectableMembersList({Key? key, this.team}) : super(key: key);
 
   @override
   State<SelectableMembersList> createState() => _SelectableMembersListState();
@@ -289,22 +268,28 @@ class SelectableMembersList extends StatefulWidget {
 class _SelectableMembersListState extends State<SelectableMembersList> {
   List<Member> allMembers = [];
 
+  
   @override
   void initState() {
     super.initState();
-    //_loadMembers();
-    if (widget.initialSelectedMembers != null) {
-      selectedMembers.addAll(widget.initialSelectedMembers!);
-    }
+    _loadMembers();
+    _loadMembersByTeam();
   }
-/*
+
   Future<void> _loadMembers() async {
     List<Member> loadedMembers = await DatabaseHelper.instance.getMembers();
     setState(() {
       allMembers = loadedMembers;
     });
   }
-*/
+
+  Future<void> _loadMembersByTeam() async {
+    List<Member> membersTeam = await DatabaseHelper.instance.getMembersByTeam(widget.team!.getName());
+    setState(() {
+      selectedMembers = membersTeam;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -530,4 +515,5 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
       ],
     );
   }
-}
+                    }
+                  
