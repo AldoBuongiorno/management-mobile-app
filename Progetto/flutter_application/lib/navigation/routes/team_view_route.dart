@@ -98,87 +98,114 @@ class _TeamRouteState extends State<TeamRoute> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: FutureBuilder<List<Member>>(
-                      future: _membersFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Center(
-                            child: Text('Errore: ${snapshot.error}'),
-                          );
-                        } else {
-                          return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                padding: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 8,
-                                  left: 10,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        const Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Text('Matricola:'),
-                                            Text('Nome:'),
-                                            Text('Cognome:'),
-                                            Text('Ruolo:'),
-                                          ],
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              style: const TextStyle(fontWeight: FontWeight.bold),
-                                              snapshot.data![index].getCode().toString(),
-                                            ),
-                                            Text(
-                                              style: const TextStyle(fontWeight: FontWeight.bold),
-                                              snapshot.data![index].getMemberName(),
-                                            ),
-                                            Text(
-                                              style: const TextStyle(fontWeight: FontWeight.bold),
-                                              snapshot.data![index].getMemberSurname(),
-                                            ),
-                                            Text(
-                                              style: const TextStyle(fontWeight: FontWeight.bold),
-                                              snapshot.data![index].getMemberRole(),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        }
-                      },
-                    ),
+                  child: FutureBuilder<List<Member>>(
+                    future: _membersFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text('Errore: ${snapshot.error}'),
+                        );
+                      } else {
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 8,
+                                left: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Text('Matricola:'),
+                                          Text('Nome:'),
+                                          Text('Cognome:'),
+                                          Text('Ruolo:'),
+                                        ],
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            snapshot.data![index].getCode().toString(),
+                                          ),
+                                          Text(
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            snapshot.data![index].getMemberName(),
+                                          ),
+                                          Text(
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            snapshot.data![index].getMemberSurname(),
+                                          ),
+                                          Text(
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
+                                            snapshot.data![index].getMemberRole(),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
                   ),
-                ]),
-              
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                      ),
+                      onPressed: () async {
+                        DatabaseHelper.instance.deleteTeam(widget.team.name);
+                        Navigator.of(context).pop();
+                      },
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.delete_forever),
+                          SizedBox(width: 3),
+                          Text(
+                            'Elimina',
+                            style: TextStyle(fontSize: 15.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }
