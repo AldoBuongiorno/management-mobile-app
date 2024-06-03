@@ -15,6 +15,16 @@ class StatsPage extends StatefulWidget {
 }
 
 class _StatsPageState extends State<StatsPage> {
+  Future<int> _loadNumTeams() async {
+    final int numTeams = await DatabaseHelper.instance.getNumTeams();
+    return numTeams;
+  }
+
+  Future<int> _loadNumProjects() async {
+    final int numProjects = await DatabaseHelper.instance.getNumProjects();
+    return numProjects;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,15 +47,28 @@ class _StatsPageState extends State<StatsPage> {
             padding: EdgeInsets.all(20),
             margin: EdgeInsets.symmetric(vertical: 10),
             color: Colors.grey[350], // Sfondo grigio chiaro
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Statistiche Team',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 10),
-                Text('Numero di team: 123'),
+                const SizedBox(height: 10),
+                FutureBuilder<int>(
+                  future: _loadNumTeams(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Errore: ${snapshot.error}'));
+                    } else if (snapshot.hasData) {
+                      return Text('Numero di team: ${snapshot.data}');
+                    } else {
+                      return const SizedBox();
+                    }
+                  },
+                ),
                 Text('Numero medio membri team: 456'),
               ],
             ),
@@ -55,16 +78,42 @@ class _StatsPageState extends State<StatsPage> {
             padding: EdgeInsets.all(20),
             margin: EdgeInsets.symmetric(vertical: 10),
             color: Colors.grey[350], // Sfondo grigio chiaro
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Statistiche Progetti',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                const Row(
+                  children: [
+                    Text(
+                      'Statistiche Progetti',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 10),
-                Text('Numero di progetti: 123'),
-                Text('Numero di progetti completati con successo: 456'),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FutureBuilder<int>(
+                      future: _loadNumProjects(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Errore: ${snapshot.error}'));
+                        } else if (snapshot.hasData) {
+                          return Text('Numero di progetti: ${snapshot.data}');
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
+                    Text('Numero di progetti completati con successo: 456'),
+                  ],
+                ),
               ],
             ),
           ),
@@ -73,5 +122,3 @@ class _StatsPageState extends State<StatsPage> {
     );
   }
 }
-
-

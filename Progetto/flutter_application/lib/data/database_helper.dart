@@ -329,6 +329,32 @@ class DatabaseHelper {
     );
   }
 
+Future<int> getNumTeams() async {
+  final db = await database;
+  final List<Map<String, dynamic>> result = await db.rawQuery(
+    'SELECT COUNT(*) as count FROM Team'
+  );
+
+  if (result.isNotEmpty) {
+    return result.first['count'] as int;
+  } else {
+    return 0; 
+  }
+}
+
+Future<int> getNumProjects() async {
+  final db = await database;
+  final List<Map<String, dynamic>> result = await db.rawQuery(
+    'SELECT COUNT(*) as count FROM Project'
+  );
+
+  if (result.isNotEmpty) {
+    return result.first['count'] as int;
+  } else {
+    return 0; 
+  }
+}
+
   Future<bool> teamExists(String teamName) async {
   final db = await database;
   final List<Map<String, Object?>> result = await db.query(
