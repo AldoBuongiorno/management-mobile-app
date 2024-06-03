@@ -461,6 +461,11 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> updateFailureReason(String project, String reason) async {
+    final db = await database;
+    await db.update('Project', {'projectFailureReason': reason }, where: 'name = ?', whereArgs: [project]);
+  }
+
   Future<void> updateExpirationDate(String project, DateTime newDate) async {
     final db = await database;
     await db.update(
