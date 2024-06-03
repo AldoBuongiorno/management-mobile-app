@@ -127,11 +127,11 @@ class HomePageScreenState extends State<HomePageScreen> {
                     ).then((_) => setState(() {})),
                 child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.transparent,
+                      
+                        //color: Colors.transparent,
                         border: Border.all(
-                            width: 3,
-                            color:
-                                const Color.fromARGB(255, 255, 255, 255)), //155
+                            width: 4,
+                            color: Colors.white), //155
                         borderRadius:
                             const BorderRadius.all(Radius.circular(20))),
                     margin: const EdgeInsets.symmetric(horizontal: 5),
