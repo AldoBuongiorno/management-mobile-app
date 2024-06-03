@@ -79,42 +79,18 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const SizedBox(height: 20),
                 Row(
-                  children: [
-                    CustomHeadingTitle(titleText: "Nome"),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: BlurredBox(
-                    borderRadius: BorderRadius.circular(30),
-                    sigma: 15,
-                    child: TextField(
-                      style: const TextStyle(color: Colors.white),
-                      controller: teamNameController,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 15,
-                        ),
-                        filled: true,
-                        fillColor: const Color.fromARGB(100, 0, 0, 0),
-                        border: const OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: widget.team.name,
-                        hintStyle: const TextStyle(
-                          color: Color.fromARGB(255, 192, 192, 192),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomHeadingTitle(titleText: "Membri"),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      color: Colors.black,
+                      iconSize: 30,
+                      onPressed: () {
+                        // Logica per aggiungere un membro (attualmente non fa nulla)
+                      },
+                    ),
                   ],
                 ),
                 const SizedBox(height: 5),
@@ -142,8 +118,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 5),
+                                margin: const EdgeInsets.symmetric(vertical: 5),
                                 padding: const EdgeInsets.only(
                                   top: 8,
                                   bottom: 8,
@@ -156,52 +131,68 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                                 child: Column(
                                   children: [
                                     Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                        Row(
                                           children: [
-                                            Text('Matricola:'),
-                                            Text('Nome:'),
-                                            Text('Cognome:'),
-                                            Text('Ruolo:'),
+                                            const Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text('Matricola:'),
+                                                Text('Nome:'),
+                                                Text('Cognome:'),
+                                                Text('Ruolo:'),
+                                              ],
+                                            ),
+                                            const SizedBox(width: 10),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  snapshot.data![index]
+                                                      .getCode()
+                                                      .toString(),
+                                                ),
+                                                Text(
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  snapshot.data![index]
+                                                      .getMemberName(),
+                                                ),
+                                                Text(
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  snapshot.data![index]
+                                                      .getMemberSurname(),
+                                                ),
+                                                Text(
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                  snapshot.data![index]
+                                                      .getMemberRole(),
+                                                ),
+                                              ],
+                                            ),
                                           ],
                                         ),
-                                        const SizedBox(width: 10),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                              snapshot.data![index]
-                                                  .getCode()
-                                                  .toString(),
-                                            ),
-                                            Text(
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                              snapshot.data![index]
-                                                  .getMemberName(),
-                                            ),
-                                            Text(
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                              snapshot.data![index]
-                                                  .getMemberSurname(),
-                                            ),
-                                            Text(
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                              snapshot.data![index]
-                                                  .getMemberRole(),
-                                            ),
-                                          ],
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {
+                                            // Logica per cancellare un membro (attualmente non fa nulla)
+                                          },
                                         ),
                                       ],
                                     ),
@@ -254,7 +245,3 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
     );
   }
 }
-
-
-
-

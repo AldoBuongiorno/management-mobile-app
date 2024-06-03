@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/navigation/routes/edit_team_route.dart';
+import 'package:flutter_application/navigation/routes/team_view_route.dart';
 import '../commonElements/blurred_box.dart';
 import '../commonElements/responsive_padding.dart';
 import 'package:flutter_application/classes/all.dart';
@@ -84,7 +85,14 @@ class _TeamScreenState extends State<TeamScreen> {
                     ),
                     itemCount: filteredList.length,
                     itemBuilder: (context, index) {
-                      return Container(
+                      return GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TeamRoute(team: filteredList[index]),
+                          ),
+                        ).then((_) => _loadTeams()),
+                      child: Container(
                         height: 150, // Regola l'altezza del contenitore se necessario
                         decoration: BoxDecoration(
                           image: DecorationImage(
@@ -111,7 +119,7 @@ class _TeamScreenState extends State<TeamScreen> {
                                     ),
                                   ).then((_) => _loadTeams()),
                                   icon: const Icon(
-                                    Icons.people,
+                                    Icons.edit,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -151,7 +159,7 @@ class _TeamScreenState extends State<TeamScreen> {
                             ),
                           ],
                         ),
-                      );
+                      ));
                     },
                   )
                 : const Center(child: Text("Nessun team trovato.")),

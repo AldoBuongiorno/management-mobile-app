@@ -69,6 +69,11 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
             height: 10,
           ),
           const SelectableMembersList(),
+          const SizedBox(height: 10),
+          Row(children: [
+            //SizedBox(width: 25),
+            CustomHeadingTitle(titleText: "Copertina"),
+          ]),
           grid,
           ElevatedButton(
               onPressed: teamNameController.text.isEmpty ? null : () async {  
