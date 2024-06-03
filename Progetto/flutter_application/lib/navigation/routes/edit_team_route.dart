@@ -126,101 +126,141 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                 ElevatedButton(
                   onPressed: ((widget.team.name == teamNameController.text ||
                               teamNameController.text.isEmpty) &&
-                          areListsEqual())
+                          areListsEqual() 
+                          //&& (widget.team.thumbnail ==
+                              //ProjectList.thumbnailsListProject[
+                                  //grid.selectedThumbnail]())    
+                                  )
                       ? null
                       : () async {
-                          if (widget.team.name != teamNameController.text) {
-                            if (await DatabaseHelper.instance
-                                .teamExists(teamNameController.text)) {
+                          if(widget.team.name != teamNameController.text){
+                            if(await DatabaseHelper.instance
+                                  .teamExists(teamNameController.text) ) {
                               showDialog<String>(
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  title: const Text('Errore'),
-                                  content: Text(
-                                      ("Il team \"${teamNameController.text}\" esiste già.")),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'Ok'),
-                                      child: const Text('Ok'),
-                                    ),
-                                  ],
-                                ),
-                              );
-                              return; // Termina la funzione se il nome del team esiste già
-                            }
-                          }
-
-                          if (selectedMembers.length < 2) {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Errore'),
-                                content: const Text(
-                                    "Il team deve essere composto da almeno due membri."),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Ok'),
-                                    child: const Text('Ok'),
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                    title: const Text('Errore'),
+                                    content: Text(
+                                        ("Il team \"${teamNameController.text}\" esiste già.")),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'Ok'),
+                                        child: const Text('Ok'),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            );
-                            return; // Termina la funzione se non ci sono abbastanza membri
-                          }
-
-                          if (!checkIfMembersAreFree()) {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Errore'),
-                                content: const Text(
-                                    "Almeno uno dei membri del team è occupato."),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Ok'),
-                                    child: const Text('Ok'),
-                                  ),
-                                ],
-                              ),
-                            );
-                            return; // Termina la funzione se almeno un membro è occupato
-                          }
-
-                          // Altrimenti, procedi con l'aggiornamento del team
-                          for (Member member in selectedMembers.where(
-                              (member) => !initialMembers.contains(member))) {
-                            await DatabaseHelper.instance.assignTeamToMember(
-                                teamNameController.text, member.code!);
-                          }
-
-                          for (Member member in initialMembers.where(
-                              (member) => !selectedMembers.contains(member))) {
-                            await DatabaseHelper.instance.removeTeamFromMember(
-                                member.getCode()!, widget.team.name);
-                          }
-
-                          await DatabaseHelper.instance.updateTeamName(
-                              widget.team.getName(), teamNameController.text);
-
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text('Successo!'),
-                              content: const Text(
-                                  "Il team è stato modificato correttamente."),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'Ok'),
-                                  child: const Text('Ok'),
-                                ),
-                              ],
-                            ),
-                          );
-
-                          teamNameController.clear();
+                                ); }}
+                               
+                                  selectedMembers.length < 2
+                                      ? showDialog<String>(
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            title: const Text('Errore'),
+                                            content: const Text(
+                                                ("Il team deve essere composto da almeno due membri.")),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, 'Ok'),
+                                                child: const Text('Ok'),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : {
+                                          checkIfMembersAreFree()
+                                              ? {
+                                                  for (Member member
+                                                      in selectedMembers
+                                                          .where((member) =>
+                                                              !initialMembers
+                                                                  .contains(
+                                                                      member))
+                                                          .toList())
+                                                    {
+                                                      DatabaseHelper.instance
+                                                          .assignTeamToMember(
+                                                              teamNameController
+                                                                  .text,
+                                                              member.code!),
+                                                    },
+                                                  for (Member member
+                                                      in initialMembers
+                                                          .where((member) =>
+                                                              !selectedMembers
+                                                                  .contains(
+                                                                      member))
+                                                          .toList())
+                                                    {
+                                                      DatabaseHelper.instance
+                                                          .removeTeamFromMember(
+                                                              member.getCode()!,
+                                                              widget.team.name),
+                                                    },
+                                                  DatabaseHelper.instance
+                                                      .updateTeamName(
+                                                    widget.team.getName(),
+                                                    teamNameController.text,
+                                                  ),
+                                                  DatabaseHelper.instance
+                                                      .updateThumbnailTeam(
+                                                          teamNameController
+                                                              .text,
+                                                          ProjectList
+                                                              .thumbnailsListProject[
+                                                                  grid.selectedThumbnail]
+                                                              .assetName),
+                                                  showDialog<String>(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        AlertDialog(
+                                                      title: const Text(
+                                                          'Successo!'),
+                                                      content: const Text(
+                                                          ("Il team è stato modificato correttamente.")),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  'Ok'),
+                                                          child:
+                                                              const Text('Ok'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  teamNameController.clear(),
+                                                }
+                                              : {
+                                                  showDialog<String>(
+                                                    context: context,
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        AlertDialog(
+                                                      title:
+                                                          const Text('Errore'),
+                                                      content: const Text(
+                                                          ("Almeno uno dei membri del team è occupato.")),
+                                                      actions: <Widget>[
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  'Ok'),
+                                                          child:
+                                                              const Text('Ok'),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                },
+                                        
+                                };
                         },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
@@ -241,8 +281,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
 
   bool checkIfMembersAreFree() {
     bool valid = true;
-    for (Member member in selectedMembers
-        .where((member) => !initialMembers.contains(member))
+    for (Member member in (selectedMembers
+        .where((member) => !initialMembers.contains(member)))
         .toList()) {
       valid = valid && member.isFree();
     }
@@ -287,6 +327,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
     List<Member> membersTeam = await DatabaseHelper.instance.getMembersByTeam(widget.team!.getName());
     setState(() {
       selectedMembers = membersTeam;
+      initialMembers = membersTeam;
     });
   }
 
