@@ -23,6 +23,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
   void initState() {
     super.initState();
     _loadProjects();
+     filterProjectListController.addListener(() {
+      _filterProjects(filterProjectListController.text);
+    });
+  }
+
+   @override
+  void dispose() {
+    filterProjectListController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadProjects() async {
@@ -68,7 +77,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
                 hintText: 'Cerca progetti...',
                 hintStyle: TextStyle(color: Color.fromARGB(255, 192, 192, 192)),
               ),
-              onChanged: _filterProjects,
             ),
           ),
           const SizedBox(height: 20),
