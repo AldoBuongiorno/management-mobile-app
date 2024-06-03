@@ -430,6 +430,7 @@ class DatabaseHelper {
 
   Future<void> updateTeamName(String oldName, String newName) async {
     final db = await database;
+    await db.update('Team', {'name': newName}, where: 'name = ?', whereArgs: [oldName]);
     await db.update(
       'Project',
       {'team': newName, 'lastModified': DateTime.now().toIso8601String()},
