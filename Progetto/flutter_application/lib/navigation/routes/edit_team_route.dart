@@ -283,13 +283,14 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
     );
   }
 
-  bool checkIfMembersAreFree() {
+  bool checkIfMembersAreFree(String team) {
     bool valid = true;
     for (Member member in (selectedMembers
         .where((member) => !initialMembers.contains(member)))
         .toList()) {
       valid = valid && member.isFree();
     }
+
     return valid;
   }
 

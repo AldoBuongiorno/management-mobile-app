@@ -408,6 +408,8 @@ class DatabaseHelper {
     }
   }
 
+  
+
   Future<void> assignMainTeamToMember(String teamName, int code) async {
     final db = await database;
     await db.update(

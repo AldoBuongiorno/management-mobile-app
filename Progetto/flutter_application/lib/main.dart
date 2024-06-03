@@ -88,6 +88,8 @@ class _Group21AppState extends State<Group21App> {
     indicatorColor: Color.fromARGB(255, 235, 235, 235),
     labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
     backgroundColor: Color.fromARGB(56, 0, 0, 0),
+    surfaceTintColor: Colors.transparent,
+    
   );
 
   @override
