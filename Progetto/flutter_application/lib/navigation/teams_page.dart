@@ -31,6 +31,15 @@ class _TeamScreenState extends State<TeamScreen> {
   void initState() {
     super.initState();
     _loadTeams();
+    filterTeamListController.addListener(() {
+      _filterTeams(filterTeamListController.text);
+    });
+  }
+
+   @override
+  void dispose() {
+    filterTeamListController.dispose();
+    super.dispose();
   }
 
   void _filterTeams(String query) {
@@ -68,7 +77,6 @@ class _TeamScreenState extends State<TeamScreen> {
                 hintText: 'Cerca team...',
                 hintStyle: TextStyle(color: Color.fromARGB(255, 192, 192, 192)),
               ),
-              onChanged: _filterTeams,
             ),
           ),
           const SizedBox(height: 20),

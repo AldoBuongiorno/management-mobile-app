@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); //se tolgo non cambia niente
 
-  await deleteDatabase(join(await getDatabasesPath(), 'my_database.db'));
+  //await deleteDatabase(join(await getDatabasesPath(), 'my_database.db'));
   final db = DatabaseHelper.instance;
   await db.database;
   DatabaseHelper.instance.database.then((_) {
