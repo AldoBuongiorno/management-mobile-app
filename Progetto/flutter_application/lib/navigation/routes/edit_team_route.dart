@@ -23,13 +23,9 @@ class EditTeamScreen extends StatefulWidget {
 class _EditTeamScreenState extends State<EditTeamScreen> {
   late TextEditingController teamNameController;
   
-  /*Future<List<Member>> _loadInitialMembers() async {
-    return await DatabaseHelper.instance.getMembersByTeam(widget.team.name);
-  }*/
 
   @override
   void initState() {
-    //initialMembers = await _loadInitialMembers();
     super.initState();
     teamNameController = TextEditingController(text: widget.team.getName());
   }
@@ -294,7 +290,6 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
   }
 
   bool areListsEqual() {
-    //print(initialMembers); print(selectedMembers);
     var set1 = selectedMembers.toSet();
     var set2 = initialMembers.toSet();
     return set1.length == set2.length && set1.containsAll(set2);
@@ -348,7 +343,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
             color: const Color.fromARGB(120, 0, 0, 0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.symmetric(horizontal: 8),
                 shadowColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,
                 elevation: 0,
@@ -386,7 +381,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                     });
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 7),
+                                    margin: EdgeInsets.symmetric(vertical: 7),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
@@ -395,8 +390,8 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                         ),
                                         color: selectedMembers
                                                 .contains(allMembers[index])
-                                            ? const Color.fromARGB(255, 207, 28, 79)
-                                            : const Color.fromARGB(
+                                            ? Color.fromARGB(255, 207, 28, 79)
+                                            : Color.fromARGB(
                                                 255, 239, 212, 221)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
@@ -405,7 +400,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                           children: [
                                             TextSpan(
                                               text: "${allMembers[index].code}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             TextSpan(
@@ -473,7 +468,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
             ),
           ),
         ),
-        const SizedBox(
+        SizedBox(
           height: 8,
         ),
         ListView.builder(
