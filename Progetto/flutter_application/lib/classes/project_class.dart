@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 
@@ -34,6 +36,14 @@ class Project {
 
   bool isSuspended() {
     return status == "Sospeso" ? true : false;
+  }
+
+  bool isFailed() {
+    return status == "Fallito" ? true : false;
+  }
+
+  bool isCompleted() {
+    return status == "Completato" ? true : false;
   }
 
   bool isArchived() {

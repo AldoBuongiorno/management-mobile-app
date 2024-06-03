@@ -6,6 +6,7 @@ import 'package:flutter_application/data/database_helper.dart';
 import '../commonElements/responsive_padding.dart';
 import '../commonElements/blurred_box.dart';
 import 'package:flutter_application/classes/all.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class StatsPage extends StatefulWidget {
   const StatsPage({super.key});
@@ -21,9 +22,10 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Future<int> _loadAvgNumMembersPerTeam() async {
-    final List<int> numMembersPerTeam = await DatabaseHelper.instance.getAvgNumMembersPerTeam();
+    final List<int> numMembersPerTeam =
+        await DatabaseHelper.instance.getAvgNumMembersPerTeam();
     int sum = 0;
-    for(final num in numMembersPerTeam){
+    for (final num in numMembersPerTeam) {
       sum += num;
       print(num);
     }
@@ -87,7 +89,8 @@ class _StatsPageState extends State<StatsPage> {
                     } else if (snapshot.hasError) {
                       return Center(child: Text('Errore: ${snapshot.error}'));
                     } else if (snapshot.hasData) {
-                      return Text('Numero medio di membri per team: ${snapshot.data}');
+                      return Text(
+                          'Numero medio di membri per team: ${snapshot.data}');
                     } else {
                       return const SizedBox();
                     }
@@ -134,7 +137,39 @@ class _StatsPageState extends State<StatsPage> {
                         }
                       },
                     ),
-                    Text('Numero di progetti completati con successo: 456'),
+                    const SizedBox(height: 10),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 25),
+                      height: 200,
+                      width: 300,
+                      child: PieChart(
+                        PieChartData(
+                          sections: [
+                            PieChartSectionData(
+                              color: Colors.blue,
+                              value: 40, 
+                              title: 'Attivi', 
+                            ),
+                            PieChartSectionData(
+                              color: Colors.green,
+                              value: 30, 
+                              title:
+                                  'Completati', 
+                            ),
+                            PieChartSectionData(
+                              color: Colors.red,
+                              value: 20, 
+                              title: 'Falliti', 
+                            ),
+                            PieChartSectionData(
+                              color: Colors.orange,
+                              value: 10, 
+                              title: 'Sospesi', 
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
