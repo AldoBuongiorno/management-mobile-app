@@ -12,6 +12,15 @@ class Team {
     return thumbnail;
   }
 
+  @override
+  bool operator == (Object other) {
+    if (other is Team) {
+      return name == other.name;
+    }
+    return false;
+  }
+
+
   Team({required this.name, required this.thumbnail,});
 
   Map<String, dynamic> toMap() {

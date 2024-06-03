@@ -128,12 +128,9 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                 ]),
                 grid,
                 ElevatedButton(
-                  onPressed: (widget.team.name == teamNameController.text ||
-                              teamNameController.text.isEmpty) || areListsEqual()
-                      ? null
-                      : () async {
-                          if (widget.team.name != teamNameController.text) {
-                            if (await DatabaseHelper.instance
+                  onPressed: () async {
+                          
+                            /*if (await DatabaseHelper.instance
                                 .teamExists(teamNameController.text)) {
                               showDialog<String>(
                                 context: context,
@@ -151,8 +148,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                                 ),
                               );
                               return; // Termina la funzione se il nome del team esiste già
-                            }
-                          }
+                            }*/
+                          
 
                           if (selectedMembers.length < 2) {
                             showDialog<String>(
@@ -173,7 +170,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                             return; // Termina la funzione se non ci sono abbastanza membri
                           }
 
-                          if (!checkIfMembersAreFree()) {
+                          if (!checkIfMembersAreFree(widget.team.name)) {
                             showDialog<String>(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
@@ -193,22 +190,37 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                           }
 
                           // Altrimenti, procedi con l'aggiornamento del team
-                          for (Member member in selectedMembers.where(
-                              (member) => !initialMembers.contains(member))) {
+                          await DatabaseHelper.instance.updateTeamName(
+                              widget.team.getName(), teamNameController.text);
+                          
+                          for (Member member in selectedMembers) {
+                            
                             await DatabaseHelper.instance.assignTeamToMember(
                                 teamNameController.text, member.code!);
                           }
 
-                          for (Member member in initialMembers.where(
+                          for(Member member in await DatabaseHelper.instance.getMembers()) {
+                            if(!selectedMembers.contains(member)) {
+                              DatabaseHelper.instance.removeTeamFromMember(member.code!, widget.team.name);
+                            }
+                          }
+
+                          /*for (Member member in initialMembers.where(
                               (member) => !selectedMembers.contains(member))) {
                             await DatabaseHelper.instance.removeTeamFromMember(
                                 member.getCode()!, widget.team.name);
-                          }
+                          }*/
 
-                          await DatabaseHelper.instance.updateTeamName(
-                              widget.team.getName(), teamNameController.text);
+                          
+                            Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
 
-                          showDialog<String>(
+                            SnackBar(padding: EdgeInsets.zero ,backgroundColor: Colors.transparent,
+            content: Container(color: const Color.fromARGB(156, 0, 0, 0) ,child: BlurredBox(sigma: 20, borderRadius: BorderRadius.zero, child:const Column( children:  [SizedBox(height: 10,),Text('Team modificato con successo!'), SizedBox(height: 10,) ]))),
+            
+          )
+                          );
+                          /*showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: const Text('Successo!'),
@@ -221,7 +233,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                                 ),
                               ],
                             ),
-                          );
+                          );*/
 
                           //teamNameController.clear();
                         },
@@ -242,13 +254,17 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
     );
   }
 
-  bool checkIfMembersAreFree() {
+  bool checkIfMembersAreFree(String team) {
     bool valid = true;
-    for (Member member in selectedMembers
-        .where((member) => !initialMembers.contains(member))
-        .toList()) {
-      valid = valid && member.isFree();
+    for (Member member in selectedMembers) {
+      //if(member.mainTeam != null && member.mainTeam! == widget.team) member.mainTeam = null;
+      //if(member.secondaryTeam != null && member.secondaryTeam! == widget.team) member.mainTeam = null;
+      if(member.mainTeam != null && member.secondaryTeam != null) {
+        valid = valid && (member.isFree() || member.mainTeam!.name == team || member.secondaryTeam!.name == team);
+      }
+      
     }
+
     return valid;
   }
 

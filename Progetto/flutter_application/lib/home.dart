@@ -43,6 +43,10 @@ class _HomePageState extends State<HomePage> {
               indicatorColor: Color.fromARGB(255, 235, 235, 235),
               labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
               backgroundColor: Color.fromARGB(56, 0, 0, 0),
+              shadowColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              
+              
             ), //in main.dart
             child: ClipRect(
                 //serve per ritagliare il figlio in un rettangolo per garantire che l'effetto di sfocatura (BackdropFilter) venga applicato correttamente solo all'interno del rettangolo del widget.

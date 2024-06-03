@@ -29,6 +29,14 @@ class Member {
     return mainTeam == null || secondaryTeam == null;
   }
 
+  bool isFreeOrBelongsToTeam(String team) {
+    if(mainTeam != null) {
+      return secondaryTeam == null || mainTeam!.name == team;
+    } else if(secondaryTeam != null) {
+      return mainTeam == null || secondaryTeam!.name == team;
+    } else { return mainTeam == null || secondaryTeam == null; }
+  }
+
   @override
   bool operator == (Object other) {
     if (other is Member) {
