@@ -206,7 +206,7 @@ class SelectableMembersList extends StatefulWidget {
 }
 
 class _SelectableMembersListState extends State<SelectableMembersList> {
-  List<Member> selectedMembers = [];
+  //List<Member> selectedMembers = [];
   List<Member> allMembers = [];
 
   @override
@@ -227,90 +227,95 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
     return Column(
       children: [
         BlurredBox(
-          borderRadius: BorderRadius.circular(10),
-          sigma: 15,
-          child: Container(color: Color.fromARGB(100, 0, 0, 0), child: ElevatedButton(
-            style: ElevatedButton.styleFrom(shadowColor: Colors.transparent, surfaceTintColor: Colors.transparent,
-              elevation: 0,
-              backgroundColor: Color.fromARGB(0, 0, 0, 0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: BorderSide.none
-              ),
-            ),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    backgroundColor: Colors.white, // Imposta lo sfondo bianco
-                    title: const Text("Aggiungi membri"),
-                    content: StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                        return SizedBox(
-                          width: double.maxFinite,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: allMembers.length,
-                            itemBuilder: (context, index) {
-                              return CheckboxListTile(
-                                title: Text(
-                                    "${allMembers[index].name} ${allMembers[index].surname}"),
-                                value:
-                                    selectedMembers.contains(allMembers[index]),
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    if (value == true) {
-                                      selectedMembers.add(allMembers[index]);
-                                    } else {
-                                      selectedMembers.remove(allMembers[index]);
-                                    }
-                                  });
+            borderRadius: BorderRadius.circular(10),
+            sigma: 15,
+            child: Container(
+              color: const Color.fromARGB(100, 0, 0, 0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shadowColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                  elevation: 0,
+                  backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide.none),
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        backgroundColor:
+                            Colors.white, // Imposta lo sfondo bianco
+                        title: const Text("Aggiungi membri"),
+                        content: StatefulBuilder(
+                          builder:
+                              (BuildContext context, StateSetter setState) {
+                            return SizedBox(
+                              width: double.maxFinite,
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: allMembers.length,
+                                itemBuilder: (context, index) {
+                                  return CheckboxListTile(
+                                    title: Text(
+                                        "${allMembers[index].name} ${allMembers[index].surname}"),
+                                    value: selectedMembers
+                                        .contains(allMembers[index]),
+                                    onChanged: (bool? value) {
+                                      if (value == true) {
+                                        selectedMembers.add(allMembers[index]);
+                                      } else {
+                                        selectedMembers
+                                            .remove(allMembers[index]);
+                                      }
+                                      setState(() {});
+                                    },
+                                  );
                                 },
-                              );
+                              ),
+                            );
+                          },
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            child: const Text('Annulla'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
                             },
                           ),
-                        );
-                      },
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('Annulla'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(
-                        child: const Text('Conferma'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          setState(() {});
-                        },
-                      ),
-                    ],
+                          TextButton(
+                            child: const Text('Conferma'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              setState(() {});
+                            },
+                          ),
+                        ],
+                      );
+                    },
                   );
                 },
-              );
-            },
-            child: const Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    "Partecipanti al progetto",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
+                child: const Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Partecipanti al progetto",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                  ),
+                    Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
+                  ],
                 ),
-                Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-              ],
-            ),
-          ),
-        )),
+              ),
+            )),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
