@@ -229,11 +229,13 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
         BlurredBox(
           borderRadius: BorderRadius.circular(10),
           sigma: 15,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(100, 0, 0, 0),
+          child: Container(color: Color.fromARGB(100, 0, 0, 0), child: ElevatedButton(
+            style: ElevatedButton.styleFrom(shadowColor: Colors.transparent, surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              backgroundColor: Color.fromARGB(0, 0, 0, 0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide.none
               ),
             ),
             onPressed: () {
@@ -290,7 +292,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                 },
               );
             },
-            child: Row(
+            child: const Row(
               children: [
                 Expanded(
                   child: Text(
@@ -308,7 +310,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
               ],
             ),
           ),
-        ),
+        )),
         ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
