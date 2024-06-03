@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_application/classes/all.dart';
 import 'package:flutter_application/commonElements/tasks_checkbox_view.dart';
 import '../data/database_helper.dart';
@@ -61,15 +60,28 @@ Widget teamCheck(Project testItem) {
 
 Widget getProjectName(Project testItem) {
   return Flexible(
-      child: Container(
-          child: Text(testItem.name,
-              overflow: TextOverflow
-                  .ellipsis, //e il testo è più lungo dello spazio disponibile nel widget, verrà visualizzato un segno di ellissi ("...") alla fine
-              style: const TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white))));
+      child: Text(testItem.name,
+          overflow: TextOverflow
+              .ellipsis, //e il testo è più lungo dello spazio disponibile nel widget, verrà visualizzato un segno di ellissi ("...") alla fine
+          style: const TextStyle(
+              fontSize: 21,
+              fontWeight: FontWeight.bold,
+              color: Colors.white)));
 }
+
+/*Widget buildEmptyAddProjectItem( context) {  return GestureDetector(onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SecondRoute(),
+                          ),
+                        ), child: Container(
+      decoration: BoxDecoration(
+          color: Colors.transparent,
+          border: Border.all(
+              width: 3, color: const Color.fromARGB(255, 255, 255, 255)),//155
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
+      margin: const EdgeInsets.symmetric(horizontal: 5),
+      child: const Center(child: Icon(Icons.add_circle_outline_sharp, size: 75, color: Colors.white,)))); }*/
 
 Widget buildCarousel(int index, Project testItem, context) => Container(
       decoration: BoxDecoration(
@@ -96,30 +108,35 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Task non complete'),
+                            title: const Text('Task da completare'),
                             content: SizedBox(
                                 width: double.maxFinite,
                                 child: TasksCheckboxViewForHomepage(
-                                    tasks: tasksList )),
+                                    tasks: tasksList)),
                             actions: [
                               TextButton(
-                                child: Text('Aggiungi task', style: TextStyle(color: Colors.lightBlue),),
+                                child: const Text(
+                                  'Aggiungi task',
+                                  style: TextStyle(color: Colors.lightBlue),
+                                ),
                                 onPressed: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditProjectScreen(
-                                          project: testItem,
-                                        ),
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditProjectScreen(
+                                        project: testItem,
                                       ),
-                                    ).then((_) => Navigator.of(context).pop());
+                                    ),
+                                  ).then((_) => Navigator.of(context).pop());
                                 },
                               ),
                               TextButton(
-                                child: Text('Conferma', style: TextStyle(color: Colors.pink),),
+                                child: const Text(
+                                  'Conferma',
+                                  style: TextStyle(color: Colors.pink),
+                                ),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
-                              
                             ],
                           );
                         });
@@ -141,7 +158,7 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10)),
                     child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: teamCheck(testItem)))
               ],
             ),

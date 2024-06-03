@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../data/project_list.dart';
 import 'blurred_box.dart';
 
+// ignore: must_be_immutable
 class SelectableThumbnailGrid extends StatefulWidget {
   SelectableThumbnailGrid({this.selectedThumbnail = 0, required this.list });
 

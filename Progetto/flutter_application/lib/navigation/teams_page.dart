@@ -79,7 +79,7 @@ class _TeamScreenState extends State<TeamScreen> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3, // Aumenta il numero di colonne per rendere i riquadri più piccoli
                       crossAxisSpacing: 10, // Aumenta lo spazio tra le colonne
-                      mainAxisSpacing: 10, // Aumenta lo spazio tra le righe
+                      mainAxisSpacing: 0, // Aumenta lo spazio tra le righe
                       childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 1.2 : 2, // Riduce l'altezza dei riquadri
                     ),
                     itemCount: filteredList.length,

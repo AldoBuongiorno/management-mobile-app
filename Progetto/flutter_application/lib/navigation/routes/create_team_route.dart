@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/commonElements/selectable_thumbnail_grid.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:flutter_application/data/project_list.dart';
+import 'package:flutter_application/data/thumbnail_list.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';

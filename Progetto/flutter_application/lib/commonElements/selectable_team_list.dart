@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:sqflite/sqflite.dart';
-
 import '../classes/team_class.dart';
-import '../data/project_list.dart';
 
+// ignore: must_be_immutable
 class SelectableTeamsList extends StatefulWidget {
   SelectableTeamsList({super.key});
   int selectedTeam = 0;

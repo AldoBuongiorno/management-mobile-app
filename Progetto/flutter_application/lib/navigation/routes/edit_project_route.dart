@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:flutter_application/navigation/routes/create_project_route.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
 import '../../commonElements/tasks_checkbox_view.dart';
-import '../../data/project_list.dart';
+import '../../data/thumbnail_list.dart';
 
 int selectedTeam = 0;
 List<Task> tasks = [];

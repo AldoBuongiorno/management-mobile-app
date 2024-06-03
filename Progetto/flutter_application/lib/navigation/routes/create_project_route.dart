@@ -1,6 +1,5 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/blurred_box.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
@@ -8,9 +7,7 @@ import 'package:flutter_application/data/database_helper.dart';
 import '../../commonElements/selectable_team_list.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
 import '../../commonElements/tasks_checkbox_view.dart';
-import '../../data/project_list.dart';
-import '../../commonElements/headings_title.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import '../../data/thumbnail_list.dart';
 import 'package:flutter_application/classes/all.dart';
 
 int selectedTeam = 0;
@@ -105,7 +102,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ]),
           const SizedBox(height: 5),
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

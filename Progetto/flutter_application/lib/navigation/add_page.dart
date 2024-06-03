@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/database_helper.dart';
+import '../classes/setting_class.dart';
 import '../commonElements/blurred_box.dart';
 import 'routes/create_member_route.dart';
 import 'routes/create_project_route.dart';
 import 'package:input_quantity/input_quantity.dart';
-import '../data/project_list.dart';
 import 'routes/create_team_route.dart';
 
 class AddPage extends StatelessWidget {
@@ -38,72 +38,97 @@ class FirstRoute extends StatelessWidget {
                         ? 20
                         : 100),
                 child: Column(children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Expanded(
-                            child: Text(
-                                "Numero di progetti visualizzati in homepage:")),
-                        //SizedBox(width: 10,),
-                        InputQty.int(
-                            //isIntrinsicWidth: false,
-                            decoration: QtyDecorationProps(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        width: 2, color: Colors.white)),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                isBordered: true,
-                                plusBtn: const Icon(
-                                  Icons.add,
-                                  color: Colors.pink,
-                                ),
-                                minusBtn: const Icon(
-                                  Icons.remove,
-                                  color: Colors.lightBlue,
-                                )),
-                            initVal: ProjectList.projectOnHomepageNumber,
-                            minVal: 1,
-                            maxVal: 15,
-                            onQtyChanged: (value) =>
-                                DatabaseHelper.instance.updateSetting('NumberOfProjectsOnHomepage',value))
-                                
-                      ]),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Expanded(
-                            child: Text(
-                                "Numero di team visualizzati in homepage:")),
-                        //SizedBox(width: 10,),
-                        InputQty.int(
-                            //isIntrinsicWidth: false,
-                            decoration: QtyDecorationProps(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25),
-                                    borderSide: const BorderSide(
-                                        width: 2, color: Colors.white)),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 10),
-                                isBordered: true,
-                                plusBtn: const Icon(
-                                  Icons.add,
-                                  color: Colors.pink,
-                                ),
-                                minusBtn: const Icon(
-                                  Icons.remove,
-                                  color: Colors.lightBlue,
-                                )),
-                            initVal: ProjectList.teamOnHomepageNumber,
-                            minVal: 1,
-                            maxVal: 10,
-                            onQtyChanged: (value) =>
-                                DatabaseHelper.instance.updateSetting('NumberOfTeamsOnHomepage',value))
-                      ]),
+                  FutureBuilder(
+                      future: DatabaseHelper.instance.getSettings(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Setting>> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return Column(children: [
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Expanded(
+                                      child: Text(
+                                          "Numero di progetti visualizzati in homepage:")),
+                                  //SizedBox(width: 10,),
+                                  InputQty.int(
+                                      //isIntrinsicWidth: false,
+                                      decoration: QtyDecorationProps(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              borderSide: const BorderSide(
+                                                  width: 2,
+                                                  color: Colors.white)),
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 5, horizontal: 10),
+                                          isBordered: true,
+                                          plusBtn: const Icon(
+                                            Icons.add,
+                                            color: Colors.pink,
+                                          ),
+                                          minusBtn: const Icon(
+                                            Icons.remove,
+                                            color: Colors.lightBlue,
+                                          )),
+                                      initVal:
+                                          snapshot.data![0].number,
+                                      minVal: 1,
+                                      maxVal: 15,
+                                      onQtyChanged: (value) =>
+                                          DatabaseHelper.instance.updateSetting(
+                                              'NumberOfProjectsOnHomepage',
+                                              value))
+                                ]),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Expanded(
+                                      child: Text(
+                                          "Numero di team visualizzati in homepage:")),
+                                  //SizedBox(width: 10,),
+                                  InputQty.int(
+                                      //isIntrinsicWidth: false,
+                                      decoration: QtyDecorationProps(
+                                          border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
+                                              borderSide: const BorderSide(
+                                                  width: 2,
+                                                  color: Colors.white)),
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  vertical: 5, horizontal: 10),
+                                          isBordered: true,
+                                          plusBtn: const Icon(
+                                            Icons.add,
+                                            color: Colors.pink,
+                                          ),
+                                          minusBtn: const Icon(
+                                            Icons.remove,
+                                            color: Colors.lightBlue,
+                                          )),
+                                      initVal: snapshot.data![1].number,
+                                      minVal: 1,
+                                      maxVal: 10,
+                                      onQtyChanged: (value) =>
+                                          DatabaseHelper.instance.updateSetting(
+                                              'NumberOfTeamsOnHomepage', value))
+                                ])
+                          ]);
+                        }
+                      }),
                   SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 50,
@@ -120,15 +145,15 @@ class FirstRoute extends StatelessWidget {
                                     RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ))),
-                            child: const Row( mainAxisAlignment: MainAxisAlignment.center,children: [
-                            
-                            Icon(Icons.library_add_check),
-                            Text(
-                              'Aggiungi progetto',
-                              style: TextStyle(color: Colors.black),
-                              
-                            ),
-                            ]),
+                            child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.library_add_check),
+                                  Text(
+                                    'Aggiungi progetto',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ]),
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -137,7 +162,7 @@ class FirstRoute extends StatelessWidget {
                                           const SecondRoute()));
                             },
                           ))),
-                          const SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 50,
@@ -154,24 +179,24 @@ class FirstRoute extends StatelessWidget {
                                     RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ))),
-                        child: const Row( mainAxisAlignment: MainAxisAlignment.center,children: [
-                            
-                            Icon(Icons.person_add),
-                            Text(
-                              'Aggiungi membro',
-                              style: TextStyle(color: Colors.black),
-                              
-                            ),
-                            ]),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ToAddMemberRoute()));
-                        },
-                      ))),
-                      const SizedBox(height: 5),
+                            child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.person_add),
+                                  Text(
+                                    'Aggiungi membro',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ]),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ToAddMemberRoute()));
+                            },
+                          ))),
+                  const SizedBox(height: 5),
                   SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 50,
@@ -179,10 +204,9 @@ class FirstRoute extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                           sigma: 15,
                           child: ElevatedButton(
-                            
                             style: ButtonStyle(
-                              
-                              foregroundColor: MaterialStateProperty.all(Colors.white),
+                                foregroundColor:
+                                    MaterialStateProperty.all(Colors.white),
                                 backgroundColor: MaterialStateProperty.all(
                                     const Color.fromARGB(50, 0, 0, 0)),
                                 shadowColor: MaterialStateProperty.all(
@@ -191,23 +215,23 @@ class FirstRoute extends StatelessWidget {
                                     RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ))),
-                        child: const Row( mainAxisAlignment: MainAxisAlignment.center,children: [
-                            
-                            Icon(Icons.group_add),
-                            Text(
-                              'Aggiungi team',
-                              style: TextStyle(color: Colors.black),
-                              
-                            ),
-                            ]),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ToAddTeamRoute()));
-                        },
-                      ))),
+                            child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.group_add),
+                                  Text(
+                                    'Aggiungi team',
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ]),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ToAddTeamRoute()));
+                            },
+                          ))),
                 ]))));
   }
 }

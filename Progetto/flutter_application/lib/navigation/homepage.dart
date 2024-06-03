@@ -2,14 +2,19 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
 
+import '../classes/setting_class.dart';
 import '../commonElements/carousel_item.dart';
 import '../commonElements/headings_title.dart';
 import '../data/database_helper.dart';
-import '../data/project_list.dart';
-import 'teams_page.dart';
+import 'add_page.dart';
 
-class HomePageScreen extends StatelessWidget {
-  const HomePageScreen({super.key});
+class HomePageScreen extends StatefulWidget {
+  @override
+  State<HomePageScreen> createState() => HomePageScreenState();
+}
+
+class HomePageScreenState extends State<HomePageScreen> {
+  HomePageScreenState();
 /*
   Future<List<Project>> _loadProjectsOrderByLastModified() async {
     return await DatabaseHelper.instance.getActiveProjectsOrderedByLastModified(); 
@@ -25,12 +30,11 @@ class HomePageScreen extends StatelessWidget {
       future: Future.wait([
         DatabaseHelper.instance.getActiveProjectsOrderedByLastModified(),
         DatabaseHelper.instance.getTeamsOrderedByMemberCount(),
-        //DatabaseHelper.instance.getSettings(),
-        
+        DatabaseHelper.instance.getSettings(),
       ]),
       builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
@@ -54,6 +58,7 @@ class HomePageScreen extends StatelessWidget {
               const SizedBox(height: 20),
               addCarouselIfNotEmpty(
                 snapshot.data?[0] as List<Project>,
+                snapshot.data![2],
                 context,
               ),
               const SizedBox(
@@ -79,6 +84,7 @@ class HomePageScreen extends StatelessWidget {
                           : 100),
                   child: addTeamsIfNotEmpty(
                     snapshot.data?[1] as List<Team>,
+                    snapshot.data![2],
                     context,
                   ))
             ],
@@ -88,8 +94,10 @@ class HomePageScreen extends StatelessWidget {
     );
   }
 
-  Widget addCarouselIfNotEmpty(List testList, BuildContext context) {
-    if (testList.isEmpty) {
+  Widget addCarouselIfNotEmpty(
+      List<Project> list, List<Setting> settings, BuildContext context) {
+    //testList.insert(0, Project(name: '', description: '', team: Team(name: '', thumbnail: const AssetImage('')), thumbnail: const AssetImage('')));
+    if (list.isEmpty) {
       return Container(
         alignment: Alignment.centerLeft,
         margin: EdgeInsets.symmetric(
@@ -102,32 +110,51 @@ class HomePageScreen extends StatelessWidget {
       );
     } else {
       return CarouselSlider.builder(
-        itemCount: testList.length < ProjectList.projectOnHomepageNumber
-            ? testList.length
-            : ProjectList.teamOnHomepageNumber
-        /*ProjectList.projectsList
-                  .where((element) => element.isActive())
-                  .toList()
-                  .length <
-              ProjectList.projectOnHomepageNumber
-          ? ProjectList.projectsList
-              .where((element) => element.isActive())
-              .toList()
-              .length
-          : ProjectList.projectOnHomepageNumber*/
+        itemCount: list.length + 1 < settings[0].number + 1
+            ? list.length + 1
+            : settings[0].number + 1
         ,
         itemBuilder: (context, index, realIndex) {
-          //final urlImage = testList[index];
-          Project testItem = testList[index];
-          return buildCarousel(index, testItem, context);
+          if (index - 1 == -1) {
+            //testList.removeAt(0);
+
+            return GestureDetector(
+                onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SecondRoute(),
+                      ),
+                    ).then((_) => setState(() {})),
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                            width: 3,
+                            color:
+                                const Color.fromARGB(255, 255, 255, 255)), //155
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20))),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    child: const Center(
+                        child: Icon(
+                      Icons.add_circle_outline_sharp,
+                      size: 75,
+                      color: Colors.white,
+                    ))));
+          } else {
+            Project testItem = list[index - 1];
+            return buildCarousel(index - 1, testItem, context);
+          }
         },
-        options: CarouselOptions(height: 200, enableInfiniteScroll: false),
+        options: CarouselOptions(
+            height: 200, enableInfiniteScroll: false, initialPage: 1),
       );
     }
   }
 
-  Widget addTeamsIfNotEmpty(List testList, BuildContext context) {
-    if (testList.isEmpty) {
+  Widget addTeamsIfNotEmpty(List<Team> list, List<Setting> settings,BuildContext context) {
+    
+    if (list.isEmpty) {
       return Container(
           alignment: Alignment.centerLeft,
           child: const Text('Non ci sono team recenti.'));
@@ -135,15 +162,12 @@ class HomePageScreen extends StatelessWidget {
       return ListView.builder(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemCount: testList
-              .length /*testlistProjectList.teamsList.length
-                     <
-                ProjectList.teamOnHomepageNumber
-            ? ProjectList.teamsList.length
-            : ProjectList.projectOnHomepageNumber*/
+          itemCount: list.length < settings[1].number
+            ? list.length 
+            : settings[1].number
           ,
           itemBuilder: (context, index) {
-            Team testItem = testList[index];
+            Team testItem = list[index];
             return ExpandableTeamTile(testItem.getName(), index);
           });
     }
@@ -188,13 +212,13 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              Flexible(child: Text(overflow: TextOverflow.ellipsis,
                 widget.teamName,
                 style: const TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                 ),
-              ),
+              )),
               FutureBuilder<List<Member>>(
                 future: _membersFuture,
                 builder: (context, snapshot) {
@@ -203,13 +227,13 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Errore: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
-                    return Text(
+                    return Flexible(child: Text(overflow: TextOverflow.fade,
                       "(${snapshot.data!.length} membri)",
                       style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: 14,
                       ),
-                    );
+                    ));
                   } else {
                     return const SizedBox();
                   }

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:flutter_application/data/project_list.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:css_colors/css_colors.dart';
 import 'home.dart';
-import '../commonElements/responsive_padding.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

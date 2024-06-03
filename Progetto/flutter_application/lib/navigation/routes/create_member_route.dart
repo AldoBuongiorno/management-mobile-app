@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application/data/project_list.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 import 'package:flutter_application/classes/all.dart';

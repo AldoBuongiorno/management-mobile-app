@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/classes/all.dart';
-import 'package:flutter_application/data/database_helper.dart';
 
 
 class ProjectList {

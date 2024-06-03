@@ -349,7 +349,7 @@ Future<void> assignTeamToMember(String teamName, int code) async {
     where: 'code = ?',
     whereArgs: [code],
   );
-  } else if(member!.secondaryTeam == null) { await db.update(
+  } else if(member.secondaryTeam == null) { await db.update(
     'Member',
     {'secondaryTeam': teamName},
     where: 'code = ?',

@@ -1,17 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application/commonElements/headings_title.dart';
-import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/navigation/teams_page.dart';
-import 'commonElements/carousel_item.dart';
 import 'navigation/add_page.dart';
-import 'data/project_list.dart';
 import 'navigation/homepage.dart';
 import 'navigation/projects_page.dart';
 import './main.dart';
-import 'package:flutter_application/classes/all.dart';
 import './navigation/stats_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   int index = 0;
 
   final screens = [
-    const HomePageScreen(), //in navigation/homepage.dart
+    HomePageScreen(), //in navigation/homepage.dart
     const ProjectScreen(), //in navigation/projects_page.dart
     const AddPage(), //in navigation/add_page.dart
     const TeamScreen(), //in navigation/teams_page.dart
