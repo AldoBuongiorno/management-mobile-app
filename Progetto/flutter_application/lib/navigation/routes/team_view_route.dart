@@ -98,9 +98,6 @@ class _TeamRouteState extends State<TeamRoute> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: BlurredBox(
-                    borderRadius: BorderRadius.circular(10),
-                    sigma: 15,
                     child: FutureBuilder<List<Member>>(
                       future: _membersFuture,
                       builder: (context, snapshot) {
@@ -177,12 +174,11 @@ class _TeamRouteState extends State<TeamRoute> {
                       },
                     ),
                   ),
-                ),
-              ],
+                ]),
+              
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
