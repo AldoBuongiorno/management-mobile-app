@@ -43,6 +43,20 @@ class _StatsPageState extends State<StatsPage> {
     return projectsStatus;
   }
 
+  Widget _buildLegendItem({required Color color, required String text}) {
+    return Row(
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          color: color,
+          margin: EdgeInsets.only(right: 5),
+        ),
+        Text(text),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -144,6 +158,33 @@ class _StatsPageState extends State<StatsPage> {
                       },
                     ),
                     const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildLegendItem(
+                          color: Colors.green,
+                          text: 'Attivi',
+                        ),
+                        _buildLegendItem(
+                          color: Colors.blue,
+                          text: 'Completati',
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildLegendItem(
+                          color: Colors.red,
+                          text: 'Falliti',
+                        ),
+                        _buildLegendItem(
+                          color: Colors.orange,
+                          text: 'Sospesi',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
                     FutureBuilder<List<double>>(
                       future: _loadProjectsStatus(),
                       builder: (context, snapshot) {
@@ -163,24 +204,24 @@ class _StatsPageState extends State<StatsPage> {
                               PieChartData(
                                 sections: [
                                   PieChartSectionData(
-                                    color: Colors.blue,
+                                    color: Colors.green,
                                     value: snapshot.data?[0],
-                                    title: 'Attivi',
+                                    title: '${snapshot.data?[0].toInt()}',
                                   ),
                                   PieChartSectionData(
-                                    color: Colors.green,
+                                    color: Colors.blue,
                                     value: snapshot.data?[1],
-                                    title: 'Completati',
+                                    title: '${snapshot.data?[1].toInt()}',
                                   ),
                                   PieChartSectionData(
                                     color: Colors.red,
                                     value: snapshot.data?[2],
-                                    title: 'Falliti',
+                                    title: '${snapshot.data?[2].toInt()}',
                                   ),
                                   PieChartSectionData(
                                     color: Colors.orange,
                                     value: snapshot.data?[3],
-                                    title: 'Sospesi',
+                                    title: '${snapshot.data?[3].toInt()}',
                                   ),
                                 ],
                               ),
