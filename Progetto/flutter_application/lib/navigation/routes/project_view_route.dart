@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
@@ -26,6 +25,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
 
   @override
   Widget build(BuildContext context) {
+    final failureReasonController = TextEditingController();
     return Container(
         decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -142,12 +142,31 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                             'Fallito'
                                         ? null
                                         : () async {
-                                            DatabaseHelper.instance
+                                            showDialog(context: context, builder: ((context) {
+                                              return AlertDialog(
+                                                
+                                                title: Text('Motivazione fallimento'),
+                                                content: TextField(
+                                                  maxLines: 4,
+                                                  controller: failureReasonController,
+
+                                                ),
+                                                actions: [TextButton(onPressed: () {
+                                                  DatabaseHelper.instance.updateFailureReason(widget.project.name, failureReasonController.text);
+                                                  DatabaseHelper.instance.updateStatus(widget.project.name, 'Fallito');
+                                                  setState(() {});
+
+                                                }, child: Text('Conferma'))],
+                                              );
+
+                                            }));
+
+                                            /*DatabaseHelper.instance
                                                 .updateStatus(
                                                     widget.project.name,
                                                     "Fallito");
                                             widget.project.status = 'Fallito';
-                                            setState(() {}); //
+                                            setState(() {}); *///
                                           },
                                     child: const Row(children: [
                                       Icon(Icons.archive),
