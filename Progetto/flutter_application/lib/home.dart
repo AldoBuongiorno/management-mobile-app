@@ -30,20 +30,30 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 0,
-          systemOverlayStyle: const SystemUiOverlayStyle( //stile dell'area di sistema sopra l'applicazione
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            //stile dell'area di sistema sopra l'applicazione
             statusBarColor: Color.fromARGB(56, 0, 0, 0),
           ),
         ),
         body: screens[index],
         bottomNavigationBar: NavigationBarTheme(
-            data: Group21App.navigationBarTheme, //in main.dart
-            child: ClipRect( //serve per ritagliare il figlio in un rettangolo per garantire che l'effetto di sfocatura (BackdropFilter) venga applicato correttamente solo all'interno del rettangolo del widget.
+            data: const NavigationBarThemeData(
+              //tema barra di navigazione sotto
+              height: 55,
+              indicatorColor: Color.fromARGB(255, 235, 235, 235),
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+              backgroundColor: Color.fromARGB(56, 0, 0, 0),
+            ), //in main.dart
+            child: ClipRect(
+                //serve per ritagliare il figlio in un rettangolo per garantire che l'effetto di sfocatura (BackdropFilter) venga applicato correttamente solo all'interno del rettangolo del widget.
                 child: BackdropFilter(
-                    filter: ImageFilter.blur( //sfocatura allo sfondo della navbar
+                    filter: ImageFilter.blur(
+                      //sfocatura allo sfondo della navbar
                       sigmaX: 20.0,
                       sigmaY: 20.0,
                     ),
-                    child: Opacity( //opacità della navbar
+                    child: Opacity(
+                      //opacità della navbar
                       //you can change the opacity to whatever suits you best
                       opacity: 1,
                       child: NavigationBar(
@@ -64,8 +74,8 @@ class _HomePageState extends State<HomePage> {
                               selectedIcon: Icon(Icons.map),
                               label: ''),
                           NavigationDestination(
-                              icon:
-                                  Icon(Icons.settings_outlined, color: Colors.white),
+                              icon: Icon(Icons.settings_outlined,
+                                  color: Colors.white),
                               selectedIcon: Icon(Icons.settings),
                               label: ''),
                           NavigationDestination(
@@ -83,4 +93,3 @@ class _HomePageState extends State<HomePage> {
                     )))));
   }
 }
-

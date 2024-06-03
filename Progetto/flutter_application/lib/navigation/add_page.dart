@@ -129,8 +129,9 @@ class FirstRoute extends StatelessWidget {
                           ]);
                         }
                       }),
+                      Row(children: [
                   SizedBox(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.of(context).size.width / 3,
                       height: 50,
                       child: BlurredBox(
                           borderRadius: BorderRadius.circular(10),
@@ -164,7 +165,7 @@ class FirstRoute extends StatelessWidget {
                           ))),
                   const SizedBox(height: 5),
                   SizedBox(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.of(context).size.width / 3,
                       height: 50,
                       child: BlurredBox(
                           borderRadius: BorderRadius.circular(10),
@@ -232,7 +233,7 @@ class FirstRoute extends StatelessWidget {
                                           const ToAddTeamRoute()));
                             },
                           ))),
-                ]))));
+                ])]))));
   }
 }
 
