@@ -282,6 +282,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                         projectNameController.text;
                                     widget.project.description =
                                         projectDescriptionController.text;
+                                    widget.project.team = teamsList[chips.selectedTeam];
 
                                     DatabaseHelper.instance.updateProjectName(
                                         oldName,

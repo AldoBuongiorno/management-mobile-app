@@ -101,6 +101,7 @@ class _Group21AppState extends State<Group21App> {
             false, //non mostra il banner di debug in alto a destra
         title: 'Gruppo 21',
         theme: ThemeData(
+          datePickerTheme: DatePickerThemeData(headerForegroundColor: Colors.pink),
             textSelectionTheme: const TextSelectionThemeData(
               //tema del cursore del testo e dello sfondo del testo selezionato
               selectionHandleColor: Colors.pink,
