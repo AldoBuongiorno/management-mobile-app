@@ -356,6 +356,10 @@ class DatabaseHelper {
   Future<List<int>> getAvgNumMembersPerTeam() async {
     List<Team> teams = await getTeams();
     List<int> numMembersPerTeam = [];
+    if(teams == null){
+      numMembersPerTeam.add(0);
+      return numMembersPerTeam;
+    }
     for (final team in teams) {
       final db = await database;
       final List<Map<String, dynamic>> result = await db.rawQuery(
