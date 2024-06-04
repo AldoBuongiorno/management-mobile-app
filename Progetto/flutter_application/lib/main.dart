@@ -37,8 +37,10 @@ void main() async {
 }
 
 class Group21App extends StatefulWidget {
+  const Group21App({super.key});
+
   @override
-  _Group21AppState createState() => _Group21AppState();
+  State<Group21App> createState() => _Group21AppState();
 }
 
 class _Group21AppState extends State<Group21App> {
@@ -64,19 +66,20 @@ class _Group21AppState extends State<Group21App> {
   BoxDecoration getGradientDecoration() {
     //gradiente per lo sfondo degli screen dell'app
     return const BoxDecoration(
-        gradient: LinearGradient(
-      colors: [
-        Color.fromARGB(255, 232, 232, 232),
-        Color.fromARGB(255, 0, 183, 255),
-        Color.fromARGB(255, 0, 183, 255),
-        Color.fromARGB(255, 255, 0, 115),
-        Color.fromARGB(255, 255, 0, 115),
-        Colors.yellow,
-      ],
-      stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
-      begin: Alignment.topLeft,
-      end: Alignment.bottomRight,
-    ));
+      gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 232, 232, 232),
+          Color.fromARGB(255, 0, 183, 255),
+          Color.fromARGB(255, 0, 183, 255),
+          Color.fromARGB(255, 255, 0, 115),
+          Color.fromARGB(255, 255, 0, 115),
+          Colors.yellow,
+        ],
+        stops: [0.79, 0.79, 0.865, 0.865, 0.94, 0.94],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      )
+    );
   }
 
   /*static const NavigationBarThemeData navigationBarTheme =
@@ -95,29 +98,29 @@ class _Group21AppState extends State<Group21App> {
     return Container(
       decoration: getGradientDecoration(),
       child: MaterialApp(
-        debugShowCheckedModeBanner:
-            false, //non mostra il banner di debug in alto a destra
+        debugShowCheckedModeBanner: false, //non mostra il banner di debug in alto a destra
         title: 'Gruppo 21',
         theme: ThemeData(
-            //datePickerTheme: DatePickerThemeData().copyWith(),
-            textSelectionTheme: const TextSelectionThemeData(
-              //tema del cursore del testo e dello sfondo del testo selezionato
-              selectionHandleColor: Colors.pink,
-              selectionColor: Colors.pinkAccent,
-              cursorColor: Colors.pink,
-            ),
-            scaffoldBackgroundColor: Colors.transparent,
-            appBarTheme: const AppBarTheme(
-              //tema barra superiore dell'applicazione
-              backgroundColor: Color.fromARGB(0, 0, 0, 0),
-              toolbarHeight: 50,
-            ),
-            textTheme: Theme.of(context).textTheme.apply(
-                  //tema del testo
-                  bodyColor: const Color.fromARGB(255, 0, 0, 0),
-                  displayColor: const Color.fromARGB(255, 0, 0, 0),
-                  fontFamily: 'Poppins',
-                )),
+          //datePickerTheme: DatePickerThemeData().copyWith(),
+          textSelectionTheme: const TextSelectionThemeData(
+            //tema del cursore del testo e dello sfondo del testo selezionato
+            selectionHandleColor: Colors.pink,
+            selectionColor: Colors.pinkAccent,
+            cursorColor: Colors.pink,
+          ),
+          scaffoldBackgroundColor: Colors.transparent,
+          appBarTheme: const AppBarTheme(
+            //tema barra superiore dell'applicazione
+            backgroundColor: Color.fromARGB(0, 0, 0, 0),
+            toolbarHeight: 50,
+          ),
+          textTheme: Theme.of(context).textTheme.apply(
+            //tema del testo
+            bodyColor: const Color.fromARGB(255, 0, 0, 0),
+            displayColor: const Color.fromARGB(255, 0, 0, 0),
+            fontFamily: 'Poppins',
+          )
+        ),
         home: const HomePage(),
       ),
     );
