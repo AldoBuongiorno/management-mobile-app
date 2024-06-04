@@ -44,7 +44,7 @@ class FirstRoute extends StatelessWidget {
                           AsyncSnapshot<List<Setting>> snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center();
+                          return const Center();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else {
@@ -129,111 +129,140 @@ class FirstRoute extends StatelessWidget {
                           ]);
                         }
                       }),
-                      Row(children: [
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      height: 50,
-                      child: BlurredBox(
-                          borderRadius: BorderRadius.circular(10),
-                          sigma: 15,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(50, 0, 0, 0)),
-                                shadowColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ))),
-                            child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.library_add_check),
-                                  Text(
-                                    'Aggiungi progetto',
-                                    style: TextStyle(color: Colors.black),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: [
+                          SizedBox(
+                            //width: MediaQuery.of(context).size.width / 3,
+                            height: 50,
+                            child: BlurredBox(
+                              borderRadius: BorderRadius.circular(10),
+                              sigma: 15,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all(
+                                    const Color.fromARGB(50, 0, 0, 0)
                                   ),
-                                ]),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SecondRoute()));
-                            },
-                          ))),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 3,
-                      height: 50,
-                      child: BlurredBox(
-                          borderRadius: BorderRadius.circular(10),
-                          sigma: 15,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(50, 0, 0, 0)),
-                                shadowColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ))),
-                            child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.person_add),
-                                  Text(
-                                    'Aggiungi membro',
-                                    style: TextStyle(color: Colors.black),
+                                  shadowColor: WidgetStateProperty.all(
+                                    Colors.transparent
                                   ),
-                                ]),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ToAddMemberRoute()));
-                            },
-                          ))),
-                  const SizedBox(height: 5),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      child: BlurredBox(
-                          borderRadius: BorderRadius.circular(10),
-                          sigma: 15,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                foregroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(50, 0, 0, 0)),
-                                shadowColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                                shape: MaterialStateProperty.all(
+                                  shape: WidgetStateProperty.all(
                                     RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ))),
-                            child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.group_add),
-                                  Text(
-                                    'Aggiungi team',
-                                    style: TextStyle(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(10),
+                                    )
+                                  )
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.library_add_check),
+                                    SizedBox(width: 5),
+                                    Text('Aggiungi progetto',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ]
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context, 
+                                    MaterialPageRoute(builder: (context) =>
+                                      const SecondRoute()
+                                    )
+                                  );
+                                },
+                              )
+                            )
+                          ),
+                          const SizedBox(height: 5, width: 10),
+                          SizedBox(
+                            // width: MediaQuery.of(context).size.width / 3,
+                            height: 50,
+                            child: BlurredBox(
+                              borderRadius: BorderRadius.circular(10),
+                              sigma: 15,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all(
+                                    const Color.fromARGB(50, 0, 0, 0)
                                   ),
-                                ]),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ToAddTeamRoute()));
-                            },
-                          ))),
-                ])]))));
+                                  shadowColor: WidgetStateProperty.all(
+                                    Colors.transparent
+                                  ),
+                                  shape: WidgetStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )
+                                  )
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.person_add),
+                                    SizedBox(width: 5),
+                                    Text('Aggiungi membro',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ]
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) =>
+                                      const ToAddMemberRoute()
+                                    )
+                                  );
+                                },
+                              )
+                            )
+                          ),
+                          const SizedBox(height: 5, width: 10),
+                          SizedBox(
+                            // width: MediaQuery.of(context).size.width,
+                            height: 50,
+                            child: BlurredBox(
+                              borderRadius: BorderRadius.circular(10),
+                              sigma: 15,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                  foregroundColor: WidgetStateProperty.all(Colors.white),
+                                  backgroundColor: WidgetStateProperty.all(
+                                    const Color.fromARGB(50, 0, 0, 0)
+                                  ),
+                                  shadowColor: WidgetStateProperty.all(
+                                    Colors.transparent
+                                  ),
+                                  shape: WidgetStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )
+                                  )
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.group_add),
+                                    SizedBox(width: 5),
+                                    Text('Aggiungi team',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ]
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) =>
+                                      const ToAddTeamRoute()
+                                    )
+                                  );
+                                },
+                              )
+                            )
+                          ),
+                        ]
+                                            ),
+                      )
+                  ]
+                )
+              )
+            )
+          );
   }
 }
 
