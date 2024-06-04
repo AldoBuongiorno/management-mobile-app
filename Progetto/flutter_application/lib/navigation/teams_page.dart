@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import 'package:flutter_application/navigation/routes/edit_team_route.dart';
-import 'package:flutter_application/navigation/routes/team_view_route.dart';
+import 'package:flutter_application/navigation/routes/view_team_route.dart';
 import '../commonElements/blurred_box.dart';
 import '../commonElements/responsive_padding.dart';
 import 'package:flutter_application/classes/all.dart';
@@ -127,7 +127,7 @@ class _TeamScreenState extends State<TeamScreen> {
                                     ),
                                   ).then((_) => _loadTeams()),
                                   icon: const Icon(
-                                    Icons.edit,
+                                    Icons.draw,
                                     color: Colors.white,
                                   ),
                                 ),

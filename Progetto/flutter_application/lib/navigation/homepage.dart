@@ -6,7 +6,7 @@ import '../classes/setting_class.dart';
 import '../commonElements/carousel_item.dart';
 import '../commonElements/headings_title.dart';
 import '../data/database_helper.dart';
-import 'add_page.dart';
+import 'settings_page.dart';
 
 class HomePageScreen extends StatefulWidget {
   @override
@@ -41,19 +41,20 @@ class HomePageScreenState extends State<HomePageScreen> {
           return Scaffold(
               //backgroundColor: Colors.amber,
               body: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics().applyTo(BouncingScrollPhysics()),
                   child: Column(
             //mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                   margin: EdgeInsets.symmetric(
-                      vertical: 10,
+                      vertical: 20,
                       horizontal: MediaQuery.of(context)
                                   .orientation == //il margine orizzontale dipende dall'orientamento del dispositivo
                               Orientation.portrait
                           ? 20
                           : 100),
                   child: Row(children: [
-                    CustomHeadingTitle(titleText: 'Progetti recenti'),
+                    CustomHeadingTitle(titleText: 'Progetti attivi'),
                   ])),
               const SizedBox(height: 20),
               addCarouselIfNotEmpty(
@@ -110,7 +111,7 @@ class HomePageScreenState extends State<HomePageScreen> {
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SecondRoute(),
+                        builder: (context) => const ToAddProjectRoute(),
                       ),
                     ).then((_) => setState(() {})),
                 child: Container( height: 200,
@@ -145,7 +146,7 @@ class HomePageScreenState extends State<HomePageScreen> {
                 onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const SecondRoute(),
+                        builder: (context) => const ToAddProjectRoute(),
                       ),
                     ).then((_) => setState(() {})),
                 child: Container(

@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/navigation/teams_page.dart';
-import 'navigation/add_page.dart';
+import 'navigation/settings_page.dart';
 import 'navigation/homepage.dart';
 import 'navigation/projects_page.dart';
 import './main.dart';
@@ -20,9 +20,9 @@ class _HomePageState extends State<HomePage> {
   final screens = [
     HomePageScreen(), //in navigation/homepage.dart
     const ProjectScreen(), //in navigation/projects_page.dart
-    const AddPage(), //in navigation/add_page.dart
     const TeamScreen(), //in navigation/teams_page.dart
     const StatsPage(), //in navigation/stats_page.dart
+    const Settings(), //in navigation/settings_page.dart
   ];
 
   @override
@@ -45,8 +45,6 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Color.fromARGB(56, 0, 0, 0),
               shadowColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
-              
-              
             ), //in main.dart
             child: ClipRect(
                 //serve per ritagliare il figlio in un rettangolo per garantire che l'effetto di sfocatura (BackdropFilter) venga applicato correttamente solo all'interno del rettangolo del widget.
@@ -78,19 +76,19 @@ class _HomePageState extends State<HomePage> {
                               selectedIcon: Icon(Icons.map),
                               label: ''),
                           NavigationDestination(
-                              icon: Icon(Icons.settings_outlined,
-                                  color: Colors.white),
-                              selectedIcon: Icon(Icons.settings),
-                              label: ''),
-                          NavigationDestination(
                               icon: Icon(Icons.group_outlined,
                                   color: Colors.white),
                               selectedIcon: Icon(Icons.group),
                               label: ''),
                           NavigationDestination(
-                              icon: Icon(Icons.add_chart_outlined,
+                              icon: Icon(Icons.bar_chart_outlined,
                                   color: Colors.white),
-                              selectedIcon: Icon(Icons.add_chart),
+                              selectedIcon: Icon(Icons.bar_chart),
+                              label: ''),
+                          NavigationDestination(
+                              icon: Icon(Icons.settings_outlined,
+                                  color: Colors.white),
+                              selectedIcon: Icon(Icons.settings),
                               label: ''),
                         ],
                       ),

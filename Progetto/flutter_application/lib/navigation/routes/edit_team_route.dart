@@ -78,7 +78,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
           ),
         ),
         body: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics().applyTo(BouncingScrollPhysics()),
+          physics:
+              AlwaysScrollableScrollPhysics().applyTo(BouncingScrollPhysics()),
           child: Container(
             margin: getResponsivePadding(context),
             child: Column(
@@ -127,8 +128,10 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                   CustomHeadingTitle(titleText: "Copertina"),
                 ]),
                 grid,
-                ElevatedButton(style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, backgroundColor: Colors.pink),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.pink),
                   onPressed: () async {
                     // commento per nuovo commit e push 2
                     /*if (await DatabaseHelper.instance
@@ -190,14 +193,20 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                     // Altrimenti, procedi con l'aggiornamento del team
                     await DatabaseHelper.instance.updateTeamName(
                         widget.team.getName(), teamNameController.text);
+                    await DatabaseHelper.instance.updateThumbnailTeam(
+                        teamNameController.text,
+                        ProjectList.thumbnailsListTeam[grid.selectedThumbnail]
+                            .assetName);
+                            widget.team.name = teamNameController.text;
+                            widget.team.thumbnail = ProjectList.thumbnailsListTeam[grid.selectedThumbnail];
 
                     for (Member member in selectedMembers) {
                       await DatabaseHelper.instance.assignTeamToMember(
                           teamNameController.text, member.code!);
                     }
 
-                    for (Member member
-                        in await DatabaseHelper.instance.getMembersByTeam(widget.team.name)) {
+                    for (Member member in await DatabaseHelper.instance
+                        .getMembersByTeam(widget.team.name)) {
                       if (!selectedMembers.contains(member)) {
                         DatabaseHelper.instance.removeTeamFromMember(
                             member.code!, widget.team.name);

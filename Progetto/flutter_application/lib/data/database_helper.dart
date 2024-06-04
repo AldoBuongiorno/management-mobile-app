@@ -635,6 +635,14 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> wipeDatabase() async {
+    final db = await database;
+    await db.delete('Task');
+    await db.delete('Team');
+    await db.delete('Member');
+    await db.delete('Project');
+  }
+
   Future<void> deleteProject(String name) async {
     final db = await database;
     await db.delete(
