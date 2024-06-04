@@ -815,4 +815,18 @@ class DatabaseHelper {
         ),
     ];
   }
+
+  Future<List<String>> getProjectsByTeam(String teamName) async {
+  final db = await database;
+
+  final List<Map<String, Object?>> projectsMaps = await db.query(
+    'Project',
+    columns: ['name'],
+    where: 'status = ? AND team = ?',
+    whereArgs: ['Attivo', teamName],
+  );
+
+  return projectsMaps.map((project) => project['name'] as String).toList();
+}
+
 }
