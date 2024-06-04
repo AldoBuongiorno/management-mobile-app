@@ -30,6 +30,11 @@ class _TeamRouteState extends State<TeamRoute> {
     return membersTeam;
   }
 
+  Future<List<String>> _loadProjectsByTeam(String team) async {
+    final projectsTeam = await DatabaseHelper.instance.getProjectsByTeam(team);
+    return projectsTeam;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,7 +78,8 @@ class _TeamRouteState extends State<TeamRoute> {
                     ),
                   ).then((_) {
                     setState(() {
-                      _membersFuture = _loadMembersByTeam(widget.team.getName());
+                      _membersFuture =
+                          _loadMembersByTeam(widget.team.getName());
                     });
                   }),
                   icon: const Icon(Icons.draw),
@@ -89,7 +95,7 @@ class _TeamRouteState extends State<TeamRoute> {
           child: Container(
             margin: getResponsivePadding(context),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
@@ -131,8 +137,10 @@ class _TeamRouteState extends State<TeamRoute> {
                                   Row(
                                     children: [
                                       const Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           Text('Matricola:'),
                                           Text('Nome:'),
@@ -142,24 +150,35 @@ class _TeamRouteState extends State<TeamRoute> {
                                       ),
                                       const SizedBox(width: 10),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
-                                            snapshot.data![index].getCode().toString(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            snapshot.data![index]
+                                                .getCode()
+                                                .toString(),
                                           ),
                                           Text(
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
-                                            snapshot.data![index].getMemberName(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            snapshot.data![index]
+                                                .getMemberName(),
                                           ),
                                           Text(
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
-                                            snapshot.data![index].getMemberSurname(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            snapshot.data![index]
+                                                .getMemberSurname(),
                                           ),
                                           Text(
-                                            style: const TextStyle(fontWeight: FontWeight.bold),
-                                            snapshot.data![index].getMemberRole(),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                            snapshot.data![index]
+                                                .getMemberRole(),
                                           ),
                                         ],
                                       ),
@@ -174,6 +193,56 @@ class _TeamRouteState extends State<TeamRoute> {
                     },
                   ),
                 ),
+                FutureBuilder<List<String>>(
+                  future: _loadProjectsByTeam(widget.team.getName()),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<String>> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator();
+                    } else {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        if (snapshot.data!.isEmpty) {
+                          return const Text(
+                            'Attualmente, il team non sta lavorando a nessun progetto.',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Poppins',
+                            ),
+                          );
+                        } else {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Attualmente il team sta lavorando a: ',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins',
+                                ),
+                              ),
+                              Wrap(
+                                direction: Axis.vertical,
+                                children: snapshot.data!.map((project) {
+                                  return Text(
+                                    project,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          );
+                        }
+                      }
+                    }
+                  },
+                ),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -193,7 +262,8 @@ class _TeamRouteState extends State<TeamRoute> {
                       ),
                       onPressed: () async {
                         DatabaseHelper.instance.deleteTeam(widget.team.name);
-                        DatabaseHelper.instance.deleteProjectByTeam(widget.team.name);
+                        DatabaseHelper.instance
+                            .deleteProjectByTeam(widget.team.name);
                         Navigator.of(context).pop();
                       },
                       child: const Row(

@@ -17,6 +17,13 @@ class CreateTeamScreen extends StatefulWidget {
 }
 
 class _CreateTeamScreen extends State<CreateTeamScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    selectedMembers.clear();
+  }
+
   
   final teamNameController = TextEditingController();
   @override
