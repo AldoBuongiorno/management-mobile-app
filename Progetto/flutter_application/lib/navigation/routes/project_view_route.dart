@@ -244,7 +244,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                                                     BorderSide
                                                                         .none),
                                                             hintText:
-                                                                'Inserisci il nome del progetto',
+                                                                'Inserisci la motivazione del fallimento',
                                                             hintStyle: TextStyle(
                                                                 color: Color
                                                                     .fromARGB(

@@ -333,6 +333,18 @@ class DatabaseHelper {
     }
   }
 
+  Future<int> getNumMembers() async {
+    final db = await database;
+    final List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT COUNT(*) as count FROM Member');
+
+    if (result.isNotEmpty) {
+      return result.first['count'] as int;
+    } else {
+      return 0;
+    }
+  }
+
   Future<List<int>> getAvgNumMembersPerTeam() async {
     List<Team> teams = await getTeams();
     List<int> numMembersPerTeam = [];
