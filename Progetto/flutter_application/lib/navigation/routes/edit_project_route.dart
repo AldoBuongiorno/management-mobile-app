@@ -54,7 +54,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
         selectedThumbnail:
             Thumbnail.projectThumbnails.indexOf(widget.project.thumbnail),
         list: Thumbnail.projectThumbnails);
-        late SelectableTeamsList chips;
+    late SelectableTeamsList chips;
 
     return Container(
         decoration: const BoxDecoration(
@@ -89,7 +89,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
             ),
             body: SingleChildScrollView(
                 physics: const BouncingScrollPhysics()
-                    .applyTo(AlwaysScrollableScrollPhysics()),
+                    .applyTo(const AlwaysScrollableScrollPhysics()),
                 child: Container(
                     margin: getResponsivePadding(context),
                     child: Column(
@@ -162,26 +162,29 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                           ]),
                           const SizedBox(height: 5),
                           Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0),
                               child: FutureBuilder(
-          future: DatabaseHelper.instance.getTeams(),
-          builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SizedBox();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else { 
-              chips = SelectableTeamsList(teamsList: snapshot.data!, selectedTeam: snapshot.data!.indexOf(widget.project.team!),);
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    chips
-                  ]
-                ),
-              );
-            }
-          })),
+                                  future: DatabaseHelper.instance.getTeams(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<Team>> snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const SizedBox();
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      chips = SelectableTeamsList(
+                                        teamsList: snapshot.data!,
+                                        selectedTeam: snapshot.data!
+                                            .indexOf(widget.project.team!),
+                                      );
+                                      return SingleChildScrollView(
+                                        scrollDirection: Axis.horizontal,
+                                        child: Row(children: [chips]),
+                                      );
+                                    }
+                                  })),
                           const SizedBox(height: 5),
                           Row(children: [
                             //SizedBox(width: 25),
@@ -274,81 +277,96 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                     foregroundColor: Colors.white,
                                     backgroundColor: Colors.pink),
                                 onPressed: () async {
-                                  List<Team> teamsList = await DatabaseHelper.instance.getTeams();
+                                  List<Team> teamsList =
+                                      await DatabaseHelper.instance.getTeams();
                                   String oldName = widget.project.name;
+                                  !(projectNameController.text.isEmpty ||
+                                        projectDescriptionController
+                                              .text.isEmpty ||
+                                          projectNameController.text == '' ||
+                                          projectDescriptionController.text ==
+                                              '')
+                                      ? {
+                                          widget.project.name =
+                                              projectNameController.text,
+                                          widget.project.description =
+                                              projectDescriptionController.text,
+                                          widget.project.team =
+                                              teamsList[chips.selectedTeam],
 
-                                  {
-                                    widget.project.name =
-                                        projectNameController.text;
-                                    widget.project.description =
-                                        projectDescriptionController.text;
-                                    widget.project.team = teamsList[chips.selectedTeam];
+                                          DatabaseHelper.instance
+                                              .updateProjectName(oldName,
+                                                  projectNameController.text),
+                                          DatabaseHelper.instance
+                                              .updateProjectTeam(
+                                                  projectNameController.text,
+                                                  teamsList[chips.selectedTeam]
+                                                      .name),
+                                          DatabaseHelper.instance
+                                              .updateDescription(
+                                                  projectNameController.text,
+                                                  projectDescriptionController
+                                                      .text),
+                                          DatabaseHelper.instance
+                                              .updateThumbnail(
+                                                  projectNameController.text,
+                                                  Thumbnail
+                                                      .projectThumbnails[grid
+                                                          .selectedThumbnail]
+                                                      .assetName),
 
-                                    DatabaseHelper.instance.updateProjectName(
-                                        oldName,
-                                        projectNameController.text);
-                                    DatabaseHelper.instance.updateProjectTeam(
-                                      projectNameController.text,
-                                      teamsList[chips.selectedTeam].name
-                                    );
-                                    DatabaseHelper.instance.updateDescription(
-                                        projectNameController.text,
-                                        projectDescriptionController.text);
-                                    DatabaseHelper.instance.updateThumbnail(
-                                        projectNameController.text,
-                                        Thumbnail
-                                            .projectThumbnails[
-                                                grid.selectedThumbnail]
-                                            .assetName);
+                                          DatabaseHelper.instance
+                                              .updateTaskProject(oldName,
+                                                  projectNameController.text),
+                                          //DatabaseHelper.instance.updateTas
 
-                                            DatabaseHelper.instance.updateTaskProject(oldName, projectNameController.text);
-                                    //DatabaseHelper.instance.updateTas
-                                    
-                                    //DatabaseHelper.instance.updateTas
-                                    setState(() {});
+                                          //DatabaseHelper.instance.updateTas
+                                          setState(() {}),
 
-                                    Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      padding: EdgeInsets.zero,
-                                      elevation: 0,
-                                      backgroundColor: Colors.transparent,
-                                      content: Container(
-                                          color: const Color.fromARGB(
-                                              156, 0, 0, 0),
-                                          child: BlurredBox(
-                                              sigma: 20,
-                                              borderRadius: BorderRadius.zero,
-                                              child: const Column(children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                    'Progetto modificato con successo!'),
-                                                SizedBox(
-                                                  height: 10,
-                                                )
-                                              ]))),
-                                    ));
-                                    /*showDialog<String>(
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                                  title:
-                                                      const Text('Successo!'),
-                                                  content: Text(
-                                                      ("Il progetto \"${widget.project.name}\" è stato modificato correttamente.")),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.pop(
-                                                              context, 'Ok'),
-                                                      child: const Text('Ok'),
-                                                    ),
-                                                  ],
-                                                ));*/
-                                  }
-                                  
+                                          Navigator.of(context).pop(),
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            padding: EdgeInsets.zero,
+                                            elevation: 0,
+                                            backgroundColor: Colors.transparent,
+                                            content: Container(
+                                                color: const Color.fromARGB(
+                                                    156, 0, 0, 0),
+                                                child: BlurredBox(
+                                                    sigma: 20,
+                                                    borderRadius:
+                                                        BorderRadius.zero,
+                                                    child:
+                                                        const Column(children: [
+                                                      SizedBox(
+                                                        height: 10,
+                                                      ),
+                                                      Text(
+                                                          'Progetto modificato con successo!'),
+                                                      SizedBox(
+                                                        height: 10,
+                                                      )
+                                                    ]))),
+                                          ))
+                                        }
+                                      : {
+                                          showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  AlertDialog(
+                                                    title: const Text('Errore'),
+                                                    content: const Text(
+                                                        ("Il campo nome e descrizione non possono essere vuoti.")),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        onPressed: () =>
+                                                            Navigator.pop(
+                                                                context, 'Ok'),
+                                                        child: const Text('Ok'),
+                                                      ),
+                                                    ],
+                                                  ))
+                                        };
                                 },
                                 child: const Row(
                                     mainAxisSize: MainAxisSize.min,
