@@ -35,11 +35,12 @@ class DatabaseHelper {
         await db.execute(
           '''
           CREATE TABLE Task(
-            name TEXT PRIMARY KEY,
+            name TEXT,
             completationDate TEXT,
             completed INTEGER NOT NULL,
             progress REAL NOT NULL,
-            project TEXT NOT NULL,
+            project TEXT,
+            PRIMARY KEY(name, project),
             FOREIGN KEY(project) REFERENCES Project(name)
           )
           ''',
