@@ -25,9 +25,9 @@ class _StatsPageState extends State<StatsPage> {
     for (final num in numMembersPerTeam) {
       sum += num;
     }
-    if(sum == 0){
+    if (sum == 0) {
       return 0;
-    }else{
+    } else {
       return (sum / numMembersPerTeam.length).round();
     }
   }
@@ -269,9 +269,12 @@ class _StatsPageState extends State<StatsPage> {
                     ],
                   ),
                 )),
-                const SizedBox(height: 5,),
+            const SizedBox(
+              height: 5,
+            ),
             FutureBuilder(
-              future: DatabaseHelper.instance.getProjects(),
+              future: DatabaseHelper.instance
+                  .getActiveProjectsOrderedByLastModified(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -279,26 +282,29 @@ class _StatsPageState extends State<StatsPage> {
                   return Center(child: Text('Errore: ${snapshot.error}'));
                 } else {
                   return ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       itemBuilder: ((context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
-                          padding:
-                              const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 15),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15)),
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(snapshot.data![index].name, style: const TextStyle(fontWeight: FontWeight.bold),),
-                                  Text('Creato ${DateTime.now().difference(snapshot.data![index].creationDate!).inDays} giorni fa.'),
+                                children: [ _buildLegendItem(
+                                  color: Colors.green,
+                                  text: '',
+                                ),
                                 ],
                               ),
+<<<<<<< Updated upstream
                               FutureBuilder(
                                   future: snapshot.data![index].getProgress(),
                                   builder: (context, taskSnapshot) {
@@ -316,6 +322,43 @@ class _StatsPageState extends State<StatsPage> {
                                       : const Text('0%', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),);
                                     }
                                   })
+=======
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot.data![index].name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                      'Creato ${DateTime.now().difference(snapshot.data![index].creationDate!).inDays} giorni fa.'),
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [ FutureBuilder(
+                                    future: snapshot.data![index].getProgress(),
+                                    builder: (context, taskSnapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      } else if (snapshot.hasError) {
+                                        return Center(
+                                            child: Text(
+                                                'Errore: ${snapshot.error}'));
+                                      } else {
+                                        return Text(
+                                          '${taskSnapshot.data}%',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        );
+                                      }
+                                    }), ],
+                              ),
+>>>>>>> Stashed changes
                             ],
                           ),
                         );
