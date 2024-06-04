@@ -36,9 +36,7 @@ class DatabaseHelper {
           '''
           CREATE TABLE Task(
             name TEXT,
-            completationDate TEXT,
             completed INTEGER NOT NULL,
-            progress REAL NOT NULL,
             project TEXT,
             PRIMARY KEY(name, project),
             FOREIGN KEY(project) REFERENCES Project(name)
@@ -99,13 +97,13 @@ class DatabaseHelper {
             ('Project Iota', 'Monitoring and mitigating risks related to information security', '2023-05-01', '2023-11-30', '2023-05-25', 'Attivo', NULL, 'Security', 'assets/images/projectPreview/studying.jpg');
           ''');
         await db.rawInsert('''
-          INSERT INTO Task (name, completationDate, completed, progress, project) VALUES
-            ('Task 1', '2023-01-15', 1, 100.0, 'Project Alpha'),
-            ('Task 2', '2023-02-28', 1, 100.0, 'Project Beta'),
-            ('Task 3', '2023-04-30', 0, 50.0, 'Project Gamma'),
-            ('Task 4', '2023-05-31', 0, 25.0, 'Project Delta'),
-            ('Task 5', '2023-06-30', 0, 0.0, 'Project Epsilon'),
-            ('Task 6', '2023-04-30', 0, 50.0, 'Project Iota');
+          INSERT INTO Task (name, completed, project) VALUES
+            ('Task 1', 1, 'Project Alpha'),
+            ('Task 2', 1, 'Project Beta'),
+            ('Task 3', 0, 'Project Gamma'),
+            ('Task 4', 0, 'Project Delta'),
+            ('Task 5', 0, 'Project Epsilon'),
+            ('Task 6', 0, 'Project Iota');
           ''');
         await db.rawInsert('''
           INSERT INTO Member (name, surname, role, mainTeam, secondaryTeam) VALUES
@@ -194,18 +192,12 @@ class DatabaseHelper {
     return [
       for (final {
             'name': name as String,
-            'completationDate': completationDate as String?,
             'completed': completed as int?,
-            'progress': progress as double?,
             'project': project as String,
           } in tasksMaps)
         Task(
             name: name,
-            completationDate: completationDate != null
-                ? DateTime.parse(completationDate)
-                : null,
             completed: (completed == 1 ? true : false),
-            progress: progress,
             project: await getProjectByName(project)),
     ];
   }
@@ -291,9 +283,7 @@ class DatabaseHelper {
     final taskMap = result.first;
     return Task(
       name: taskMap['name'] as String,
-      completationDate: DateTime.parse(taskMap['completationDate'] as String),
       completed: (taskMap['completed'] as int) == 1 ? true : false,
-      progress: taskMap['progress'] as double,
       project: await getProjectByName(taskMap['project'] as String),
     );
   }
@@ -593,24 +583,6 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> updateCompletationDate(String task, DateTime newDate) async {
-    final db = await database;
-    await db.update(
-      'Task',
-      {'completationDate': newDate.toIso8601String()},
-      where: 'name = ?',
-      whereArgs: [task],
-    );
-    final List<Map<String, dynamic>> result = await db.rawQuery(
-      'SELECT t.project AS project_name FROM Task t WHERE t.name = ?',
-      [task],
-    );
-    await db.rawUpdate(
-      'UPDATE Project SET lastModified = ? WHERE name = ?',
-      [DateTime.now().toIso8601String(), result.first['name'] as String],
-    );
-  }
-
   Future<void> updateCompleted(String task, bool isCompleted) async {
     final db = await database;
     await db.update(
@@ -626,24 +598,6 @@ class DatabaseHelper {
     await db.rawUpdate(
       'UPDATE Project SET lastModified = ? WHERE name = ?',
       [DateTime.now().toIso8601String(), result.first['name'] as String?],
-    );
-  }
-
-  Future<void> updateProgress(String task, double newProgress) async {
-    final db = await database;
-    await db.update(
-      'Task',
-      {'progress': newProgress},
-      where: 'name = ?',
-      whereArgs: [task],
-    );
-    final List<Map<String, dynamic>> result = await db.rawQuery(
-      'SELECT t.project AS project_name FROM Task t WHERE t.name = ?',
-      [task],
-    );
-    await db.rawUpdate(
-      'UPDATE Project SET lastModified = ? WHERE name = ?',
-      [DateTime.now().toIso8601String(), result.first['name'] as String],
     );
   }
 
@@ -746,18 +700,12 @@ class DatabaseHelper {
     return [
       for (final {
             'name': name as String,
-            'completationDate': completationDate as String?,
             'completed': completed as int,
-            'progress': progress as double,
             'project': project as String,
           } in tasksMaps)
         Task(
           name: name,
-          completationDate: completationDate != null
-              ? DateTime.parse(completationDate)
-              : null,
           completed: completed == 1,
-          progress: progress,
           project: await getProjectByName(project),
         ),
     ];
@@ -773,18 +721,12 @@ class DatabaseHelper {
     return [
       for (final {
             'name': name as String,
-            'completationDate': completationDate as String?,
             'completed': completed as int,
-            'progress': progress as double,
             'project': project as String,
           } in tasksMaps)
         Task(
           name: name,
-          completationDate: completationDate != null
-              ? DateTime.parse(completationDate)
-              : null,
           completed: completed == 1,
-          progress: progress,
           project: await getProjectByName(project),
         ),
     ];
