@@ -274,7 +274,7 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
                     children: snapshot.data!.map((member) {
                       return Container(
                         alignment: Alignment.centerLeft,
-                        margin: const EdgeInsets.only(left: 30, bottom: 5),
+                        margin: const EdgeInsets.only(left: 30, bottom: 10),
                         child: Text('${member.name} ${member.surname}'),
                       );
                     }).toList(),
