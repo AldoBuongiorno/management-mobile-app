@@ -300,6 +300,10 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                             .projectThumbnails[
                                                 grid.selectedThumbnail]
                                             .assetName);
+
+                                            DatabaseHelper.instance.updateTaskProject(oldName, projectNameController.text);
+                                    //DatabaseHelper.instance.updateTas
+                                    
                                     //DatabaseHelper.instance.updateTas
                                     setState(() {});
 

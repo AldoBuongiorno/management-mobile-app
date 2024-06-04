@@ -37,14 +37,12 @@ void main() async {
 }
 
 class Group21App extends StatefulWidget {
-
   @override
   _Group21AppState createState() => _Group21AppState();
 }
 
 class _Group21AppState extends State<Group21App> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  
 
   @override
   void initState() {
@@ -101,7 +99,7 @@ class _Group21AppState extends State<Group21App> {
             false, //non mostra il banner di debug in alto a destra
         title: 'Gruppo 21',
         theme: ThemeData(
-          datePickerTheme: DatePickerThemeData(headerForegroundColor: Colors.pink),
+            //datePickerTheme: DatePickerThemeData().copyWith(),
             textSelectionTheme: const TextSelectionThemeData(
               //tema del cursore del testo e dello sfondo del testo selezionato
               selectionHandleColor: Colors.pink,

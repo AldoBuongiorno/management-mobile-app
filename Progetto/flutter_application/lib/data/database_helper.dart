@@ -182,6 +182,12 @@ class DatabaseHelper {
     ];
   }
 
+  Future<void> updateTaskProject(String oldName, String newName) async {
+    final db = await database;
+    await db.update('Task', {'project': newName}, where: 'project = ?', whereArgs: [oldName]);
+    
+  }
+
   Future<List<Task>> getTasks() async {
     final db = await database;
     final List<Map<String, Object?>> tasksMaps = await db.query('Task');
