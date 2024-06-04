@@ -76,13 +76,13 @@ class _StatsPageState extends State<StatsPage> {
             const SizedBox(height: 10),
             BlurredBox(
                 borderRadius: BorderRadius.circular(20),
-                sigma: 15,
+                sigma: 20,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(20),
                   //margin: const EdgeInsets.symmetric(vertical: 10),
                   color:
-                      const Color.fromARGB(50, 0, 0, 0), // Sfondo grigio chiaro
+                      const Color.fromARGB(25, 0, 0, 0), // Sfondo grigio chiaro
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -139,7 +139,7 @@ class _StatsPageState extends State<StatsPage> {
                   padding: const EdgeInsets.all(20),
                   //margin: const EdgeInsets.symmetric(vertical: 10),
                   color:
-                      const Color.fromARGB(50, 0, 0, 0), // Sfondo grigio chiaro
+                      const Color.fromARGB(25, 0, 0, 0), // Sfondo grigio chiaro
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
