@@ -22,7 +22,7 @@ class EditTeamScreen extends StatefulWidget {
 
 class _EditTeamScreenState extends State<EditTeamScreen> {
   late TextEditingController teamNameController;
-  
+
   /*Future<List<Member>> _loadInitialMembers() async {
     return await DatabaseHelper.instance.getMembersByTeam(widget.team.name);
   }*/
@@ -120,7 +120,6 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                 ),
                 const SizedBox(height: 10),
                 SelectableMembersList(team: widget.team),
-              
                 const SizedBox(height: 5),
                 Row(children: [
                   //SizedBox(width: 25),
@@ -129,8 +128,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                 grid,
                 ElevatedButton(
                   onPressed: () async {
-                          // commento per nuovo commit e push 2
-                            /*if (await DatabaseHelper.instance
+                    // commento per nuovo commit e push 2
+                    /*if (await DatabaseHelper.instance
                                 .teamExists(teamNameController.text)) {
                               showDialog<String>(
                                 context: context,
@@ -149,78 +148,87 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                               );
                               return; // Termina la funzione se il nome del team esiste già
                             }*/
-                          
 
-                          if (selectedMembers.length < 2) {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Errore'),
-                                content: const Text(
-                                    "Il team deve essere composto da almeno due membri."),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Ok'),
-                                    child: const Text('Ok'),
-                                  ),
-                                ],
-                              ),
-                            );
-                            return; // Termina la funzione se non ci sono abbastanza membri
-                          }
+                    if (selectedMembers.length < 2) {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Errore'),
+                          content: const Text(
+                              "Il team deve essere composto da almeno due membri."),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Ok'),
+                              child: const Text('Ok'),
+                            ),
+                          ],
+                        ),
+                      );
+                      return; // Termina la funzione se non ci sono abbastanza membri
+                    }
 
-                          if (!checkIfMembersAreFree(widget.team.name)) {
-                            showDialog<String>(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text('Errore'),
-                                content: const Text(
-                                    "Almeno uno dei membri del team è occupato."),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Ok'),
-                                    child: const Text('Ok'),
-                                  ),
-                                ],
-                              ),
-                            );
-                            return; // Termina la funzione se almeno un membro è occupato
-                          }
+                    if (!checkIfMembersAreFree(widget.team.name)) {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Errore'),
+                          content: const Text(
+                              "Almeno uno dei membri del team è occupato."),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Ok'),
+                              child: const Text('Ok'),
+                            ),
+                          ],
+                        ),
+                      );
+                      return; // Termina la funzione se almeno un membro è occupato
+                    }
 
-                          // Altrimenti, procedi con l'aggiornamento del team
-                          await DatabaseHelper.instance.updateTeamName(
-                              widget.team.getName(), teamNameController.text);
-                          
-                          for (Member member in selectedMembers) {
-                            
-                            await DatabaseHelper.instance.assignTeamToMember(
-                                teamNameController.text, member.code!);
-                          }
+                    // Altrimenti, procedi con l'aggiornamento del team
+                    await DatabaseHelper.instance.updateTeamName(
+                        widget.team.getName(), teamNameController.text);
 
-                          for(Member member in await DatabaseHelper.instance.getMembers()) {
-                            if(!selectedMembers.contains(member)) {
-                              DatabaseHelper.instance.removeTeamFromMember(member.code!, widget.team.name);
-                            }
-                          }
+                    for (Member member in selectedMembers) {
+                      await DatabaseHelper.instance.assignTeamToMember(
+                          teamNameController.text, member.code!);
+                    }
 
-                          /*for (Member member in initialMembers.where(
+                    for (Member member
+                        in await DatabaseHelper.instance.getMembersByTeam(widget.team.name)) {
+                      if (!selectedMembers.contains(member)) {
+                        DatabaseHelper.instance.removeTeamFromMember(
+                            member.code!, widget.team.name);
+                      }
+                    }
+
+                    /*for (Member member in initialMembers.where(
                               (member) => !selectedMembers.contains(member))) {
                             await DatabaseHelper.instance.removeTeamFromMember(
                                 member.getCode()!, widget.team.name);
                           }*/
 
-                          //ggg
-                            Navigator.of(context).pop();
-                          ScaffoldMessenger.of(context).showSnackBar(
-
-                            SnackBar(padding: EdgeInsets.zero ,backgroundColor: Colors.transparent,
-            content: Container(color: const Color.fromARGB(156, 0, 0, 0) ,child: BlurredBox(sigma: 20, borderRadius: BorderRadius.zero, child:const Column( children:  [SizedBox(height: 10,),Text('Team modificato con successo!'), SizedBox(height: 10,) ]))),
-            
-          )
-                          );
-                          /*showDialog<String>(
+                    //ggg
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      padding: EdgeInsets.zero,
+                      backgroundColor: Colors.transparent,
+                      content: Container(
+                          color: const Color.fromARGB(156, 0, 0, 0),
+                          child: BlurredBox(
+                              sigma: 20,
+                              borderRadius: BorderRadius.zero,
+                              child: const Column(children: [
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text('Team modificato con successo!'),
+                                SizedBox(
+                                  height: 10,
+                                )
+                              ]))),
+                    ));
+                    /*showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: const Text('Successo!'),
@@ -235,8 +243,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                             ),
                           );*/
 
-                          //teamNameController.clear();
-                        },
+                    //teamNameController.clear();
+                  },
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -259,20 +267,15 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
     for (Member member in selectedMembers) {
       //if(member.mainTeam != null && member.mainTeam! == widget.team) member.mainTeam = null;
       //if(member.secondaryTeam != null && member.secondaryTeam! == widget.team) member.mainTeam = null;
-      if(member.mainTeam != null && member.secondaryTeam != null) {
-        valid = valid && (member.isFree() || member.mainTeam!.name == team || member.secondaryTeam!.name == team);
+      if (member.mainTeam != null && member.secondaryTeam != null) {
+        valid = valid &&
+            (member.isFree() ||
+                member.mainTeam!.name == team ||
+                member.secondaryTeam!.name == team);
       }
-      
     }
 
     return valid;
-  }
-
-  bool areListsEqual() {
-    //print(initialMembers); print(selectedMembers);
-    var set1 = selectedMembers.toSet();
-    var set2 = initialMembers.toSet();
-    return set1.length == set2.length && set1.containsAll(set2);
   }
 }
 
@@ -288,7 +291,6 @@ class SelectableMembersList extends StatefulWidget {
 class _SelectableMembersListState extends State<SelectableMembersList> {
   List<Member> allMembers = [];
 
-  
   @override
   void initState() {
     super.initState();
@@ -304,7 +306,8 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
   }
 
   Future<void> _loadMembersByTeam() async {
-    List<Member> membersTeam = await DatabaseHelper.instance.getMembersByTeam(widget.team!.getName());
+    List<Member> membersTeam =
+        await DatabaseHelper.instance.getMembersByTeam(widget.team!.getName());
     setState(() {
       selectedMembers = membersTeam;
     });
@@ -360,7 +363,8 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                     });
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 7),
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 7),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
@@ -369,7 +373,8 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                         ),
                                         color: selectedMembers
                                                 .contains(allMembers[index])
-                                            ? const Color.fromARGB(255, 207, 28, 79)
+                                            ? const Color.fromARGB(
+                                                255, 207, 28, 79)
                                             : const Color.fromARGB(
                                                 255, 239, 212, 221)),
                                     child: Padding(
@@ -535,5 +540,4 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
       ],
     );
   }
-                    }
-                  
+}
