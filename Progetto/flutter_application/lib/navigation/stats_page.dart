@@ -180,9 +180,9 @@ class _StatsPageState extends State<StatsPage> {
                           ),
                           const SizedBox(height: 10),
                           Wrap(
-                            alignment: WrapAlignment.start,
-                            spacing: 5,
-                            direction: Axis.vertical,
+                            alignment: WrapAlignment.spaceEvenly,
+                            spacing: 20,
+                            direction: Axis.horizontal,
                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               _buildLegendItem(
@@ -193,6 +193,15 @@ class _StatsPageState extends State<StatsPage> {
                                 color: Colors.blue,
                                 text: 'Completati',
                               ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            alignment: WrapAlignment.spaceAround,
+                            spacing: 20,
+                            direction: Axis.horizontal,
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                               _buildLegendItem(
                                 color: Colors.red,
                                 text: 'Falliti',
