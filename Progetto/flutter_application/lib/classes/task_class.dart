@@ -22,6 +22,7 @@ class Task {
   void setProject(Project project) {
     this.project = project;
   }
+  
 
   Task({
     required this.name,
