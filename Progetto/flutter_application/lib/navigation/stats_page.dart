@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:intl/intl.dart';
 import '../commonElements/responsive_padding.dart';
 import '../commonElements/blurred_box.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -299,7 +298,9 @@ class _StatsPageState extends State<StatsPage> {
                                           child: Text(
                                               'Errore: ${snapshot.error}'));
                                     } else {
-                                      return Text('${taskSnapshot.data}%', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),);
+                                      return taskSnapshot.data != null ?
+                                      Text('${taskSnapshot.data!.round()}%', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
+                                      : const Text('0%', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),);
                                     }
                                   })
                             ],

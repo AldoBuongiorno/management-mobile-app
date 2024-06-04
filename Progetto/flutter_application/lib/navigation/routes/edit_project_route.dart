@@ -275,6 +275,8 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                     backgroundColor: Colors.pink),
                                 onPressed: () async {
                                   List<Team> teamsList = await DatabaseHelper.instance.getTeams();
+                                  String oldName = widget.project.name;
+
                                   {
                                     widget.project.name =
                                         projectNameController.text;
@@ -282,7 +284,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                         projectDescriptionController.text;
 
                                     DatabaseHelper.instance.updateProjectName(
-                                        widget.project.name,
+                                        oldName,
                                         projectNameController.text);
                                     DatabaseHelper.instance.updateProjectTeam(
                                       projectNameController.text,
