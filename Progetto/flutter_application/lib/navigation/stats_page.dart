@@ -304,25 +304,6 @@ class _StatsPageState extends State<StatsPage> {
                                 ),
                                 ],
                               ),
-<<<<<<< Updated upstream
-                              FutureBuilder(
-                                  future: snapshot.data![index].getProgress(),
-                                  builder: (context, taskSnapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                          child: CircularProgressIndicator());
-                                    } else if (snapshot.hasError) {
-                                      return Center(
-                                          child: Text(
-                                              'Errore: ${snapshot.error}'));
-                                    } else {
-                                      return taskSnapshot.data != null ?
-                                      Text('${taskSnapshot.data!.round()}%', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),)
-                                      : const Text('0%', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),);
-                                    }
-                                  })
-=======
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -358,7 +339,6 @@ class _StatsPageState extends State<StatsPage> {
                                       }
                                     }), ],
                               ),
->>>>>>> Stashed changes
                             ],
                           ),
                         );
