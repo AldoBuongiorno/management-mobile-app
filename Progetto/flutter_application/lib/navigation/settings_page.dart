@@ -3,14 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:sqflite/sqflite.dart';
 import '../classes/setting_class.dart';
 import '../commonElements/blurred_box.dart';
 import 'routes/create_member_route.dart';
 import 'routes/create_project_route.dart';
 import 'package:input_quantity/input_quantity.dart';
 import 'routes/create_team_route.dart';
-import 'package:path/path.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -201,7 +199,7 @@ class FirstRoute extends StatelessWidget {
                       children: [
                         const Expanded(
                             child: Text(
-                                "Cancellazione dati:")),
+                                "Elimina tutti i dati presenti:")),
                         //SizedBox(width: 10,),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(

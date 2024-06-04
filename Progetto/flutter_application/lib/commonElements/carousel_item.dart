@@ -5,14 +5,11 @@ import '../data/database_helper.dart';
 import '../navigation/routes/edit_project_route.dart';
 import 'blurred_box.dart';
 
-Widget smallInfoContainer(Color containerColor, Color textColor, String text,
-    LinearGradient? gradient) {
+Widget smallInfoContainer(Color containerColor, Color textColor, String text) {
   return Container(
       margin: const EdgeInsets.only(left: 15),
       decoration: BoxDecoration(
-          gradient: gradient,
-          color: containerColor,
-          borderRadius: BorderRadius.circular(10)),
+          color: containerColor, borderRadius: BorderRadius.circular(10)),
       child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(text,
@@ -25,31 +22,17 @@ Widget smallInfoContainer(Color containerColor, Color textColor, String text,
 Widget statusCheck(Project testItem) {
   switch (testItem.getStatus()) {
     case 'Attivo':
-      return smallInfoContainer(Colors.green, Colors.white, "Attivo", null);
+      return smallInfoContainer(Colors.green, Colors.white, "Attivo");
     case 'Sospeso':
-      return smallInfoContainer(Colors.amber, Colors.white, "Sospeso", null);
+      return smallInfoContainer(Colors.amber, Colors.white, "Sospeso");
     case 'Archiviato':
-      return smallInfoContainer(Colors.red, Colors.white, "Archiviato", null);
+      return smallInfoContainer(Colors.red, Colors.white, "Archiviato");
     case 'Fallito':
-      return smallInfoContainer(Colors.red, Colors.white, "Fallito", null);
+      return smallInfoContainer(Colors.red, Colors.white, "Fallito");
     case 'Completato':
-      LinearGradient gradient = const LinearGradient(
-        colors: [
-          Color.fromARGB(255, 199, 199, 199),
-          Color.fromARGB(255, 0, 183, 255),
-          Color.fromARGB(255, 0, 183, 255),
-          Color.fromARGB(255, 255, 0, 115),
-          Color.fromARGB(255, 255, 0, 115),
-          Colors.yellow
-        ],
-        stops: [0.7, 0.7, 0.80, 0.80, 0.90, 0.90],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      );
-      return smallInfoContainer(
-          Colors.blue, Colors.white, "Completato", null);
+      return smallInfoContainer(Colors.blue, Colors.white, "Completato");
     default:
-      return smallInfoContainer(Colors.grey, Colors.white, "Sconosciuto", null);
+      return smallInfoContainer(Colors.grey, Colors.white, "Sconosciuto");
   }
 }
 
@@ -64,9 +47,7 @@ Widget getProjectName(Project testItem) {
           overflow: TextOverflow
               .ellipsis, //e il testo è più lungo dello spazio disponibile nel widget, verrà visualizzato un segno di ellissi ("...") alla fine
           style: const TextStyle(
-              fontSize: 21,
-              fontWeight: FontWeight.bold,
-              color: Colors.white)));
+              fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white)));
 }
 
 /*Widget buildEmptyAddProjectItem( context) {  return GestureDetector(onTap: () => Navigator.push(

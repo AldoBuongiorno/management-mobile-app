@@ -4,7 +4,7 @@ import 'package:flutter_application/classes/all.dart';
 import 'package:flutter_application/commonElements/responsive_padding.dart';
 import 'package:flutter_application/commonElements/selectable_thumbnail_grid.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:flutter_application/data/thumbnail_list.dart';
+import 'package:flutter_application/data/thumbnail.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
 
@@ -44,8 +44,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
   Widget build(BuildContext context) {
     SelectableThumbnailGrid grid = SelectableThumbnailGrid(
         selectedThumbnail:
-            ProjectList.thumbnailsListTeam.indexOf(widget.team.thumbnail),
-        list: ProjectList.thumbnailsListTeam);
+            Thumbnail.teamThumbnails.indexOf(widget.team.thumbnail),
+        list: Thumbnail.teamThumbnails);
 
     return Container(
       decoration: const BoxDecoration(
@@ -195,10 +195,10 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                         widget.team.getName(), teamNameController.text);
                     await DatabaseHelper.instance.updateThumbnailTeam(
                         teamNameController.text,
-                        ProjectList.thumbnailsListTeam[grid.selectedThumbnail]
+                        Thumbnail.teamThumbnails[grid.selectedThumbnail]
                             .assetName);
                             widget.team.name = teamNameController.text;
-                            widget.team.thumbnail = ProjectList.thumbnailsListTeam[grid.selectedThumbnail];
+                            widget.team.thumbnail = Thumbnail.teamThumbnails[grid.selectedThumbnail];
 
                     for (Member member in selectedMembers) {
                       await DatabaseHelper.instance.assignTeamToMember(

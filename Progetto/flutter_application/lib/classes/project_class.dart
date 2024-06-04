@@ -1,8 +1,6 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/classes/all.dart';
-
 import '../data/database_helper.dart';
 
 class Project {

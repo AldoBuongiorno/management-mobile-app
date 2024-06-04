@@ -5,7 +5,6 @@ import 'package:flutter_application/navigation/teams_page.dart';
 import 'navigation/settings_page.dart';
 import 'navigation/homepage.dart';
 import 'navigation/projects_page.dart';
-import './main.dart';
 import './navigation/stats_page.dart';
 
 class HomePage extends StatefulWidget {

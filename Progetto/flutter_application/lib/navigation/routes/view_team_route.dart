@@ -82,7 +82,7 @@ class _TeamRouteState extends State<TeamRoute> {
                           _loadMembersByTeam(widget.team.getName());
                     });
                   }),
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.draw),
                 ),
               ],
               foregroundColor: Colors.white,
@@ -247,13 +247,13 @@ class _TeamRouteState extends State<TeamRoute> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     const Icon(Icons.priority_high),
-                    const SizedBox(width: 15),
-                    const Expanded(
-                        child: Text(
-                      'Eliminando un team, eliminerai anche il progetto ad esso associato.',
-                      style:
-                          TextStyle(fontStyle: FontStyle.italic, fontSize: 13),
-                    )),
+                            const SizedBox(width: 15),
+                            const Expanded(
+                                child: Text(
+                              'Eliminando un team, eliminerai anche i progetti ad esso associato.',
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic, fontSize: 13),
+                            )),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(horizontal: 10),

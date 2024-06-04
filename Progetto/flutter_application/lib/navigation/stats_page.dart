@@ -3,7 +3,6 @@ import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import '../commonElements/responsive_padding.dart';
 import '../commonElements/blurred_box.dart';
-import 'package:flutter_application/classes/all.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class StatsPage extends StatefulWidget {
@@ -66,7 +65,7 @@ class _StatsPageState extends State<StatsPage> {
     return Scaffold(
         body: SingleChildScrollView(
       physics: const AlwaysScrollableScrollPhysics()
-          .applyTo(BouncingScrollPhysics()),
+          .applyTo(const BouncingScrollPhysics()),
       child: Container(
         margin: getResponsivePadding(context),
         child: Column(
@@ -176,8 +175,9 @@ class _StatsPageState extends State<StatsPage> {
                           ),
                           const SizedBox(height: 10),
                           Wrap(
+                            alignment: WrapAlignment.center,
                             spacing: 5,
-                            direction: Axis.vertical,
+                            direction: Axis.horizontal,
                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               _buildLegendItem(
@@ -198,7 +198,7 @@ class _StatsPageState extends State<StatsPage> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 15),
                           FutureBuilder<List<double>>(
                             future: _loadProjectsStatus(),
                             builder: (context, snapshot) {
@@ -256,6 +256,59 @@ class _StatsPageState extends State<StatsPage> {
                     ],
                   ),
                 )),
+                const SizedBox(height: 5,),
+            FutureBuilder(
+              future: DatabaseHelper.instance.getProjects(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Errore: ${snapshot.error}'));
+                } else {
+                  return ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: ((context, index) {
+                        return Container(
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          padding:
+                              const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(snapshot.data![index].name, style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(snapshot.data![index].creationDate
+                                      .toString()),
+                                ],
+                              ),
+                              FutureBuilder(
+                                  future: snapshot.data![index].getProgress(),
+                                  builder: (context, taskSnapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      return Center(
+                                          child: Text(
+                                              'Errore: ${snapshot.error}'));
+                                    } else {
+                                      return Text('${taskSnapshot.data}%', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),);
+                                    }
+                                  })
+                            ],
+                          ),
+                        );
+                      }));
+                }
+              },
+            ),
           ],
         ),
       ),

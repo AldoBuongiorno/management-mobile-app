@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 // ignore: must_be_immutable
 class ProjectRoute extends StatefulWidget {
   Project project;
-  ProjectRoute(this.project);
+  ProjectRoute(this.project, {super.key});
 
   @override
   State<ProjectRoute> createState() => _ProjectRouteState();
