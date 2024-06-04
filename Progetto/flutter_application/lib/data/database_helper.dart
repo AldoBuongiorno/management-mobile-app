@@ -86,7 +86,8 @@ class DatabaseHelper {
             ('Marketing', 'assets/images/teamPreview/teamcinque.jpg'),
             ('Design', 'assets/images/teamPreview/teamdue.jpeg'),
             ('QA', 'assets/images/teamPreview/teamquattro.jpg'),
-            ('Sales', 'assets/images/teamPreview/teamtre.jpeg');
+            ('Sales', 'assets/images/teamPreview/teamtre.jpeg'),
+            ('Security', 'assets/images/teamPreview/teamuno.jpeg');
           ''');
         await db.rawInsert('''
           INSERT INTO Project (name, description, creationDate, expirationDate, lastModified, status, projectFailureReason, team, thumbnail) VALUES
@@ -94,7 +95,8 @@ class DatabaseHelper {
             ('Project Beta', 'Marketing campaign for Q1', '2023-02-15', '2023-03-31', '2023-02-20', 'Completato', NULL, 'Marketing', 'assets/images/projectPreview/default.jpg'),
             ('Project Gamma', 'Design new website', '2023-03-01', '2023-09-30', '2023-04-10', 'Attivo', NULL, 'Design', 'assets/images/projectPreview/architectural.jpg'),
             ('Project Delta', 'Quality assurance for new release', '2023-04-01', '2023-06-30', '2023-05-15', 'Fallito', 'Insufficient resources', 'QA', 'assets/images/projectPreview/safety.jpg'),
-            ('Project Epsilon', 'Sales strategy for new product', '2023-05-01', '2023-11-30', '2023-05-25', 'Attivo', NULL, 'Sales', 'assets/images/projectPreview/baking.jpg');
+            ('Project Epsilon', 'Sales strategy for new product', '2023-05-01', '2023-11-30', '2023-05-25', 'Attivo', NULL, 'Sales', 'assets/images/projectPreview/baking.jpg'),
+            ('Project Iota', 'Monitoring and mitigating risks related to information security', '2023-05-01', '2023-11-30', '2023-05-25', 'Attivo', NULL, 'Security', 'assets/images/projectPreview/studying.jpg');
           ''');
         await db.rawInsert('''
           INSERT INTO Task (name, completationDate, completed, progress, project) VALUES
@@ -102,7 +104,8 @@ class DatabaseHelper {
             ('Task 2', '2023-02-28', 1, 100.0, 'Project Beta'),
             ('Task 3', '2023-04-30', 0, 50.0, 'Project Gamma'),
             ('Task 4', '2023-05-31', 0, 25.0, 'Project Delta'),
-            ('Task 5', '2023-06-30', 0, 0.0, 'Project Epsilon');
+            ('Task 5', '2023-06-30', 0, 0.0, 'Project Epsilon'),
+            ('Task 6', '2023-04-30', 0, 50.0, 'Project Iota');
           ''');
         await db.rawInsert('''
           INSERT INTO Member (name, surname, role, mainTeam, secondaryTeam) VALUES
@@ -110,7 +113,11 @@ class DatabaseHelper {
             ('Bob', 'Brown', 'Marketing Specialist', 'Marketing', NULL),
             ('Charlie', 'Davis', 'Designer', 'Design', 'Marketing'),
             ('Diana', 'Evans', 'QA Engineer', 'QA', 'Development'),
-            ('Eve', 'Foster', 'Sales Manager', 'Sales', NULL);
+            ('Eve', 'Foster', 'Sales Manager', 'Sales', NULL),
+            ('Charlotte', 'Gray', 'Sales Specialist', 'Sales', NULL),
+            ('John', 'Wick', 'ICT Security Manager', 'Security', NULL),
+            ('Jack', 'Reacher', 'Penetration Tester', 'Security', 'Development'),
+            ('Tupac', 'Shakur', 'Designer', 'Design', NULL);
           ''');
       },
       version: 1,
