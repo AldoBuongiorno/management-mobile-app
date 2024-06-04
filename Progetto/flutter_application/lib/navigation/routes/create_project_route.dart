@@ -35,7 +35,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     TasksCheckboxView taskCheckboxList = TasksCheckboxView(tasks: cTasks);
-    SelectableThumbnailGrid grid = SelectableThumbnailGrid(list: ProjectList.thumbnailsListProject);
+    SelectableThumbnailGrid grid =
+        SelectableThumbnailGrid(list: ProjectList.thumbnailsListProject);
     Project projectItem;
     return Container(
         margin: EdgeInsets.symmetric(
@@ -135,9 +136,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       suffixIcon: IconButton(
                           onPressed: () async {
                             if (taskInputController.text.isNotEmpty) {
-                              cTasks.add(Task(
-                                  name: taskInputController.text,
-                                  ));
+                              if (!cTasks.any((task) =>
+                                  task.name == taskInputController.text)) {
+                                cTasks
+                                    .add(Task(name: taskInputController.text));
+                              }
+                              ;
                             }
 
                             taskInputController.clear();
@@ -162,7 +166,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
           ),
           taskCheckboxList,
-          ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: Colors.pink),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.pink),
               onPressed: () async {
                 List<Team> teamsList = await DatabaseHelper.instance.getTeams();
                 projectNameController.text.isEmpty || projectDescriptionController.text.isEmpty ||
@@ -194,9 +200,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                                 .thumbnailsListProject[grid.selectedThumbnail]),
                         DatabaseHelper.instance.insertProject(projectItem),
 
-                        for(Task task in cTasks) task.setProject(projectItem),
-                        for(Task task in cTasks) DatabaseHelper.instance.insertTask(task),
-                        
+                        for (Task task in cTasks) task.setProject(projectItem),
+                        for (Task task in cTasks)
+                          DatabaseHelper.instance.insertTask(task),
+
                         //cTasks = await DatabaseHelper.instance.getTasksByProjectName(projectItem.name),
                         projectNameController.clear(),
                         projectDescriptionController.clear(),
@@ -237,7 +244,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 ),
                 Text("Aggiungi progetto")
               ])),
-              const SizedBox(height: 30)
+          const SizedBox(height: 30)
         ]));
   }
 }
