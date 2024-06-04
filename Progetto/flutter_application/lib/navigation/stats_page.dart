@@ -180,9 +180,9 @@ class _StatsPageState extends State<StatsPage> {
                           ),
                           const SizedBox(height: 10),
                           Wrap(
-                            alignment: WrapAlignment.center,
+                            alignment: WrapAlignment.start,
                             spacing: 5,
-                            direction: Axis.horizontal,
+                            direction: Axis.vertical,
                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               _buildLegendItem(
