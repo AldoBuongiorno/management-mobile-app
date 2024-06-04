@@ -129,6 +129,7 @@ class FirstRoute extends StatelessWidget {
                           ]);
                         }
                       }),
+                      const SizedBox(height: 20),
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(children: [
