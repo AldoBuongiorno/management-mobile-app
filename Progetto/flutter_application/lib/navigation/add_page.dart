@@ -141,13 +141,13 @@ class FirstRoute extends StatelessWidget {
                               sigma: 15,
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(
+                                  backgroundColor: MaterialStateProperty.all(
                                     const Color.fromARGB(50, 0, 0, 0)
                                   ),
-                                  shadowColor: WidgetStateProperty.all(
+                                  shadowColor: MaterialStateProperty.all(
                                     Colors.transparent
                                   ),
-                                  shape: WidgetStateProperty.all(
+                                  shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )
@@ -182,13 +182,13 @@ class FirstRoute extends StatelessWidget {
                               sigma: 15,
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all(
+                                  backgroundColor: MaterialStateProperty.all(
                                     const Color.fromARGB(50, 0, 0, 0)
                                   ),
-                                  shadowColor: WidgetStateProperty.all(
+                                  shadowColor: MaterialStateProperty.all(
                                     Colors.transparent
                                   ),
-                                  shape: WidgetStateProperty.all(
+                                  shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )
@@ -223,14 +223,14 @@ class FirstRoute extends StatelessWidget {
                               sigma: 15,
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  foregroundColor: WidgetStateProperty.all(Colors.white),
-                                  backgroundColor: WidgetStateProperty.all(
+                                  foregroundColor: MaterialStateProperty.all(Colors.white),
+                                  backgroundColor: MaterialStateProperty.all(
                                     const Color.fromARGB(50, 0, 0, 0)
                                   ),
-                                  shadowColor: WidgetStateProperty.all(
+                                  shadowColor: MaterialStateProperty.all(
                                     Colors.transparent
                                   ),
-                                  shape: WidgetStateProperty.all(
+                                  shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     )
