@@ -25,7 +25,11 @@ class _StatsPageState extends State<StatsPage> {
     for (final num in numMembersPerTeam) {
       sum += num;
     }
-    return (sum / numMembersPerTeam.length).round();
+    if(sum == 0){
+      return 0;
+    }else{
+      return (sum / numMembersPerTeam.length).round();
+    }
   }
 
   Future<int> _loadNumProjects() async {
@@ -175,8 +179,8 @@ class _StatsPageState extends State<StatsPage> {
                           ),
                           const SizedBox(height: 10),
                           Wrap(
-                            alignment: WrapAlignment.center,
-                            spacing: 5,
+                            alignment: WrapAlignment.spaceEvenly,
+                            spacing: 20,
                             direction: Axis.horizontal,
                             //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -188,6 +192,15 @@ class _StatsPageState extends State<StatsPage> {
                                 color: Colors.blue,
                                 text: 'Completati',
                               ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            alignment: WrapAlignment.spaceAround,
+                            spacing: 20,
+                            direction: Axis.horizontal,
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                               _buildLegendItem(
                                 color: Colors.red,
                                 text: 'Falliti',
