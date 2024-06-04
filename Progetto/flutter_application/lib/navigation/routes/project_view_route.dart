@@ -84,11 +84,9 @@ class _ProjectRouteState extends State<ProjectRoute> {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10)),
-                          child: Expanded(
-                            child: Row(children: [
-                              Expanded(child: Text(widget.project.description))
-                            ]),
-                          ),
+                          child: Row(children: [
+                            Expanded(child: Text(widget.project.description))
+                          ]),
                         )),
                     RichText(
                         text: TextSpan(children: [
