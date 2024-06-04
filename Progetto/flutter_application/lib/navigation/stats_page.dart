@@ -295,7 +295,7 @@ class _StatsPageState extends State<StatsPage> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15)),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const SizedBox(width: 8),
                               Column(
@@ -307,11 +307,12 @@ class _StatsPageState extends State<StatsPage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: 15),
-                              Column(
+                              //const SizedBox(width: 15),
+                              Flexible(child: Column(
+                                mainAxisSize: MainAxisSize.min,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
+                                   Text(
                                     snapshot.data![index].name,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold),
@@ -319,7 +320,7 @@ class _StatsPageState extends State<StatsPage> {
                                   Text(
                                       'Creato ${DateTime.now().difference(snapshot.data![index].creationDate!).inDays} giorni fa.'),
                                 ],
-                              ),
+                              )),
                               const SizedBox(width: 40),
                               Container(
                                 width: 65,
