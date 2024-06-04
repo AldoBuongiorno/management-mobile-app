@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import '../commonElements/responsive_padding.dart';
@@ -287,23 +288,26 @@ class _StatsPageState extends State<StatsPage> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: ((context, index) {
                         return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          margin: const EdgeInsets.symmetric(vertical: 5,),
                           padding: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 15),
+                              vertical: 8, horizontal: 7),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(15)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
+                              const SizedBox(width: 8),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [ _buildLegendItem(
-                                  color: Colors.green,
-                                  text: '',
-                                ),
+                                children: [
+                                  _buildLegendItem(
+                                    color: Colors.green,
+                                    text: '',
+                                  ),
                                 ],
                               ),
+                              const SizedBox(width: 15),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -316,29 +320,37 @@ class _StatsPageState extends State<StatsPage> {
                                       'Creato ${DateTime.now().difference(snapshot.data![index].creationDate!).inDays} giorni fa.'),
                                 ],
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [ FutureBuilder(
-                                    future: snapshot.data![index].getProgress(),
-                                    builder: (context, taskSnapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Center(
-                                            child: CircularProgressIndicator());
-                                      } else if (snapshot.hasError) {
-                                        return Center(
-                                            child: Text(
-                                                'Errore: ${snapshot.error}'));
-                                      } else {
-                                        return Text(
-                                          '${taskSnapshot.data}%',
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        );
-                                      }
-                                    }), ],
-                              ),
+                              const SizedBox(width: 40),
+                              Container(
+                                width: 65,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FutureBuilder(
+                                        future:
+                                            snapshot.data![index].getProgress(),
+                                        builder: (context, taskSnapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else if (snapshot.hasError) {
+                                            return Center(
+                                                child: Text(
+                                                    'Errore: ${snapshot.error}'));
+                                          } else {
+                                            return Text(
+                                              '${taskSnapshot.data}%',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            );
+                                          }
+                                        }),
+                                  ],
+                                ),
+                              )
                             ],
                           ),
                         );
