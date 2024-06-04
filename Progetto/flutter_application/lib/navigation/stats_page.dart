@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
+import 'package:intl/intl.dart';
 import '../commonElements/responsive_padding.dart';
 import '../commonElements/blurred_box.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -283,8 +284,7 @@ class _StatsPageState extends State<StatsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(snapshot.data![index].name, style: const TextStyle(fontWeight: FontWeight.bold),),
-                                  Text(snapshot.data![index].creationDate
-                                      .toString()),
+                                  Text('Creato ${DateTime.now().difference(snapshot.data![index].creationDate!).inDays} giorni fa.'),
                                 ],
                               ),
                               FutureBuilder(

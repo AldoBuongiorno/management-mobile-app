@@ -140,7 +140,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                     'Data scadenza:\t${DateFormat('dd-MM-yyyy').format(widget.project.expirationDate!)}'))
                           ],
                         ),
-                        TextButton(
+                        TextButton(style: TextButton.styleFrom(foregroundColor: Colors.pink),
                             onPressed: () {
                               showDialog(
                                   context: context,
@@ -169,7 +169,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                     : null;
                               });
                             },
-                            child: const Text('Aggiorna data scadenza'))
+                            child: const Row( children: [Icon(Icons.timer), SizedBox(width: 5), Text('Aggiorna data scadenza')]))
                       ],
                     ),
                     Padding(
@@ -336,7 +336,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                                             setState(() {});
                                           },
                                     child: const Row(children: [
-                                      Icon(Icons.close),
+                                      Icon(Icons.block),
                                       SizedBox(width: 5),
                                       Text('Sospendi')
                                     ])),
