@@ -162,21 +162,26 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                           ]),
                           const SizedBox(height: 5),
                           Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 0),
+                              padding: const EdgeInsets.symmetric(horizontal: 0),
                               child: FutureBuilder(
           future: DatabaseHelper.instance.getTeams(),
           builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox();
+              return const SizedBox();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else { 
               chips = SelectableTeamsList(teamsList: snapshot.data!, selectedTeam: snapshot.data!.indexOf(widget.project.team!),);
-              return Row(
-                  
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                   children: [
                     chips
-                  ]);}})),
+                  ]
+                ),
+              );
+            }
+          })),
                           const SizedBox(height: 5),
                           Row(children: [
                             //SizedBox(width: 25),
