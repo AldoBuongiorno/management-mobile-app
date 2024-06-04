@@ -109,21 +109,28 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ]),
           const SizedBox(height: 5),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: FutureBuilder(
-          future: DatabaseHelper.instance.getTeams(),
-          builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else { 
-              chips = SelectableTeamsList(teamsList: snapshot.data!);
-              return Row(
-                  
-                  children: [
-                    chips
-                  ]);}})),
+            padding: const EdgeInsets.symmetric(horizontal: 0),
+            child: FutureBuilder(
+              future: DatabaseHelper.instance.getTeams(),
+              builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else { 
+                  chips = SelectableTeamsList(teamsList: snapshot.data!);
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        chips
+                      ]
+                    ),
+                  );
+                }
+              }
+            )
+          ),
           const SizedBox(height: 5),
           Row(children: [
             //SizedBox(width: 25),
