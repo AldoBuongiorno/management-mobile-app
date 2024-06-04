@@ -312,14 +312,9 @@ class SecondRoute extends StatelessWidget {
             body: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics().applyTo(
                   const BouncingScrollPhysics()), // per evitare il bug della sfocatura
-              child: Column(children: [
-                const CreateProjectScreen(),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Go back!'),
-                ),
+              child: const Column(children: [
+                CreateProjectScreen(),
+                
               ]),
             )));
   }

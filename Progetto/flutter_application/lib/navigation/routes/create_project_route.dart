@@ -1,6 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/commonElements/blurred_box.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
@@ -55,10 +56,11 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 borderRadius: BorderRadius.circular(30),
                 sigma: 15,
                 child: TextField(
-                  
+                  maxLength: 50,
                   style: const TextStyle(color: Colors.white),
                   controller: projectNameController,
                   decoration: const InputDecoration(
+                    counterText: '',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       filled: true,
@@ -82,10 +84,12 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 borderRadius: BorderRadius.circular(10),
                 sigma: 15,
                 child: TextField(
+                  maxLength: 500,
                   style: const TextStyle(color: Colors.white),
                   maxLines: 5,
                   controller: projectDescriptionController,
                   decoration: const InputDecoration(
+                    counterText: '',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       filled: true,
@@ -152,7 +156,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           borderSide: BorderSide.none),
                       hintText: 'Inserisci una task',
                       hintStyle: const TextStyle(
-                          color: Color.fromARGB(255, 192, 192, 192))),
+                          color: Color.fromARGB(255, 214, 214, 214))),
                 )),
 
             //TextButton(onPressed: () { }, child: Icon(Icons.add))
@@ -161,9 +165,25 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: Colors.pink),
               onPressed: () async {
                 List<Team> teamsList = await DatabaseHelper.instance.getTeams();
-                projectNameController.text.isEmpty ||
+                projectNameController.text.isEmpty || projectDescriptionController.text.isEmpty ||
                         teamsList.isEmpty
-                    ? null
+                    ? 
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Errore'),
+                          content: const Text(
+                              "Il progetto non può avere nome o descrizione vuoto.\nInoltre devono essere possibile assegnare un team al progetto."),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Ok'),
+                              child: const Text('Ok'),
+                            ),
+                          ],
+                        ),
+                      )
+
+
                     : {
                         projectItem = Project(
                             name: projectNameController.text,
@@ -182,20 +202,32 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         projectDescriptionController.clear(),
                         grid.selectedThumbnail = 0,
                         cTasks.clear(), setState(() {}),
-                        showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Successo!'),
-                            content: Text(
-                                ("Il progetto \"${projectItem.name}\" è stato creato correttamente.\nPuoi creare altri progetti se ti va.")),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, 'Ok'),
-                                child: const Text('Ok'),
-                              ),
-                            ],
-                          ),
-                        ),
+                        
+                        Navigator.of(context).pop(),
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      padding: EdgeInsets.zero,
+                                      elevation: 0,
+                                      backgroundColor: Colors.transparent,
+                                      content: Container(
+                                          color: const Color.fromARGB(
+                                              156, 0, 0, 0),
+                                          child: BlurredBox(
+                                              sigma: 20,
+                                              borderRadius: BorderRadius.zero,
+                                              child: const Column(children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                    'Progetto creato con successo!'),
+                                                SizedBox(
+                                                  height: 10,
+                                                )
+                                              ]))),
+                                    ))
+
+
                       };
               },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [

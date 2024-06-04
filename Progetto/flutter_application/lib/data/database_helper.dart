@@ -636,6 +636,11 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> deleteProjectByTeam(String teamName) async {
+    final db = await database;
+    await db.delete('Project', where: 'team = ?', whereArgs: [teamName]);
+  }
+
   Future<void> deleteTask(String name) async {
     final db = await database;
     await db.delete(

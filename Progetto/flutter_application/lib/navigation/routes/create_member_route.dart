@@ -120,11 +120,30 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white, backgroundColor: Colors.pink),
-              onPressed: (memberNameController.text.isEmpty ||
+              onPressed: () {
+
+
+                      
+                      if(memberNameController.text.isEmpty ||
                       memberSurnameController.text.isEmpty ||
-                      memberRoleController.text.isEmpty)
-                  ? null
-                  : () {
+                      memberRoleController.text.isEmpty) {
+                        showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Errore'),
+                          content: const Text(
+                              "Tutti i campi devono essere non vuoti."),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Ok'),
+                              child: const Text('Ok'),
+                            ),
+                          ],
+                        ),
+                      );
+                      return;
+                      }
+
                       Member member;
 
                       {
@@ -140,20 +159,30 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                         memberRoleController.clear();
                         setState(() {});
                         //Navigator.pop(context),
-                        showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Successo!'),
-                            content: Text(
-                                ("${member.name} ${member.surname} è stato inserito correttamente.\nPuoi inserire altri membri se ti va.")),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, 'Ok'),
-                                child: const Text('Ok'),
-                              ),
-                            ],
-                          ),
-                        );
+                        
+                        Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      padding: EdgeInsets.zero,
+                                      elevation: 0,
+                                      backgroundColor: Colors.transparent,
+                                      content: Container(
+                                          color: const Color.fromARGB(
+                                              156, 0, 0, 0),
+                                          child: BlurredBox(
+                                              sigma: 20,
+                                              borderRadius: BorderRadius.zero,
+                                              child: const Column(children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                    'Membro inserito con successo!'),
+                                                SizedBox(
+                                                  height: 10,
+                                                )
+                                              ]))),
+                                    ));
                       }
                     },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [

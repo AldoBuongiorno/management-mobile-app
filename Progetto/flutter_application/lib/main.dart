@@ -17,7 +17,7 @@ void main() async {
 
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   final fcmToken = await FirebaseMessaging.instance.getToken();
-  print('FCMToken $fcmToken');
+  //print('FCMToken $fcmToken');
 
   //await deleteDatabase(join(await getDatabasesPath(), 'my_database.db'));
   final db = DatabaseHelper.instance;

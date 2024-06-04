@@ -78,6 +78,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
           ),
         ),
         body: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics().applyTo(BouncingScrollPhysics()),
           child: Container(
             margin: getResponsivePadding(context),
             child: Column(
@@ -126,7 +127,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                   CustomHeadingTitle(titleText: "Copertina"),
                 ]),
                 grid,
-                ElevatedButton(
+                ElevatedButton(style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.pink),
                   onPressed: () async {
                     // commento per nuovo commit e push 2
                     /*if (await DatabaseHelper.instance
@@ -208,9 +210,11 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                                 member.getCode()!, widget.team.name);
                           }*/
 
-                    //ggg
+                    //gggg
+                    //selectedMembers.clear();
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      elevation: 0,
                       padding: EdgeInsets.zero,
                       backgroundColor: Colors.transparent,
                       content: Container(

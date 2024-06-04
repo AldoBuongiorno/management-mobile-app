@@ -177,6 +177,14 @@ class _TeamRouteState extends State<TeamRoute> {
                 Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
+                    const Icon(Icons.priority_high),
+                            const SizedBox(width: 15),
+                            const Expanded(
+                                child: Text(
+                              'Eliminando un team, eliminerai anche il progetto ad esso associato.',
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic, fontSize: 13),
+                            )),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -185,6 +193,7 @@ class _TeamRouteState extends State<TeamRoute> {
                       ),
                       onPressed: () async {
                         DatabaseHelper.instance.deleteTeam(widget.team.name);
+                        DatabaseHelper.instance.deleteProjectByTeam(widget.team.name);
                         Navigator.of(context).pop();
                       },
                       child: const Row(

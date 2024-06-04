@@ -221,14 +221,17 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
     return Theme(
       data: ThemeData().copyWith(
         dividerColor: Colors.transparent,
+        
       ),
       child: Container(
+        
         margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(10),
         ),
         child: ExpansionTile(
+          
           iconColor: Colors.lightBlue,
           collapsedIconColor: Colors.pink,
           expandedAlignment: Alignment.centerLeft,

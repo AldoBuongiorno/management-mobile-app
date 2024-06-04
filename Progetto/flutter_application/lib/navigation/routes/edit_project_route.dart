@@ -50,7 +50,9 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   @override
   Widget build(BuildContext context) {
     SelectableThumbnailGrid grid = SelectableThumbnailGrid(
-        selectedThumbnail: ProjectList.thumbnailsListProject.indexOf(widget.project.thumbnail), list: ProjectList.thumbnailsListProject );
+        selectedThumbnail:
+            ProjectList.thumbnailsListProject.indexOf(widget.project.thumbnail),
+        list: ProjectList.thumbnailsListProject);
 
     return Container(
         decoration: const BoxDecoration(
@@ -84,7 +86,8 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
               ),
             ),
             body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics().applyTo(AlwaysScrollableScrollPhysics()),
+                physics: const BouncingScrollPhysics()
+                    .applyTo(AlwaysScrollableScrollPhysics()),
                 child: Container(
                     margin: getResponsivePadding(context),
                     child: Column(
@@ -227,7 +230,6 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
 
                             //TextButton(onPressed: () { }, child: Icon(Icons.add))
                           ),
-                          
                           FutureBuilder<TasksCheckboxView>(
                             future: _loadTasks(),
                             builder: (context, snapshot) {
@@ -243,44 +245,65 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                               }
                             },
                           ),
-
                           Row(children: [
-                          const Icon(Icons.auto_awesome),
-                          const SizedBox(width: 15),
-                          const Expanded(child: Text('Le task aggiunte o rimosse vengono salvate automaticamente.', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 13 ),)),
-                          ElevatedButton(
-                              onPressed: (widget.project.name ==
-                                          projectNameController.text &&
-                                      widget.project.description ==
-                                          projectDescriptionController.text &&
-                                          widget.project.thumbnail == ProjectList.thumbnailsListProject[grid.selectedThumbnail])
-                                  ? null
-                                  : () {
-                                      {
-                                        
-                                        widget.project.name =
-                                            projectNameController.text;
-                                        widget.project.description =
-                                            projectDescriptionController.text;
+                            const Icon(Icons.auto_awesome),
+                            const SizedBox(width: 15),
+                            const Expanded(
+                                child: Text(
+                              'Le task aggiunte o rimosse vengono salvate automaticamente.',
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic, fontSize: 13),
+                            )),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.pink),
+                                onPressed: () {
+                                  {
+                                    widget.project.name =
+                                        projectNameController.text;
+                                    widget.project.description =
+                                        projectDescriptionController.text;
 
-                                        DatabaseHelper.instance
-                                            .updateProjectName(
-                                                widget.project.name,
-                                                projectNameController.text);
-                                        DatabaseHelper.instance
-                                            .updateDescription(
-                                                projectNameController.text,
-                                                projectDescriptionController
-                                                    .text);
-                                        DatabaseHelper.instance.updateThumbnail(
-                                            projectNameController.text,
-                                            ProjectList
-                                                .thumbnailsListProject[
-                                                    grid.selectedThumbnail]
-                                                .assetName);
-                                        //DatabaseHelper.instance.updateTas
-                                        setState(() {});
-                                        showDialog<String>(
+                                    DatabaseHelper.instance.updateProjectName(
+                                        widget.project.name,
+                                        projectNameController.text);
+                                    DatabaseHelper.instance.updateDescription(
+                                        projectNameController.text,
+                                        projectDescriptionController.text);
+                                    DatabaseHelper.instance.updateThumbnail(
+                                        projectNameController.text,
+                                        ProjectList
+                                            .thumbnailsListProject[
+                                                grid.selectedThumbnail]
+                                            .assetName);
+                                    //DatabaseHelper.instance.updateTas
+                                    setState(() {});
+
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      padding: EdgeInsets.zero,
+                                      elevation: 0,
+                                      backgroundColor: Colors.transparent,
+                                      content: Container(
+                                          color: const Color.fromARGB(
+                                              156, 0, 0, 0),
+                                          child: BlurredBox(
+                                              sigma: 20,
+                                              borderRadius: BorderRadius.zero,
+                                              child: const Column(children: [
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                    'Team modificato con successo!'),
+                                                SizedBox(
+                                                  height: 10,
+                                                )
+                                              ]))),
+                                    ));
+                                    /*showDialog<String>(
                                             context: context,
                                             builder: (BuildContext context) =>
                                                 AlertDialog(
@@ -296,20 +319,20 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                                       child: const Text('Ok'),
                                                     ),
                                                   ],
-                                                ));
-                                      }
-                                      ;
-                                    },
-                              child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    
-                                    Icon(Icons.save),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text("Modifica progetto")
-                                  ]))
-                        ])])))));
+                                                ));*/
+                                  }
+                                  
+                                },
+                                child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.save),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text("Modifica progetto")
+                                    ]))
+                          ])
+                        ])))));
   }
 }
