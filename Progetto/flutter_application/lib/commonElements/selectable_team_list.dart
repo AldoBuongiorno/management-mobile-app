@@ -4,8 +4,9 @@ import '../classes/team_class.dart';
 
 // ignore: must_be_immutable
 class SelectableTeamsList extends StatefulWidget {
-  SelectableTeamsList({super.key});
-  int selectedTeam = 0;
+  SelectableTeamsList({required this.teamsList, this.selectedTeam = 0});
+  List<Team> teamsList;
+  int selectedTeam;
   @override
   State<SelectableTeamsList> createState() => _SelectableTeamsListState();
 }
@@ -23,43 +24,36 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: FutureBuilder(
-          future: _loadTeams(),
-          builder: (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SizedBox();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-                List<ChoiceChip> teamsList = List<ChoiceChip>.generate(
-                        snapshot.data!.length,
-                        (int index) {
-                          return ChoiceChip(
-                            
-                            selectedColor: Colors.pink,
-                            iconTheme: const IconThemeData(color: Colors.white),
-                            label: Text(snapshot.data![index].getName()),
-                            selected: widget.selectedTeam == index,
-                            onSelected: (bool selected) {
-                              setState(() {
-                                widget.selectedTeam = selected ? index : 0;
-                              });
-                            },
-                          );
-                        },
-                      ).toList();
-              return snapshot.data!.isNotEmpty
-                  ? SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(mainAxisSize: MainAxisSize.min,
-                    //direction: Axis.horizontal,
-                    //verticalDirection: VerticalDirection.down,
-                      //spacing: 5.0, 
-                      children: teamsList,
-                    ))
-                  : const Text(
-                      "Non ci sono team disponibili. Non è possibile creare un progetto senza team.");
-            }
-          })
-    );
+    return widget.teamsList.isNotEmpty
+        ? SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              //direction: Axis.horizontal,
+              //verticalDirection: VerticalDirection.down,
+              //spacing: 5.0,
+              children: List<Row>.generate(
+                widget.teamsList.length,
+                (int index) {
+                  return Row(children: [ ChoiceChip(
+                    selectedColor: Colors.pink,
+                    checkmarkColor:  Colors.white,
+                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(width: 0, color: widget.selectedTeam == index ? Colors.pink : Colors.white)),
+     
+                    labelStyle: TextStyle(color: widget.selectedTeam == index ? Colors.white : Colors.black),
+                    //iconTheme: IconThemeData(color: widget.selectedTeam == index ? Colors.white : Colors.black),
+                    label: Text(widget.teamsList[index].getName()),
+                    selected: widget.selectedTeam == index,
+                    onSelected: (bool selected) {
+                      setState(() {
+                        widget.selectedTeam = selected ? index : 0;
+                      });
+                    },
+                  ), const SizedBox(width: 5)] );
+                },
+              ).toList(),
+            ))
+        : const Text(
+            "Non ci sono team disponibili. Non è possibile creare un progetto senza team.");
   }
 }

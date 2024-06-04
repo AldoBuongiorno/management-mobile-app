@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/commonElements/selectable_thumbnail_grid.dart';
 import 'package:flutter_application/data/database_helper.dart';
-import 'package:flutter_application/data/thumbnail_list.dart';
+import 'package:flutter_application/data/thumbnail.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:flutter_application/classes/all.dart';
 
 List<Member> selectedMembers = [];
@@ -25,7 +23,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
   Widget build(BuildContext context) {
     //selectedMembers.clear();
     SelectableThumbnailGrid grid =
-        SelectableThumbnailGrid(list: ProjectList.thumbnailsListTeam);
+        SelectableThumbnailGrid(list: Thumbnail.teamThumbnails);
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: 10,
@@ -138,8 +136,8 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                                                 Team(
                                                     name:
                                                         teamNameController.text,
-                                                    thumbnail: ProjectList
-                                                            .thumbnailsListTeam[
+                                                    thumbnail: Thumbnail
+                                                            .teamThumbnails[
                                                         grid.selectedThumbnail])),
                                             for (Member member
                                                 in selectedMembers)

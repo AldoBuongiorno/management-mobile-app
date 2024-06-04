@@ -8,7 +8,7 @@ import 'package:flutter_application/data/database_helper.dart';
 import '../../commonElements/selectable_team_list.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
 import '../../commonElements/tasks_checkbox_view.dart';
-import '../../data/thumbnail_list.dart';
+import '../../data/thumbnail.dart';
 import 'package:flutter_application/classes/all.dart';
 
 int selectedTeam = 0;
@@ -36,7 +36,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   Widget build(BuildContext context) {
     TasksCheckboxView taskCheckboxList = TasksCheckboxView(tasks: cTasks);
     SelectableThumbnailGrid grid =
-        SelectableThumbnailGrid(list: ProjectList.thumbnailsListProject);
+        SelectableThumbnailGrid(list: Thumbnail.projectThumbnails);
+        late SelectableTeamsList chips;
     Project projectItem;
     return Container(
         margin: EdgeInsets.symmetric(
@@ -61,7 +62,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   style: const TextStyle(color: Colors.white),
                   controller: projectNameController,
                   decoration: const InputDecoration(
-                    counterText: '',
+                      counterText: '',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       filled: true,
@@ -90,7 +91,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   maxLines: 5,
                   controller: projectDescriptionController,
                   decoration: const InputDecoration(
-                    counterText: '',
+                      counterText: '',
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                       filled: true,
@@ -109,11 +110,20 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           const SizedBox(height: 5),
           Padding(
               padding: const EdgeInsets.symmetric(horizontal: 0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: FutureBuilder(
+          future: DatabaseHelper.instance.getTeams(),
+          builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else { 
+              chips = SelectableTeamsList(teamsList: snapshot.data!);
+              return Row(
+                  
                   children: [
-                    SelectableTeamsList(),
-                  ])),
+                    chips
+                  ]);}})),
           const SizedBox(height: 5),
           Row(children: [
             //SizedBox(width: 25),
@@ -171,10 +181,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   foregroundColor: Colors.white, backgroundColor: Colors.pink),
               onPressed: () async {
                 List<Team> teamsList = await DatabaseHelper.instance.getTeams();
-                projectNameController.text.isEmpty || projectDescriptionController.text.isEmpty ||
+                projectNameController.text.isEmpty ||
+                        projectDescriptionController.text.isEmpty ||
                         teamsList.isEmpty
-                    ? 
-                    showDialog<String>(
+                    ? showDialog<String>(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                           title: const Text('Errore'),
@@ -188,16 +198,14 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                           ],
                         ),
                       )
-
-
                     : {
                         projectItem = Project(
                             name: projectNameController.text,
                             description: projectDescriptionController.text,
                             status: "Attivo",
-                            team: teamsList[selectedTeam],
-                            thumbnail: ProjectList
-                                .thumbnailsListProject[grid.selectedThumbnail]),
+                            team: teamsList[chips.selectedTeam],
+                            thumbnail: Thumbnail
+                                .projectThumbnails[grid.selectedThumbnail]),
                         DatabaseHelper.instance.insertProject(projectItem),
 
                         for (Task task in cTasks) task.setProject(projectItem),
@@ -209,32 +217,27 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         projectDescriptionController.clear(),
                         grid.selectedThumbnail = 0,
                         cTasks.clear(), setState(() {}),
-                        
+
                         Navigator.of(context).pop(),
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(
-                                      padding: EdgeInsets.zero,
-                                      elevation: 0,
-                                      backgroundColor: Colors.transparent,
-                                      content: Container(
-                                          color: const Color.fromARGB(
-                                              156, 0, 0, 0),
-                                          child: BlurredBox(
-                                              sigma: 20,
-                                              borderRadius: BorderRadius.zero,
-                                              child: const Column(children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                ),
-                                                Text(
-                                                    'Progetto creato con successo!'),
-                                                SizedBox(
-                                                  height: 10,
-                                                )
-                                              ]))),
-                                    ))
-
-
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          padding: EdgeInsets.zero,
+                          elevation: 0,
+                          backgroundColor: Colors.transparent,
+                          content: Container(
+                              color: const Color.fromARGB(156, 0, 0, 0),
+                              child: BlurredBox(
+                                  sigma: 20,
+                                  borderRadius: BorderRadius.zero,
+                                  child: const Column(children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text('Progetto creato con successo!'),
+                                    SizedBox(
+                                      height: 10,
+                                    )
+                                  ]))),
+                        ))
                       };
               },
               child: const Row(mainAxisSize: MainAxisSize.min, children: [

@@ -6,9 +6,10 @@ import 'package:flutter_application/commonElements/responsive_padding.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import '../../commonElements/blurred_box.dart';
 import '../../commonElements/headings_title.dart';
+import '../../commonElements/selectable_team_list.dart';
 import '../../commonElements/selectable_thumbnail_grid.dart';
 import '../../commonElements/tasks_checkbox_view.dart';
-import '../../data/thumbnail_list.dart';
+import '../../data/thumbnail.dart';
 
 int selectedTeam = 0;
 List<Task> tasks = [];
@@ -51,8 +52,9 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   Widget build(BuildContext context) {
     SelectableThumbnailGrid grid = SelectableThumbnailGrid(
         selectedThumbnail:
-            ProjectList.thumbnailsListProject.indexOf(widget.project.thumbnail),
-        list: ProjectList.thumbnailsListProject);
+            Thumbnail.projectThumbnails.indexOf(widget.project.thumbnail),
+        list: Thumbnail.projectThumbnails);
+        late SelectableTeamsList chips;
 
     return Container(
         decoration: const BoxDecoration(
@@ -159,14 +161,22 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                             CustomHeadingTitle(titleText: "Team"),
                           ]),
                           const SizedBox(height: 5),
-                          const Padding(
+                          Padding(
                               padding: EdgeInsets.symmetric(horizontal: 0),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    //SelectableTeamsList(),
-                                  ])),
+                              child: FutureBuilder(
+          future: DatabaseHelper.instance.getTeams(),
+          builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return SizedBox();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else { 
+              chips = SelectableTeamsList(teamsList: snapshot.data!, selectedTeam: snapshot.data!.indexOf(widget.project.team!),);
+              return Row(
+                  
+                  children: [
+                    chips
+                  ]);}})),
                           const SizedBox(height: 5),
                           Row(children: [
                             //SizedBox(width: 25),
@@ -258,7 +268,8 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                 style: ElevatedButton.styleFrom(
                                     foregroundColor: Colors.white,
                                     backgroundColor: Colors.pink),
-                                onPressed: () {
+                                onPressed: () async {
+                                  List<Team> teamsList = await DatabaseHelper.instance.getTeams();
                                   {
                                     widget.project.name =
                                         projectNameController.text;
@@ -268,13 +279,17 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                     DatabaseHelper.instance.updateProjectName(
                                         widget.project.name,
                                         projectNameController.text);
+                                    DatabaseHelper.instance.updateProjectTeam(
+                                      projectNameController.text,
+                                      teamsList[chips.selectedTeam].name
+                                    );
                                     DatabaseHelper.instance.updateDescription(
                                         projectNameController.text,
                                         projectDescriptionController.text);
                                     DatabaseHelper.instance.updateThumbnail(
                                         projectNameController.text,
-                                        ProjectList
-                                            .thumbnailsListProject[
+                                        Thumbnail
+                                            .projectThumbnails[
                                                 grid.selectedThumbnail]
                                             .assetName);
                                     //DatabaseHelper.instance.updateTas
@@ -297,7 +312,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                                   height: 10,
                                                 ),
                                                 Text(
-                                                    'Team modificato con successo!'),
+                                                    'Progetto modificato con successo!'),
                                                 SizedBox(
                                                   height: 10,
                                                 )

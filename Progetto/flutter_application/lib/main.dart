@@ -16,7 +16,7 @@ void main() async {
   );
 
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  final fcmToken = await FirebaseMessaging.instance.getToken();
+  //final fcmToken = await FirebaseMessaging.instance.getToken();
   //print('FCMToken $fcmToken');
 
   await deleteDatabase(join(await getDatabasesPath(), 'my_database.db'));
@@ -51,7 +51,7 @@ class _Group21AppState extends State<Group21App> {
     super.initState();
     _firebaseMessaging.requestPermission();
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    /*FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Received a message while in the foreground!');
       if (message.notification != null) {
         print('Message also contained a notification: ${message.notification}');
@@ -60,7 +60,7 @@ class _Group21AppState extends State<Group21App> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Message clicked!');
-    });
+    });*/
   }
 
   BoxDecoration getGradientDecoration() {
@@ -81,7 +81,7 @@ class _Group21AppState extends State<Group21App> {
     ));
   }
 
-  static const NavigationBarThemeData navigationBarTheme =
+  /*static const NavigationBarThemeData navigationBarTheme =
       NavigationBarThemeData(
     //tema barra di navigazione sotto
     height: 55,
@@ -90,7 +90,7 @@ class _Group21AppState extends State<Group21App> {
     backgroundColor: Color.fromARGB(56, 0, 0, 0),
     surfaceTintColor: Colors.transparent,
     
-  );
+  );*/
 
   @override
   Widget build(BuildContext context) {
