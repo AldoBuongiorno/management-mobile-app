@@ -55,7 +55,6 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
             Thumbnail.projectThumbnails.indexOf(widget.project.thumbnail),
         list: Thumbnail.projectThumbnails);
         late SelectableTeamsList chips;
-        Project projectItem;
 
     return Container(
         decoration: const BoxDecoration(
@@ -277,44 +276,38 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                 onPressed: () async {
                                   List<Team> teamsList = await DatabaseHelper.instance.getTeams();
                                   String oldName = widget.project.name;
-                                  projectNameController.text.isEmpty || projectDescriptionController.text.isEmpty ||
-                                  teamsList.isEmpty ? showDialog<String>(
-                                    context: context, builder: (BuildContext context) => AlertDialog(
-                                      title: const Text('Errore'),
-                                      content: const Text(
-                                        "Il progetto non può avere nome o descrizione vuoto.\nInoltre devono essere possibile assegnare un team al progetto."),
-                                      actions: <Widget>[
-                                        TextButton(onPressed: () => Navigator.pop(context, 'Ok'),
-                                          child: const Text('Ok'),
-                                        ),
-                                      ],
-                                    ),
-                                  ) : {
-                                      projectItem = Project(
-                                        name: projectNameController.text,
-                                        description: projectDescriptionController.text,
-                                        status: "Attivo",
-                                        team: teamsList[chips.selectedTeam],
-                                        thumbnail: Thumbnail.projectThumbnails[grid.selectedThumbnail]),
+
+                                  {
+                                    widget.project.name =
+                                        projectNameController.text;
+                                    widget.project.description =
+                                        projectDescriptionController.text;
+                                    widget.project.team = teamsList[chips.selectedTeam];
 
                                     DatabaseHelper.instance.updateProjectName(
                                         oldName,
-                                        projectNameController.text),
+                                        projectNameController.text);
                                     DatabaseHelper.instance.updateProjectTeam(
                                       projectNameController.text,
                                       teamsList[chips.selectedTeam].name
-                                    ),
+                                    );
                                     DatabaseHelper.instance.updateDescription(
                                         projectNameController.text,
-                                        projectDescriptionController.text),
+                                        projectDescriptionController.text);
                                     DatabaseHelper.instance.updateThumbnail(
                                         projectNameController.text,
-                                        Thumbnail.projectThumbnails[
-                                          grid.selectedThumbnail].assetName),
-                                    //DatabaseHelper.instance.updateTas
-                                    setState(() {}),
+                                        Thumbnail
+                                            .projectThumbnails[
+                                                grid.selectedThumbnail]
+                                            .assetName);
 
-                                    Navigator.of(context).pop(),
+                                            DatabaseHelper.instance.updateTaskProject(oldName, projectNameController.text);
+                                    //DatabaseHelper.instance.updateTas
+                                    
+                                    //DatabaseHelper.instance.updateTas
+                                    setState(() {});
+
+                                    Navigator.of(context).pop();
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       padding: EdgeInsets.zero,
@@ -336,7 +329,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                                   height: 10,
                                                 )
                                               ]))),
-                                    ))
+                                    ));
                                     /*showDialog<String>(
                                             context: context,
                                             builder: (BuildContext context) =>
@@ -354,7 +347,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                                     ),
                                                   ],
                                                 ));*/
-                                  };
+                                  }
                                   
                                 },
                                 child: const Row(
