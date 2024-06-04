@@ -26,7 +26,11 @@ class _StatsPageState extends State<StatsPage> {
     for (final num in numMembersPerTeam) {
       sum += num;
     }
-    return (sum / numMembersPerTeam.length).round();
+    if(sum == 0){
+      return 0;
+    }else{
+      return (sum / numMembersPerTeam.length).round();
+    }
   }
 
   Future<int> _loadNumProjects() async {
