@@ -76,7 +76,7 @@ class _TeamRouteState extends State<TeamRoute> {
                       _membersFuture = _loadMembersByTeam(widget.team.getName());
                     });
                   }),
-                  icon: const Icon(Icons.edit),
+                  icon: const Icon(Icons.draw),
                 ),
               ],
               foregroundColor: Colors.white,
@@ -181,7 +181,7 @@ class _TeamRouteState extends State<TeamRoute> {
                             const SizedBox(width: 15),
                             const Expanded(
                                 child: Text(
-                              'Eliminando un team, eliminerai anche il progetto ad esso associato.',
+                              'Eliminando un team, eliminerai anche i progetti ad esso associato.',
                               style: TextStyle(
                                   fontStyle: FontStyle.italic, fontSize: 13),
                             )),
