@@ -591,14 +591,14 @@ class DatabaseHelper {
       where: 'name = ?',
       whereArgs: [task],
     );
-    final List<Map<String, dynamic>> result = await db.rawQuery(
+    /*final List<Map<String, dynamic>> result = await db.rawQuery(
       'SELECT t.project AS project_name FROM Task t WHERE t.name = ?',
       [task],
     );
     await db.rawUpdate(
       'UPDATE Project SET lastModified = ? WHERE name = ?',
       [DateTime.now().toIso8601String(), result.first['name'] as String?],
-    );
+    );*/
   }
 
   Future<void> wipeDatabase() async {
