@@ -83,7 +83,7 @@ class _TasksCheckboxViewState extends State<TasksCheckboxView> {
               setState(() {
                 widget.tasks[index].completed =
                     value! ?  true : false;
-
+                DatabaseHelper.instance.updateCompleted(widget.tasks[index].name, value);
               });
             },
             secondary: IconButton(
