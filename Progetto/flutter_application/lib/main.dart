@@ -19,7 +19,7 @@ void main() async {
   //final fcmToken = await FirebaseMessaging.instance.getToken();
   //print('FCMToken $fcmToken');
 
-  //await deleteDatabase(join(await getDatabasesPath(), 'my_database.db'));
+  await deleteDatabase(join(await getDatabasesPath(), 'my_database.db'));
   final db = DatabaseHelper.instance;
   await db.database;
   DatabaseHelper.instance.database.then((_) {
