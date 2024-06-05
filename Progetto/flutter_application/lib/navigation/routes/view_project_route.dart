@@ -171,6 +171,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                             ),
                             setState(() {
                               widget.project.expirationDate = selectedDate;
+                              widget.project.lastModified = DateTime.now();
                             })
                           } : null;
                         });
