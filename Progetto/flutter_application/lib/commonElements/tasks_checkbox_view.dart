@@ -90,9 +90,9 @@ class _TasksCheckboxViewState extends State<TasksCheckboxView> {
             secondary: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
+                  DatabaseHelper.instance.deleteTask(widget.tasks[index].name);
                   widget.tasks.removeAt(index);
                   setState(() {});
-                  //DatabaseHelper.instance.deleteTask(widget.tasks[index].name);
                 }), //Text((ProjectList().getTaskList().indexOf(task) + 1).toString(), style: TextStyle(fontSize: 16),),
           );
         });
