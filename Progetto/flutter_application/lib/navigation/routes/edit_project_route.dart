@@ -28,7 +28,6 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   late TextEditingController projectDescriptionController;
   TextEditingController taskInputController = TextEditingController();
   late FutureBuilder dontSetStatePlease; late SelectableTeamsList chips;
-  
   late SelectableThumbnailGrid grid;
 
   @override

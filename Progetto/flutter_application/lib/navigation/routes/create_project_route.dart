@@ -25,6 +25,38 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   final projectNameController = TextEditingController();
   final projectDescriptionController = TextEditingController();
   TextEditingController taskInputController = TextEditingController();
+  late FutureBuilder dontSetStatePlease; late SelectableTeamsList chips;
+  late SelectableThumbnailGrid grid;
+
+  @override
+  void initState() {
+    super.initState();
+
+  grid = SelectableThumbnailGrid(
+      selectedThumbnail: 0,
+      list: Thumbnail.projectThumbnails
+    );
+    dontSetStatePlease = FutureBuilder(
+                    future: DatabaseHelper.instance.getTeams(),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        chips = SelectableTeamsList(
+                          teamsList: snapshot.data!,
+                          selectedTeam: 0,
+                        );
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(children: [chips]),
+                        );
+                      }
+                    }
+                  );
+
+  }
 
   @override
   void dispose() {
@@ -35,9 +67,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
   @override
   Widget build(BuildContext context) {
     TasksCheckboxView taskCheckboxList = TasksCheckboxView(tasks: cTasks);
-    SelectableThumbnailGrid grid =
-        SelectableThumbnailGrid(list: Thumbnail.projectThumbnails);
-        late SelectableTeamsList chips;
+    
     Project projectItem;
     return Container(
         margin: EdgeInsets.symmetric(
@@ -110,26 +140,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           const SizedBox(height: 5),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0),
-            child: FutureBuilder(
-              future: DatabaseHelper.instance.getTeams(),
-              builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const SizedBox();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else { 
-                  chips = SelectableTeamsList(teamsList: snapshot.data!);
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        chips
-                      ]
-                    ),
-                  );
-                }
-              }
-            )
+            child: dontSetStatePlease
           ),
           const SizedBox(height: 5),
           Row(children: [
