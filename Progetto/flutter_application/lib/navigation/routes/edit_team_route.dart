@@ -304,7 +304,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                               shrinkWrap: true,
                               itemCount: allMembers.length,
                               itemBuilder: (context, index) {
-                                return InkWell(
+                                return GestureDetector(
                                   onTap: () {
                                     setState(() {
                                       if (selectedMembers
@@ -322,15 +322,13 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(
-                                          color: Colors.black,
-                                          width: 1,
-                                        ),
+                                            color: Colors.transparent),
                                         color: selectedMembers
                                                 .contains(allMembers[index])
                                             ? const Color.fromARGB(
                                                 255, 207, 28, 79)
                                             : const Color.fromARGB(
-                                                255, 239, 212, 221)),
+                                                255, 255, 255, 255)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Text.rich(
@@ -338,15 +336,34 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                           children: [
                                             TextSpan(
                                               text: "${allMembers[index].code}",
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      selectedMembers.contains(
+                                                              allMembers[index])
+                                                          ? Colors.white
+                                                          : Colors.black),
                                             ),
                                             TextSpan(
                                                 text:
-                                                    ": ${allMembers[index].name} ${allMembers[index].surname}"),
+                                                    ": ${allMembers[index].name} ${allMembers[index].surname}",
+                                                style: TextStyle(
+                                                    color: selectedMembers
+                                                            .contains(
+                                                                allMembers[
+                                                                    index])
+                                                        ? Colors.white
+                                                        : Colors.black)),
                                             TextSpan(
                                                 text:
-                                                    " (${allMembers[index].role})"),
+                                                    " (${allMembers[index].role})",
+                                                style: TextStyle(
+                                                    color: selectedMembers
+                                                            .contains(
+                                                                allMembers[
+                                                                    index])
+                                                        ? Colors.white
+                                                        : Colors.black)),
                                           ],
                                         ),
                                       ),

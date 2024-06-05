@@ -37,7 +37,11 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
                   selectedColor: Colors.pink,
                   checkmarkColor:  Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), 
+                    borderRadius: BorderRadius.circular(10),
+                    side: BorderSide(
+                      width: 0, 
+                      color: widget.selectedTeam == index ? Colors.pink : Colors.white
+                    ) 
                   ),
                   labelStyle: TextStyle(color: widget.selectedTeam == index ? Colors.white : Colors.black),
                   label: Text(widget.teamsList[index].getName()),
