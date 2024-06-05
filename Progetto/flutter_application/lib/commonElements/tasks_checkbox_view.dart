@@ -34,12 +34,10 @@ class _TasksCheckboxViewForHomepageState extends State<TasksCheckboxViewForHomep
                         false; // Imposta completed a value se value non è nullo, altrimenti a false.
                     DatabaseHelper.instance.updateCompleted(
                         widget.tasks[index].name, value ?? false);
-                      Future.delayed(Duration(milliseconds: 1200), () {
-                        if (widget.tasks[index].completed == true) {
+                      Future.delayed(Duration(milliseconds: 100), () {
                           setState(() {
                             widget.tasks.removeAt(index);
                         });
-                      };
                       });
                   });
             },
