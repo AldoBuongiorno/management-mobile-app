@@ -38,10 +38,6 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
                   checkmarkColor:  Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10), 
-                    side: BorderSide(
-                      width: 0, 
-                      color: widget.selectedTeam == index ? Colors.pink : Colors.white
-                    )
                   ),
                   labelStyle: TextStyle(color: widget.selectedTeam == index ? Colors.white : Colors.black),
                   label: Text(widget.teamsList[index].getName()),
@@ -56,7 +52,7 @@ class _SelectableTeamsListState extends State<SelectableTeamsList> {
               ]
             );
           },
-        ).toList(),
+        ),
       )
     ) : const Text("Non ci sono team disponibili. Non è possibile creare un progetto senza team.");
   }
