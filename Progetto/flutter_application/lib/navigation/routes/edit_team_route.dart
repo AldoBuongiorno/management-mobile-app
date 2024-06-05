@@ -90,9 +90,11 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                     borderRadius: BorderRadius.circular(30),
                     sigma: 15,
                     child: TextField(
+                      maxLength: 50,
                       style: const TextStyle(color: Colors.white),
                       controller: teamNameController,
                       decoration: InputDecoration(
+                        counterText: '',
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 15),
                         filled: true,

@@ -188,13 +188,11 @@ class _StatsPageState extends State<StatsPage> {
                                 return Center(child: Text('Errore: ${snapshot.error}'));
                               } else if (snapshot.hasData) {
                                 return Container(
-                                  margin: EdgeInsets.symmetric(
-                                    horizontal: MediaQuery.of(context).orientation 
-                                      == Orientation.portrait ? 25 : 100
-                                  ),
+                                  
+                                  
                                   height: 200,
-                                  width: 300,
-                                  child: PieChart(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Center( child: PieChart(
                                     PieChartData(
                                       sections: [
                                         PieChartSectionData(
@@ -220,7 +218,7 @@ class _StatsPageState extends State<StatsPage> {
                                       ],
                                     ),
                                   ),
-                                );
+                                ));
                               } else {
                                 return const SizedBox();
                               }

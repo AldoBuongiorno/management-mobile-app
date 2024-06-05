@@ -122,24 +122,19 @@ class _ProjectScreenState extends State<ProjectScreen> {
                             ),
                           ],
                         ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                const SizedBox(width: 12),
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 10),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                                    child: teamCheck(filteredList[index]),
-                                  ),
-                                ),
-                              ],
-                            ),
+                        Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
+            Container(
+                    margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Row(mainAxisSize: MainAxisSize.min,
+              children: [
+                teamCheck(filteredList[index])
+              ])),
+            ),
                             BlurredBox(
                               borderRadius: const BorderRadius.vertical(
                                 bottom: Radius.circular(20),

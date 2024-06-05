@@ -37,8 +37,11 @@ Widget statusCheck(Project testItem) {
 }
 
 Widget teamCheck(Project testItem) {
-  return Text(testItem.getTeam()!.getName(),
-      style: const TextStyle(color: Colors.black, fontSize: 13));
+  return Flexible(
+      child: Text(testItem.getTeam()!.getName(),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          style: const TextStyle(color: Colors.black, fontSize: 13)));
 }
 
 Widget getProjectName(Project testItem) {
@@ -115,19 +118,16 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
             ],
           ),
           //SizedBox(height: 3),
-          Column(children: [
-            Row(
-              children: [
-                const SizedBox(width: 12),
-                Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: teamCheck(testItem)))
-              ],
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [teamCheck(testItem)])),
             ),
             BlurredBox(
                 borderRadius:
