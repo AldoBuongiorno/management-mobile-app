@@ -19,7 +19,7 @@ class _TasksCheckboxViewForHomepageState extends State<TasksCheckboxViewForHomep
   Widget build(BuildContext context) {
     return widget.tasks.isEmpty ? Text('Non sono presenti task.') : ListView.builder(
         shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: widget.tasks.length,
         itemBuilder: (context, index) {
           return CheckboxListTile(
