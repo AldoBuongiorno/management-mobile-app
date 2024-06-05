@@ -245,6 +245,7 @@ class _TeamRouteState extends State<TeamRoute> {
                         ),
                       )
                     ),
+                    const SizedBox(width: 5),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 10),

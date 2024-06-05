@@ -103,11 +103,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.bold
                         ),
-                        text: widget.project.team!.name
-                      ),
-                      const TextSpan(
-                        style: TextStyle(color: Colors.black, fontFamily: 'Poppins'),
-                        text: '.'
+                        text: "${widget.project.team!.name}."
                       ),
                     ]
                   )
