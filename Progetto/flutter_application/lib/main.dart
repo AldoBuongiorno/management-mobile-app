@@ -7,7 +7,7 @@ import 'package:flutter_application/data/database_helper.dart';
 import 'home.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); //se tolgo non cambia niente
+  WidgetsFlutterBinding.ensureInitialized(); 
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -21,11 +21,10 @@ void main() async {
   final db = DatabaseHelper.instance;
   await db.database;
   DatabaseHelper.instance.database.then((_) {
-    //ProjectList().loadSampleData();
-    runApp(Group21App());
+    runApp(const Group21App());
   });
 
-  //se tolgo non cambia niente
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       systemNavigationBarColor: Color.fromARGB(0, 20, 0, 0),
