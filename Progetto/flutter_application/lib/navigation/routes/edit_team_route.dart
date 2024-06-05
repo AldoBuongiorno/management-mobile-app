@@ -80,7 +80,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Row(
+                const Row(
                   children: [CustomHeadingTitle(titleText: "Nome")],
                 ),
                 Padding(
@@ -109,7 +109,7 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                     ),
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomHeadingTitle(titleText: "Membri"),
@@ -118,7 +118,8 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                 const SizedBox(height: 10),
                 SelectableMembersList(team: widget.team),
                 const SizedBox(height: 5),
-                Row(children: [CustomHeadingTitle(titleText: "Copertina")]),
+                const Row(
+                    children: [CustomHeadingTitle(titleText: "Copertina")]),
                 grid,
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -190,10 +191,10 @@ class _EditTeamScreenState extends State<EditTeamScreen> {
                       backgroundColor: Colors.transparent,
                       content: Container(
                           color: const Color.fromARGB(156, 0, 0, 0),
-                          child: BlurredBox(
+                          child: const BlurredBox(
                               sigma: 20,
                               borderRadius: BorderRadius.zero,
-                              child: const Column(children: [
+                              child: Column(children: [
                                 SizedBox(height: 10),
                                 Text('Team modificato con successo!'),
                                 SizedBox(height: 10)

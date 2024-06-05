@@ -17,160 +17,175 @@ class CreateTeamScreen extends StatefulWidget {
 }
 
 class _CreateTeamScreen extends State<CreateTeamScreen> {
-late SelectableThumbnailGrid grid;
+  late SelectableThumbnailGrid grid;
 
   @override
   void initState() {
     super.initState();
     selectedMembers.clear();
     grid = SelectableThumbnailGrid(
-      selectedThumbnail: 0,
-      list: Thumbnail.teamThumbnails
-    );
+        selectedThumbnail: 0, list: Thumbnail.teamThumbnails);
   }
 
-  
   final teamNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: MediaQuery.of(context).orientation == Orientation.portrait ? 20 : 100),
+          vertical: 10,
+          horizontal: MediaQuery.of(context).orientation == Orientation.portrait
+              ? 20
+              : 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Row(children: [CustomHeadingTitle(titleText: "Nome team")]),
+          const Row(children: [CustomHeadingTitle(titleText: "Nome team")]),
           const SizedBox(height: 10),
           BlurredBox(
-            borderRadius: BorderRadius.circular(30),
-            sigma: 15,
-            child: TextField(
-              maxLength: 50,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              style: const TextStyle(color: Colors.white),
-              controller: teamNameController,
-              decoration: const InputDecoration(
-                counterText: '',
-                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                filled: true,
-                fillColor: Color.fromARGB(100, 0, 0, 0),
-                border: OutlineInputBorder(borderSide: BorderSide.none),
-                hintText: 'Inserisci il nome del team',
-                hintStyle: TextStyle(color: Color.fromARGB(255, 192, 192, 192))
-              ),
-            )
-          ),
+              borderRadius: BorderRadius.circular(30),
+              sigma: 15,
+              child: TextField(
+                maxLength: 50,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                style: const TextStyle(color: Colors.white),
+                controller: teamNameController,
+                decoration: const InputDecoration(
+                    counterText: '',
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                    filled: true,
+                    fillColor: Color.fromARGB(100, 0, 0, 0),
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    hintText: 'Inserisci il nome del team',
+                    hintStyle:
+                        TextStyle(color: Color.fromARGB(255, 192, 192, 192))),
+              )),
           const SizedBox(height: 10),
-          Row(children: [CustomHeadingTitle(titleText: "Membri del team")]),
+          const Row(
+              children: [CustomHeadingTitle(titleText: "Membri del team")]),
           const SizedBox(height: 10),
           const SelectableMembersList(),
-          Row(children: [CustomHeadingTitle(titleText: "Copertina")]),
+          const Row(children: [CustomHeadingTitle(titleText: "Copertina")]),
           grid,
           ElevatedButton(
-            style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: Colors.pink),
-            onPressed: () async {
-              teamNameController.text.isEmpty ? showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Errore'),
-                  content: const Text("Il team non può essere vuoto."),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Ok'),
-                      child: const Text('Ok'),
-                    ),
-                  ],
-                ),
-              ) : await DatabaseHelper.instance.teamExists(teamNameController.text) ? showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Errore'),
-                  content: Text("Il team \"${teamNameController.text}\" esiste già."),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'Ok'),
-                      child: const Text('Ok'),
-                    ),
-                  ],
-                ),
-              ) : {
-                selectedMembers.length < 2 ? showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Errore'),
-                    content: const Text("Il team deve essere composto da almeno due membri."),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Ok'),
-                        child: const Text('Ok'),
-                      ),
-                    ],
-                  ),
-                ) : {
-                  checkIfMembersAreFree() ? {
-                    DatabaseHelper.instance.insertTeam(
-                      Team(
-                        name: teamNameController.text,
-                        thumbnail: Thumbnail.teamThumbnails[grid.selectedThumbnail]
-                      )
-                    ),
-                    for (Member member in selectedMembers){
-                      DatabaseHelper.instance.assignTeamToMember(
-                        teamNameController.text,
-                        member.code!
-                      )
-                    },              
-                    Navigator.of(context).pop(),
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(                          
-                        padding: EdgeInsets.zero,
-                        elevation: null,
-                        backgroundColor:Colors.transparent,
-                        content: Container(
-                          color: const Color.fromARGB(156, 0, 0, 0),
-                          child: BlurredBox(
-                            sigma: 20,
-                            borderRadius: BorderRadius.zero,
-                            child: const Column(
-                              children: [
-                                SizedBox(height: 10),
-                                Text('Team creato con successo!'),
-                                SizedBox(height: 10)
-                              ]
-                            )
-                          )
+              style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white, backgroundColor: Colors.pink),
+              onPressed: () async {
+                teamNameController.text.isEmpty
+                    ? showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Errore'),
+                          content: const Text("Il team non può essere vuoto."),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Ok'),
+                              child: const Text('Ok'),
+                            ),
+                          ],
                         ),
                       )
-                    )
-                  } : {
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Errore'),
-                        content: const Text("Almeno uno dei membri del team è occupato."),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Ok'),
-                            child: const Text('Ok'),
-                          ),
-                        ],
-                      ),
-                    )
-                  },
-                } 
-              };
-            },
-            child: const Row(
-              mainAxisSize: MainAxisSize.min, 
-              children: [
+                    : await DatabaseHelper.instance
+                            .teamExists(teamNameController.text)
+                        ? showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: const Text('Errore'),
+                              content: Text(
+                                  "Il team \"${teamNameController.text}\" esiste già."),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context, 'Ok'),
+                                  child: const Text('Ok'),
+                                ),
+                              ],
+                            ),
+                          )
+                        : {
+                            selectedMembers.length < 2
+                                ? showDialog<String>(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      title: const Text('Errore'),
+                                      content: const Text(
+                                          "Il team deve essere composto da almeno due membri."),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context, 'Ok'),
+                                          child: const Text('Ok'),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : {
+                                    checkIfMembersAreFree()
+                                        ? {
+                                            DatabaseHelper.instance.insertTeam(
+                                                Team(
+                                                    name:
+                                                        teamNameController.text,
+                                                    thumbnail: Thumbnail
+                                                            .teamThumbnails[
+                                                        grid.selectedThumbnail])),
+                                            for (Member member
+                                                in selectedMembers)
+                                              {
+                                                DatabaseHelper.instance
+                                                    .assignTeamToMember(
+                                                        teamNameController.text,
+                                                        member.code!)
+                                              },
+                                            Navigator.of(context).pop(),
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              padding: EdgeInsets.zero,
+                                              elevation: null,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              content: Container(
+                                                  color: const Color.fromARGB(
+                                                      156, 0, 0, 0),
+                                                  child: const BlurredBox(
+                                                      sigma: 20,
+                                                      borderRadius:
+                                                          BorderRadius.zero,
+                                                      child: Column(children: [
+                                                        SizedBox(height: 10),
+                                                        Text(
+                                                            'Team creato con successo!'),
+                                                        SizedBox(height: 10)
+                                                      ]))),
+                                            ))
+                                          }
+                                        : {
+                                            showDialog<String>(
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  AlertDialog(
+                                                title: const Text('Errore'),
+                                                content: const Text(
+                                                    "Almeno uno dei membri del team è occupato."),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.pop(
+                                                            context, 'Ok'),
+                                                    child: const Text('Ok'),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          },
+                                  }
+                          };
+              },
+              child: const Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(Icons.group_add),
                 SizedBox(width: 5),
                 Text("Aggiungi team")
-              ]
-            )
-          ),
+              ])),
           const SizedBox(height: 30)
         ],
       ),
@@ -233,7 +248,8 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
               ),
               onPressed: () {
                 showDialog(
-                  context: context, builder: (context) {
+                  context: context,
+                  builder: (context) {
                     return AlertDialog(
                       backgroundColor: Colors.white,
                       title: const Text("Aggiungi membri"),
@@ -248,21 +264,28 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                 return GestureDetector(
                                   onTap: () {
                                     setState(() {
-                                      if (selectedMembers.contains(allMembers[index])) {
-                                        selectedMembers.remove(allMembers[index]);
+                                      if (selectedMembers
+                                          .contains(allMembers[index])) {
+                                        selectedMembers
+                                            .remove(allMembers[index]);
                                       } else {
                                         selectedMembers.add(allMembers[index]);
                                       }
                                     });
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.symmetric(vertical: 7),
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 7),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(color: Colors.transparent),
-                                      color: selectedMembers.contains(allMembers[index]) ? 
-                                      const Color.fromARGB(255, 207, 28, 79) : const Color.fromARGB(255, 255, 255, 255)
-                                    ),
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: Colors.transparent),
+                                        color: selectedMembers
+                                                .contains(allMembers[index])
+                                            ? const Color.fromARGB(
+                                                255, 207, 28, 79)
+                                            : const Color.fromARGB(
+                                                255, 255, 255, 255)),
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Text.rich(
@@ -271,25 +294,33 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                                             TextSpan(
                                               text: "${allMembers[index].code}",
                                               style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: selectedMembers.contains(allMembers[index]) ? 
-                                                Colors.white : Colors.black
-                                              ),
+                                                  fontWeight: FontWeight.bold,
+                                                  color:
+                                                      selectedMembers.contains(
+                                                              allMembers[index])
+                                                          ? Colors.white
+                                                          : Colors.black),
                                             ),
                                             TextSpan(
-                                              text: ": ${allMembers[index].name} ${allMembers[index].surname}",
-                                              style: TextStyle(
-                                                color: selectedMembers.contains(allMembers[index]) ? 
-                                                Colors.white : Colors.black
-                                              )
-                                            ),
+                                                text:
+                                                    ": ${allMembers[index].name} ${allMembers[index].surname}",
+                                                style: TextStyle(
+                                                    color: selectedMembers
+                                                            .contains(
+                                                                allMembers[
+                                                                    index])
+                                                        ? Colors.white
+                                                        : Colors.black)),
                                             TextSpan(
-                                              text: " (${allMembers[index].role})",
-                                              style: TextStyle(
-                                                color: selectedMembers.contains(allMembers[index]) ? 
-                                                Colors.white : Colors.black
-                                              )
-                                            ),
+                                                text:
+                                                    " (${allMembers[index].role})",
+                                                style: TextStyle(
+                                                    color: selectedMembers
+                                                            .contains(
+                                                                allMembers[
+                                                                    index])
+                                                        ? Colors.white
+                                                        : Colors.black)),
                                           ],
                                         ),
                                       ),
@@ -331,7 +362,7 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                   Expanded(
                     child: Text(
                       "Partecipanti al progetto",
-                      style: TextStyle(color: Colors.white,fontSize: 16),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                   Icon(
@@ -386,19 +417,23 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                             children: [
                               Text(
                                 member.getCode().toString(),
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 member.getMemberName(),
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 member.getMemberSurname(),
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 member.getMemberRole(),
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -407,7 +442,9 @@ class _SelectableMembersListState extends State<SelectableMembersList> {
                       IconButton(
                         icon: const Icon(Icons.cancel),
                         onPressed: () {
-                          setState(() {selectedMembers.remove(member);});
+                          setState(() {
+                            selectedMembers.remove(member);
+                          });
                         },
                       ),
                     ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application/commonElements/headings_title.dart';
 import 'package:flutter_application/data/database_helper.dart';
 import '../commonElements/responsive_padding.dart';
@@ -20,7 +19,8 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Future<int> _loadAvgNumMembersPerTeam() async {
-    final List<int> numMembersPerTeam = await DatabaseHelper.instance.getAvgNumMembersPerTeam();
+    final List<int> numMembersPerTeam =
+        await DatabaseHelper.instance.getAvgNumMembersPerTeam();
     int sum = 0;
     for (final num in numMembersPerTeam) {
       sum += num;
@@ -38,7 +38,8 @@ class _StatsPageState extends State<StatsPage> {
   }
 
   Future<List<double>> _loadProjectsStatus() async {
-    final List<double> projectsStatus = await DatabaseHelper.instance.getStatusProjects();
+    final List<double> projectsStatus =
+        await DatabaseHelper.instance.getStatusProjects();
     return projectsStatus;
   }
 
@@ -48,9 +49,7 @@ class _StatsPageState extends State<StatsPage> {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: color, 
-            borderRadius: BorderRadius.circular(10)
-          ),
+              color: color, borderRadius: BorderRadius.circular(10)),
           width: 20,
           height: 20,
           margin: const EdgeInsets.only(right: 5),
@@ -63,22 +62,24 @@ class _StatsPageState extends State<StatsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics().applyTo(const BouncingScrollPhysics()),
-        child: Container(
-          margin: getResponsivePadding(context),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomHeadingTitle(titleText: 'Statistiche generali'),
-              const SizedBox(height: 10),
-              BlurredBox(
+        body: SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics()
+          .applyTo(const BouncingScrollPhysics()),
+      child: Container(
+        margin: getResponsivePadding(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const CustomHeadingTitle(titleText: 'Statistiche generali'),
+            const SizedBox(height: 10),
+            BlurredBox(
                 borderRadius: BorderRadius.circular(20),
                 sigma: 20,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(20),
-                  color:const Color.fromARGB(25, 0, 0, 0), // Sfondo grigio chiaro
+                  color:
+                      const Color.fromARGB(25, 0, 0, 0), // Sfondo grigio chiaro
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -90,10 +91,13 @@ class _StatsPageState extends State<StatsPage> {
                       FutureBuilder<int>(
                         future: _loadNumTeams(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
                           } else if (snapshot.hasError) {
-                            return Center(child: Text('Errore: ${snapshot.error}'));
+                            return Center(
+                                child: Text('Errore: ${snapshot.error}'));
                           } else if (snapshot.hasData) {
                             return Text('Numero di team: ${snapshot.data}');
                           } else {
@@ -104,12 +108,16 @@ class _StatsPageState extends State<StatsPage> {
                       FutureBuilder<int>(
                         future: _loadAvgNumMembersPerTeam(),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const Center(child: CircularProgressIndicator());
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
                           } else if (snapshot.hasError) {
-                            return Center(child: Text('Errore: ${snapshot.error}'));
+                            return Center(
+                                child: Text('Errore: ${snapshot.error}'));
                           } else if (snapshot.hasData) {
-                            return Text('Numero medio di membri per team: ${snapshot.data}');
+                            return Text(
+                                'Numero medio di membri per team: ${snapshot.data}');
                           } else {
                             return const SizedBox();
                           }
@@ -117,16 +125,16 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                     ],
                   ),
-                )
-              ),
-              const SizedBox(height: 10),
-              BlurredBox(
+                )),
+            const SizedBox(height: 10),
+            BlurredBox(
                 borderRadius: BorderRadius.circular(20),
                 sigma: 15,
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.all(20),
-                  color:const Color.fromARGB(25, 0, 0, 0), // Sfondo grigio chiaro
+                  color:
+                      const Color.fromARGB(25, 0, 0, 0), // Sfondo grigio chiaro
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -145,80 +153,105 @@ class _StatsPageState extends State<StatsPage> {
                           FutureBuilder<int>(
                             future: _loadNumProjects(),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(child: CircularProgressIndicator());
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
-                                return Center(child: Text('Errore: ${snapshot.error}'));
+                                return Center(
+                                    child: Text('Errore: ${snapshot.error}'));
                               } else if (snapshot.hasData) {
-                                return Text('Numero di progetti: ${snapshot.data}');
+                                return Text(
+                                    'Numero di progetti: ${snapshot.data}');
                               } else {
                                 return const SizedBox();
                               }
                             },
                           ),
                           const SizedBox(height: 10),
-                          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Wrap(
-                            alignment: WrapAlignment.start,
-                            spacing: 20,
-                            direction: Axis.horizontal,
-                            children: [
-                              _buildLegendItem(color: Colors.green, text: 'Attivi'),
-                              _buildLegendItem(color: Colors.blue, text: 'Completati'),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Wrap(
-                            alignment: WrapAlignment.start,
-                            spacing: 20,
-                            direction: Axis.horizontal,
-                            children: [
-                              _buildLegendItem(color: Colors.red,text: 'Falliti'),
-                              _buildLegendItem(color: Colors.orange,text: 'Sospesi'),
-                            ],
-                          ),])]),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Wrap(
+                                        alignment: WrapAlignment.start,
+                                        spacing: 20,
+                                        direction: Axis.horizontal,
+                                        children: [
+                                          _buildLegendItem(
+                                              color: Colors.green,
+                                              text: 'Attivi'),
+                                          _buildLegendItem(
+                                              color: Colors.blue,
+                                              text: 'Completati'),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Wrap(
+                                        alignment: WrapAlignment.start,
+                                        spacing: 20,
+                                        direction: Axis.horizontal,
+                                        children: [
+                                          _buildLegendItem(
+                                              color: Colors.red,
+                                              text: 'Falliti'),
+                                          _buildLegendItem(
+                                              color: Colors.orange,
+                                              text: 'Sospesi'),
+                                        ],
+                                      ),
+                                    ])
+                              ]),
                           const SizedBox(height: 15),
                           FutureBuilder<List<double>>(
                             future: _loadProjectsStatus(),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(child: CircularProgressIndicator());
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
-                                return Center(child: Text('Errore: ${snapshot.error}'));
+                                return Center(
+                                    child: Text('Errore: ${snapshot.error}'));
                               } else if (snapshot.hasData) {
                                 return Container(
-                                  
-                                  
-                                  height: 200,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: Center( child: PieChart(
-                                    PieChartData(
-                                      sections: [
-                                        PieChartSectionData(
-                                          color: Colors.green,
-                                          value: snapshot.data?[0],
-                                          title: '${snapshot.data?[0].toInt()}',
+                                    height: 200,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Center(
+                                      child: PieChart(
+                                        PieChartData(
+                                          sections: [
+                                            PieChartSectionData(
+                                              color: Colors.green,
+                                              value: snapshot.data?[0],
+                                              title:
+                                                  '${snapshot.data?[0].toInt()}',
+                                            ),
+                                            PieChartSectionData(
+                                              color: Colors.blue,
+                                              value: snapshot.data?[1],
+                                              title:
+                                                  '${snapshot.data?[1].toInt()}',
+                                            ),
+                                            PieChartSectionData(
+                                              color: Colors.red,
+                                              value: snapshot.data?[2],
+                                              title:
+                                                  '${snapshot.data?[2].toInt()}',
+                                            ),
+                                            PieChartSectionData(
+                                              color: Colors.orange,
+                                              value: snapshot.data?[3],
+                                              title:
+                                                  '${snapshot.data?[3].toInt()}',
+                                            ),
+                                          ],
                                         ),
-                                        PieChartSectionData(
-                                          color: Colors.blue,
-                                          value: snapshot.data?[1],
-                                          title: '${snapshot.data?[1].toInt()}',
-                                        ),
-                                        PieChartSectionData(
-                                          color: Colors.red,
-                                          value: snapshot.data?[2],
-                                          title: '${snapshot.data?[2].toInt()}',
-                                        ),
-                                        PieChartSectionData(
-                                          color: Colors.orange,
-                                          value: snapshot.data?[3],
-                                          title: '${snapshot.data?[3].toInt()}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ));
+                                      ),
+                                    ));
                               } else {
                                 return const SizedBox();
                               }
@@ -228,50 +261,54 @@ class _StatsPageState extends State<StatsPage> {
                       ),
                     ],
                   ),
-                )
-              ),
-              const SizedBox(height: 5),
-              FutureBuilder(
-                future: DatabaseHelper.instance.getActiveProjectsOrderedByLastModified(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Errore: ${snapshot.error}'));
-                  } else {
-                    return ListView.builder(
+                )),
+            const SizedBox(height: 5),
+            FutureBuilder(
+              future: DatabaseHelper.instance
+                  .getActiveProjectsOrderedByLastModified(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Errore: ${snapshot.error}'));
+                } else {
+                  return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data!.length,
                       itemBuilder: ((context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(vertical: 5),
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 7),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 7),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)
-                          ),
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const SizedBox(width: 8),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [_buildLegendItem(color: Colors.green,text: '')],
+                                children: [
+                                  _buildLegendItem(
+                                      color: Colors.green, text: '')
+                                ],
                               ),
                               Flexible(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      snapshot.data![index].name,
-                                      style: const TextStyle(fontWeight: FontWeight.bold),
-                                    ),
-                                    Text('Creato ${DateTime.now().difference(snapshot.data![index].creationDate!).inDays} giorni fa.'),
-                                  ],
-                                )
-                              ),
+                                  child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot.data![index].name,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                      'Creato ${DateTime.now().difference(snapshot.data![index].creationDate!).inDays} giorni fa.'),
+                                ],
+                              )),
                               const SizedBox(width: 40),
                               SizedBox(
                                 width: 65,
@@ -279,39 +316,40 @@ class _StatsPageState extends State<StatsPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     FutureBuilder(
-                                      future: snapshot.data![index].getProgress(),
-                                      builder: (context, taskSnapshot) {
-                                        if (snapshot.connectionState == ConnectionState.waiting) {
-                                          return const Center(child:CircularProgressIndicator());
-                                        } else if (snapshot.hasError) {
-                                          return Center(
-                                            child: Text('Errore: ${snapshot.error}'));
-                                        } else {
-                                          return Text(
-                                            '${taskSnapshot.data}%',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    ),
+                                        future:
+                                            snapshot.data![index].getProgress(),
+                                        builder: (context, taskSnapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                                child:
+                                                    CircularProgressIndicator());
+                                          } else if (snapshot.hasError) {
+                                            return Center(
+                                                child: Text(
+                                                    'Errore: ${snapshot.error}'));
+                                          } else {
+                                            return Text(
+                                              '${taskSnapshot.data}%',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            );
+                                          }
+                                        }),
                                   ],
                                 ),
                               )
                             ],
                           ),
                         );
-                      })
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
+                      }));
+                }
+              },
+            ),
+          ],
         ),
-      )
-    );
+      ),
+    ));
   }
 }

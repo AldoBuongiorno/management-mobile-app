@@ -28,13 +28,15 @@ class DefaultFirebaseOptions {
         return macos;
       case TargetPlatform.windows:
         return windows;
-      case TargetPlatform.linux: throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for linux - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
-      default: throw UnsupportedError(
-        'DefaultFirebaseOptions are not supported for this platform.',
-      );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      default:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions are not supported for this platform.',
+        );
     }
   }
 
@@ -83,5 +85,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'gruppo-21-progetto.appspot.com',
     measurementId: 'G-29YPT2LLRN',
   );
-
 }

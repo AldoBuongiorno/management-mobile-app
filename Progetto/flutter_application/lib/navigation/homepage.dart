@@ -41,160 +41,150 @@ class HomePageScreenState extends State<HomePageScreen> {
           return Text('Error: ${snapshot.error}');
         } else {
           return Scaffold(
-            //backgroundColor: Colors.amber,
-            body: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics().applyTo(const BouncingScrollPhysics()),
-              child: Column(
-                //mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: MediaQuery.of(context).orientation == Orientation.portrait ? 20 : 100
-                    ),
-                    child: Row(
-                      children: [
-                        CustomHeadingTitle(titleText: 'Progetti attivi'),
-                      ]
-                    )
-                  ),
-                  const SizedBox(height: 20),
-                  addCarouselIfNotEmpty(
-                    snapshot.data?[0] as List<Project>,
-                    snapshot.data![2],
-                    context,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: MediaQuery.of(context).orientation == Orientation.portrait ? 20 : 100
-                    ),
-                    child: Row(
-                      children: [
-                        CustomHeadingTitle(titleText: 'Team recenti'),
-                      ]
-                    )
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: MediaQuery.of(context).orientation == Orientation.portrait ? 20 : 100
-                    ),
-                    child: addTeamsIfNotEmpty(
-                      snapshot.data?[1] as List<Team>,
-                      snapshot.data![2],
-                      context,
-                    )
-                  )
-                ],
-              )
-            )
-          );
+              //backgroundColor: Colors.amber,
+              body: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics()
+                      .applyTo(const BouncingScrollPhysics()),
+                  child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: MediaQuery.of(context).orientation ==
+                                      Orientation.portrait
+                                  ? 20
+                                  : 100),
+                          child: const Row(children: [
+                            CustomHeadingTitle(titleText: 'Progetti attivi'),
+                          ])),
+                      const SizedBox(height: 20),
+                      addCarouselIfNotEmpty(
+                        snapshot.data?[0] as List<Project>,
+                        snapshot.data![2],
+                        context,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: MediaQuery.of(context).orientation ==
+                                      Orientation.portrait
+                                  ? 20
+                                  : 100),
+                          child: const Row(children: [
+                            CustomHeadingTitle(titleText: 'Team recenti'),
+                          ])),
+                      const SizedBox(height: 10),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: MediaQuery.of(context).orientation ==
+                                      Orientation.portrait
+                                  ? 20
+                                  : 100),
+                          child: addTeamsIfNotEmpty(
+                            snapshot.data?[1] as List<Team>,
+                            snapshot.data![2],
+                            context,
+                          ))
+                    ],
+                  )));
         }
       },
     );
   }
 
   Widget addCarouselIfNotEmpty(
-    List<Project> list, List<Setting> settings, BuildContext context) {
+      List<Project> list, List<Setting> settings, BuildContext context) {
     //testList.insert(0, Project(name: '', description: '', team: Team(name: '', thumbnail: const AssetImage('')), thumbnail: const AssetImage('')));
     if (list.isEmpty) {
       return Container(
-        alignment: Alignment.centerLeft,
-        margin: EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: MediaQuery.of(context).orientation == Orientation.portrait ? 20 : 100
-        ),
-        child: GestureDetector(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const ToAddProjectRoute()
-            )
-          ).then((_) => setState(() {})),
-          child: Container(
-            height: 200,
-            decoration: BoxDecoration(
-              //color: Colors.transparent,
-              border: Border.all(
-                width: 4,
-                color: Colors.white
-              ), //155
-              borderRadius: const BorderRadius.all(Radius.circular(20))
-            ),
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            child: const Center(
-              child: Icon(
-                Icons.add_circle_outline_sharp,
-                size: 75,
-                color: Colors.white,
-              )
-            )
-          )
-        )
-        //const Text('Non ci sono progetti recenti.'),
-      );
-    } else {
-      return CarouselSlider.builder(
-        itemCount: list.length + 1 < settings[0].number + 1 ? list.length + 1 : settings[0].number + 1,
-        itemBuilder: (context, index, realIndex) {
-          if (index - 1 == -1) {
-            return GestureDetector(
+          alignment: Alignment.centerLeft,
+          margin: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal:
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? 20
+                      : 100),
+          child: GestureDetector(
               onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ToAddProjectRoute(),
-                ),
-              ).then((_) => setState(() {})),
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ToAddProjectRoute()))
+                  .then((_) => setState(() {})),
               child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 4,
-                    color: Colors.white
-                  ), 
-                  borderRadius: const BorderRadius.all(Radius.circular(20))
-                ),
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                child: const Center(
-                  child: Icon(
+                  height: 200,
+                  decoration: BoxDecoration(
+                      //color: Colors.transparent,
+                      border: Border.all(width: 4, color: Colors.white), //155
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  child: const Center(
+                      child: Icon(
                     Icons.add_circle_outline_sharp,
                     size: 75,
                     color: Colors.white,
-                  )
-                )
-              )
-            );
+                  ))))
+          //const Text('Non ci sono progetti recenti.'),
+          );
+    } else {
+      return CarouselSlider.builder(
+        itemCount: list.length + 1 < settings[0].number + 1
+            ? list.length + 1
+            : settings[0].number + 1,
+        itemBuilder: (context, index, realIndex) {
+          if (index - 1 == -1) {
+            return GestureDetector(
+                onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ToAddProjectRoute(),
+                      ),
+                    ).then((_) => setState(() {})),
+                child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(width: 4, color: Colors.white),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20))),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    child: const Center(
+                        child: Icon(
+                      Icons.add_circle_outline_sharp,
+                      size: 75,
+                      color: Colors.white,
+                    ))));
           } else {
             Project testItem = list[index - 1];
             return buildCarousel(index - 1, testItem, context);
           }
         },
-        options: CarouselOptions(height: 200, enableInfiniteScroll: false, initialPage: 1),
+        options: CarouselOptions(
+            height: 200, enableInfiniteScroll: false, initialPage: 1),
       );
     }
   }
 
-  Widget addTeamsIfNotEmpty(List<Team> list, List<Setting> settings,BuildContext context) {
-    
+  Widget addTeamsIfNotEmpty(
+      List<Team> list, List<Setting> settings, BuildContext context) {
     if (list.isEmpty) {
       return Container(
-        alignment: Alignment.centerLeft,
-        child: const Text('Non ci sono team recenti.')
-      );
+          alignment: Alignment.centerLeft,
+          child: const Text('Non ci sono team recenti.'));
     } else {
       return ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: list.length < settings[1].number ? list.length : settings[1].number,
-        itemBuilder: (context, index) {
-          Team testItem = list[index];
-          return ExpandableTeamTile(testItem.getName(), index);
-        }
-      );
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: list.length < settings[1].number
+              ? list.length
+              : settings[1].number,
+          itemBuilder: (context, index) {
+            Team testItem = list[index];
+            return ExpandableTeamTile(testItem.getName(), index);
+          });
     }
   }
 }
@@ -224,7 +214,7 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
       data: ThemeData().copyWith(
         dividerColor: Colors.transparent,
       ),
-      child: Container(        
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -238,15 +228,14 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(
-                  overflow: TextOverflow.ellipsis,
-                  widget.teamName,
-                  style: const TextStyle(
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ),
+                  child: Text(
+                overflow: TextOverflow.ellipsis,
+                widget.teamName,
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
               FutureBuilder<List<Member>>(
                 future: _membersFuture,
                 builder: (context, snapshot) {
@@ -256,15 +245,14 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
                     return Center(child: Text('Errore: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
                     return Flexible(
-                      child: Text(
-                        overflow: TextOverflow.fade,
-                        "(${snapshot.data!.length} membri)",
-                        style: const TextStyle(
-                          fontFamily: 'Poppins',
-                          fontSize: 14,
-                        ),
-                      )
-                    );
+                        child: Text(
+                      overflow: TextOverflow.fade,
+                      "(${snapshot.data!.length} membri)",
+                      style: const TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 14,
+                      ),
+                    ));
                   } else {
                     return const SizedBox();
                   }
@@ -277,20 +265,20 @@ class _ExpandableTeamTileState extends State<ExpandableTeamTile> {
               future: _membersFuture,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
-                    return Column(
-                      children: snapshot.data!.map((member) {
-                        return Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.only(left: 30, bottom: 10),
-                          child: Text('${member.name} ${member.surname}'),
-                        );
-                      }).toList(),
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                },
+                    snapshot.hasData) {
+                  return Column(
+                    children: snapshot.data!.map((member) {
+                      return Container(
+                        alignment: Alignment.centerLeft,
+                        margin: const EdgeInsets.only(left: 30, bottom: 10),
+                        child: Text('${member.name} ${member.surname}'),
+                      );
+                    }).toList(),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              },
             ),
           ],
         ),

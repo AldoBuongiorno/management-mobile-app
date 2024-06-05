@@ -63,18 +63,20 @@ class _TeamRouteState extends State<TeamRoute> {
             child: AppBar(
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {Navigator.pop(context);},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               actions: [
                 IconButton(
                   onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditTeamScreen(team: widget.team),
-                    )
-                  ).then((_) {
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditTeamScreen(team: widget.team),
+                      )).then((_) {
                     setState(() {
-                      _membersFuture = _loadMembersByTeam(widget.team.getName());
+                      _membersFuture =
+                          _loadMembersByTeam(widget.team.getName());
                     });
                   }),
                   icon: const Icon(Icons.draw),
@@ -92,7 +94,7 @@ class _TeamRouteState extends State<TeamRoute> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(children: [CustomHeadingTitle(titleText: "Membri")]),
+                const Row(children: [CustomHeadingTitle(titleText: "Membri")]),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: FutureBuilder<List<Member>>(
@@ -125,51 +127,50 @@ class _TeamRouteState extends State<TeamRoute> {
                               ),
                               child: Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      const Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text('Matricola:'),
-                                          Text('Nome:'),
-                                          Text('Cognome:'),
-                                          Text('Ruolo:'),
-                                        ],
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                            snapshot.data![index].getCode().toString(),
-                                          ),
-                                          Text(
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                            snapshot.data![index].getMemberName(),
-                                          ),
-                                          Text(
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                            snapshot.data![index].getMemberSurname(),
-                                          ),
-                                          Text(
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold
-                                            ),
-                                            snapshot.data![index].getMemberRole(),
-                                          ),
-                                        ],
-                                      ),
-                                    ]
-                                  ),
+                                  Row(children: [
+                                    const Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text('Matricola:'),
+                                        Text('Nome:'),
+                                        Text('Cognome:'),
+                                        Text('Ruolo:'),
+                                      ],
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                          snapshot.data![index]
+                                              .getCode()
+                                              .toString(),
+                                        ),
+                                        Text(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                          snapshot.data![index].getMemberName(),
+                                        ),
+                                        Text(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                          snapshot.data![index]
+                                              .getMemberSurname(),
+                                        ),
+                                        Text(
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                          snapshot.data![index].getMemberRole(),
+                                        ),
+                                      ],
+                                    ),
+                                  ]),
                                 ],
                               ),
                             );
@@ -181,10 +182,8 @@ class _TeamRouteState extends State<TeamRoute> {
                 ),
                 FutureBuilder<List<String>>(
                   future: _loadProjectsByTeam(widget.team.getName()),
-                  builder: (
-                    BuildContext context,
-                    AsyncSnapshot<List<String>> snapshot
-                  ) {
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<String>> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
                     } else {
@@ -237,14 +236,11 @@ class _TeamRouteState extends State<TeamRoute> {
                     const Icon(Icons.priority_high),
                     const SizedBox(width: 15),
                     const Expanded(
-                      child: Text(
-                        'Eliminando un team, eliminerai anche i progetti ad esso associato.',
-                        style: TextStyle(
-                          fontStyle: FontStyle.italic, 
-                          fontSize: 13
-                        ),
-                      )
-                    ),
+                        child: Text(
+                      'Eliminando un team, eliminerai anche i progetti ad esso associato.',
+                      style:
+                          TextStyle(fontStyle: FontStyle.italic, fontSize: 13),
+                    )),
                     const SizedBox(width: 5),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -254,7 +250,8 @@ class _TeamRouteState extends State<TeamRoute> {
                       ),
                       onPressed: () async {
                         DatabaseHelper.instance.deleteTeam(widget.team.name);
-                        DatabaseHelper.instance.deleteProjectByTeam(widget.team.name);
+                        DatabaseHelper.instance
+                            .deleteProjectByTeam(widget.team.name);
                         Navigator.of(context).pop();
                       },
                       child: const Row(

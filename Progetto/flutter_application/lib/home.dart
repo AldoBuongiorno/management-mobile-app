@@ -27,76 +27,70 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-          //stile dell'area di sistema sopra l'applicazione
-          statusBarColor: Color.fromARGB(56, 0, 0, 0),
+        appBar: AppBar(
+          toolbarHeight: 0,
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            //stile dell'area di sistema sopra l'applicazione
+            statusBarColor: Color.fromARGB(56, 0, 0, 0),
+          ),
         ),
-      ),
-      body: screens[index],
-      bottomNavigationBar: NavigationBarTheme(
-        data: const NavigationBarThemeData(
-          //tema barra di navigazione sotto
-          height: 55,
-          indicatorColor: Color.fromARGB(255, 235, 235, 235),
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-          backgroundColor: Color.fromARGB(56, 0, 0, 0),
-          shadowColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-        ), //in main.dart
-        child: ClipRect(
-          //serve per ritagliare il figlio in un rettangolo per garantire che l'effetto di sfocatura (BackdropFilter) venga applicato correttamente solo all'interno del rettangolo del widget.
-          child: BackdropFilter(
-            filter: ImageFilter.blur(
-              //sfocatura allo sfondo della navbar
-              sigmaX: 20.0,
-              sigmaY: 20.0,
-            ),
-            child: Opacity(
-              //opacità della navbar
-              //you can change the opacity to whatever suits you best
-              opacity: 1,
-              child: NavigationBar(
-                //overlayColor: MaterialStateProperty.all<Color>(Colors.green),
-                //animationDuration: Duration(seconds: 1),
-                selectedIndex: index, 
-                onDestinationSelected: (index) => setState(() => this.index = index),
-                destinations: const [
-                  NavigationDestination(
-                    icon: Icon(Icons.home_outlined,
-                      color: Colors.white
+        body: screens[index],
+        bottomNavigationBar: NavigationBarTheme(
+            data: const NavigationBarThemeData(
+              //tema barra di navigazione sotto
+              height: 55,
+              indicatorColor: Color.fromARGB(255, 235, 235, 235),
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+              backgroundColor: Color.fromARGB(56, 0, 0, 0),
+              shadowColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+            ), //in main.dart
+            child: ClipRect(
+                //serve per ritagliare il figlio in un rettangolo per garantire che l'effetto di sfocatura (BackdropFilter) venga applicato correttamente solo all'interno del rettangolo del widget.
+                child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      //sfocatura allo sfondo della navbar
+                      sigmaX: 20.0,
+                      sigmaY: 20.0,
                     ),
-                    selectedIcon: Icon(Icons.home),
-                    label: ''),
-                  NavigationDestination(
-                    icon: Icon(Icons.map_outlined, color: Colors.white),
-                    selectedIcon: Icon(Icons.map),
-                    label: ''),
-                  NavigationDestination(
-                    icon: Icon(Icons.group_outlined,
-                      color: Colors.white
-                    ),
-                    selectedIcon: Icon(Icons.group),
-                    label: ''),
-                  NavigationDestination(
-                    icon: Icon(Icons.bar_chart_outlined,
-                      color: Colors.white
-                    ),
-                    selectedIcon: Icon(Icons.bar_chart),
-                    label: ''),
-                  NavigationDestination(
-                    icon: Icon(Icons.settings_outlined,
-                      color: Colors.white
-                    ),
-                    selectedIcon: Icon(Icons.settings),
-                    label: ''),
-                ],
-              ),
-            )
-          )
-        )
-      )
-    );
+                    child: Opacity(
+                      //opacità della navbar
+                      //you can change the opacity to whatever suits you best
+                      opacity: 1,
+                      child: NavigationBar(
+                        //overlayColor: MaterialStateProperty.all<Color>(Colors.green),
+                        //animationDuration: Duration(seconds: 1),
+                        selectedIndex: index,
+                        onDestinationSelected: (index) =>
+                            setState(() => this.index = index),
+                        destinations: const [
+                          NavigationDestination(
+                              icon: Icon(Icons.home_outlined,
+                                  color: Colors.white),
+                              selectedIcon: Icon(Icons.home),
+                              label: ''),
+                          NavigationDestination(
+                              icon:
+                                  Icon(Icons.map_outlined, color: Colors.white),
+                              selectedIcon: Icon(Icons.map),
+                              label: ''),
+                          NavigationDestination(
+                              icon: Icon(Icons.group_outlined,
+                                  color: Colors.white),
+                              selectedIcon: Icon(Icons.group),
+                              label: ''),
+                          NavigationDestination(
+                              icon: Icon(Icons.bar_chart_outlined,
+                                  color: Colors.white),
+                              selectedIcon: Icon(Icons.bar_chart),
+                              label: ''),
+                          NavigationDestination(
+                              icon: Icon(Icons.settings_outlined,
+                                  color: Colors.white),
+                              selectedIcon: Icon(Icons.settings),
+                              label: ''),
+                        ],
+                      ),
+                    )))));
   }
 }
