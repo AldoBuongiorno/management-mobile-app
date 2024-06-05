@@ -113,7 +113,7 @@ Widget buildCarousel(int index, Project testItem, context) => Container(
                               ),
                               TextButton(
                                 child: const Text(
-                                  'Conferma',
+                                  'Esci',
                                   style: TextStyle(color: Colors.pink),
                                 ),
                                 onPressed: () => Navigator.of(context).pop(),

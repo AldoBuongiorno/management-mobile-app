@@ -29,18 +29,19 @@ class _TasksCheckboxViewForHomepageState extends State<TasksCheckboxViewForHomep
             title: Text(widget.tasks[index].getName()),
             value: widget.tasks[index].getCompleted(),
             onChanged: (bool? value) {
-              setState(() {
-                widget.tasks[index].completed == true ?
-                { 
-                  widget.tasks[index].completed = false,
-                  DatabaseHelper.instance.updateCompleted(widget.tasks[index].name, false)
-                } : {
-                  widget.tasks[index].completed = true,
-                  DatabaseHelper.instance.updateCompleted(widget.tasks[index].name, true)
-
-                };
-
-              });
+                  setState(() {
+                    widget.tasks[index].completed = value ??
+                        false; // Imposta completed a value se value non è nullo, altrimenti a false.
+                    DatabaseHelper.instance.updateCompleted(
+                        widget.tasks[index].name, value ?? false);
+                      Future.delayed(Duration(milliseconds: 1200), () {
+                        if (widget.tasks[index].completed == true) {
+                          setState(() {
+                            widget.tasks.removeAt(index);
+                        });
+                      };
+                      });
+                  });
             },
             secondary: IconButton(
                 icon: const Icon(Icons.delete),
