@@ -81,96 +81,86 @@ class _TeamScreenState extends State<TeamScreen> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: filteredList.isNotEmpty
-                ? GridView.builder(
-                    physics: AlwaysScrollableScrollPhysics().applyTo(BouncingScrollPhysics()),
-                    primary: false,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3, // Aumenta il numero di colonne per rendere i riquadri più piccoli
-                      crossAxisSpacing: 10, // Aumenta lo spazio tra le colonne
-                      mainAxisSpacing: 0, // Aumenta lo spazio tra le righe
-                      childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 1.2 : 2, // Riduce l'altezza dei riquadri
+            child: filteredList.isNotEmpty ? GridView.builder(
+              physics: const AlwaysScrollableScrollPhysics().applyTo(const BouncingScrollPhysics()),
+              primary: false,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3, // Aumenta il numero di colonne per rendere i riquadri più piccoli
+                crossAxisSpacing: 10, // Aumenta lo spazio tra le colonne
+                mainAxisSpacing: 0, // Aumenta lo spazio tra le righe
+                childAspectRatio: MediaQuery.of(context).orientation == Orientation.portrait ? 1.2 : 2, // Riduce l'altezza dei riquadri
+              ),
+              itemCount: filteredList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TeamRoute(team: filteredList[index])),
+                  ).then((_) => _loadTeams()),
+                  child: Container(
+                    height: 150, // Regola l'altezza del contenitore se necessario
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: filteredList[index].thumbnail,
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(15)),
                     ),
-                    itemCount: filteredList.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TeamRoute(team: filteredList[index]),
-                          ),
-                        ).then((_) => _loadTeams()),
-                      child: Container(
-                        height: 150, // Regola l'altezza del contenitore se necessario
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: filteredList[index].thumbnail,
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: const BorderRadius.all(Radius.circular(15)),
-                        ),
-                        padding: EdgeInsets.zero,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    padding: EdgeInsets.zero,
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => EditTeamScreen(
-                                        team: filteredList[index],
-                                      ),
-                                    ),
-                                  ).then((_) => _loadTeams()),
-                                  icon: const Icon(
-                                    Icons.draw,
-                                    color: Colors.white,
-                                  ),
+                            IconButton(
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditTeamScreen(team: filteredList[index]),
                                 ),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                BlurredBox(
-                                  borderRadius: const BorderRadius.vertical(
-                                    bottom: Radius.circular(15),
-                                  ),
-                                  sigma: 15,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 3),
-                                    decoration: const BoxDecoration(
-                                      color: Color.fromARGB(100, 0, 0, 0),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        const SizedBox(width: 10),
-                                        Flexible(
-                                          child: Text(
-                                            filteredList[index].getName(),
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 16, // Diminuisci la dimensione del testo
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ).then((_) => _loadTeams()),
+                              icon: const Icon(Icons.draw,color: Colors.white),
                             ),
                           ],
                         ),
-                      ));
-                    },
+                        Column(
+                          children: [
+                            BlurredBox(
+                              borderRadius: const BorderRadius.vertical(
+                                bottom: Radius.circular(15),
+                              ),
+                              sigma: 15,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 3),
+                                decoration: const BoxDecoration(color: Color.fromARGB(100, 0, 0, 0)),
+                                child: Row(
+                                  children: [
+                                    const SizedBox(width: 10),
+                                    Flexible(
+                                      child: Text(
+                                        filteredList[index].getName(),
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 16, // Diminuisci la dimensione del testo
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   )
-                : const Center(child: Text("Nessun team trovato.")),
+                );
+              },
+            ) : const Center(child: Text("Nessun team trovato.")),
           ),
         ],
       ),
