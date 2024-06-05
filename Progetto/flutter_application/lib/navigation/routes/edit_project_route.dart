@@ -117,7 +117,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 const SizedBox(height: 20),
-                Row(children: [CustomHeadingTitle(titleText: "Nome")]),
+                const Row(children: [CustomHeadingTitle(titleText: "Nome")]),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 10, 
@@ -144,7 +144,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Row(children: [CustomHeadingTitle(titleText: "Descrizione")]),
+                const Row(children: [CustomHeadingTitle(titleText: "Descrizione")]),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 10, 
@@ -172,16 +172,16 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                Row(children: [CustomHeadingTitle(titleText: "Team")]),
+                const Row(children: [CustomHeadingTitle(titleText: "Team")]),
                 const SizedBox(height: 5),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: dontSetStatePlease,  
                 ),
                 const SizedBox(height: 5),
-                Row(children: [CustomHeadingTitle(titleText: "Copertina")]),
+                const Row(children: [CustomHeadingTitle(titleText: "Copertina")]),
                 grid,
-                Row(children: [CustomHeadingTitle(titleText: "Task")]),
+                const Row(children: [CustomHeadingTitle(titleText: "Task")]),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 10, 
@@ -257,6 +257,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                             widget.project.name = projectNameController.text,
                             widget.project.description = projectDescriptionController.text,
                             widget.project.team = teamsList[chips.selectedTeam],
+                            widget.project.lastModified = DateTime.now(),
 
                             DatabaseHelper.instance.updateProjectName(oldName,projectNameController.text),
                             DatabaseHelper.instance.updateProjectTeam(
@@ -282,10 +283,10 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                                 backgroundColor: Colors.transparent,
                                 content: Container(
                                   color: const Color.fromARGB(156, 0, 0, 0),
-                                  child: BlurredBox(
+                                  child: const BlurredBox(
                                     sigma: 20,
                                     borderRadius:BorderRadius.zero,
-                                    child: const Column(
+                                    child: Column(
                                       children: [
                                         SizedBox(height: 10),
                                         Text('Progetto modificato con successo!'),
