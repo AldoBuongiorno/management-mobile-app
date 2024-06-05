@@ -50,20 +50,6 @@ Widget getProjectName(Project testItem) {
               fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white)));
 }
 
-/*Widget buildEmptyAddProjectItem( context) {  return GestureDetector(onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SecondRoute(),
-                          ),
-                        ), child: Container(
-      decoration: BoxDecoration(
-          color: Colors.transparent,
-          border: Border.all(
-              width: 3, color: const Color.fromARGB(255, 255, 255, 255)),//155
-          borderRadius: const BorderRadius.all(Radius.circular(20))),
-      margin: const EdgeInsets.symmetric(horizontal: 5),
-      child: const Center(child: Icon(Icons.add_circle_outline_sharp, size: 75, color: Colors.white,)))); }*/
-
 Widget buildCarousel(int index, Project testItem, context) => Container(
       decoration: BoxDecoration(
           image: DecorationImage(image: testItem.thumbnail, fit: BoxFit.cover),

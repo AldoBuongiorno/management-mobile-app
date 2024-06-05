@@ -82,11 +82,11 @@ class _StatsPageState extends State<StatsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      /*const Text(
                         'Statistiche Team',
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10),
+                      ),*/
+                      //const SizedBox(height: 10),
                       FutureBuilder<int>(
                         future: _loadNumTeams(),
                         builder: (context, snapshot) {
@@ -130,7 +130,7 @@ class _StatsPageState extends State<StatsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      /*const Row(
                         children: [
                           Text(
                             'Statistiche Progetti',
@@ -138,7 +138,7 @@ class _StatsPageState extends State<StatsPage> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 10),*/
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -157,25 +157,27 @@ class _StatsPageState extends State<StatsPage> {
                             },
                           ),
                           const SizedBox(height: 10),
+                          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Wrap(
-                            alignment: WrapAlignment.spaceEvenly,
+                            alignment: WrapAlignment.start,
                             spacing: 20,
                             direction: Axis.horizontal,
                             children: [
-                              _buildLegendItem(color: Colors.green,text: 'Attivi'),
-                              _buildLegendItem(color: Colors.blue,text: 'Completati'),
+                              _buildLegendItem(color: Colors.green, text: 'Attivi'),
+                              _buildLegendItem(color: Colors.blue, text: 'Completati'),
                             ],
                           ),
                           const SizedBox(height: 10),
                           Wrap(
-                            alignment: WrapAlignment.spaceAround,
+                            alignment: WrapAlignment.start,
                             spacing: 20,
                             direction: Axis.horizontal,
                             children: [
                               _buildLegendItem(color: Colors.red,text: 'Falliti'),
                               _buildLegendItem(color: Colors.orange,text: 'Sospesi'),
                             ],
-                          ),
+                          ),])]),
                           const SizedBox(height: 15),
                           FutureBuilder<List<double>>(
                             future: _loadProjectsStatus(),

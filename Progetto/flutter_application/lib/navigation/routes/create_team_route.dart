@@ -17,18 +17,23 @@ class CreateTeamScreen extends StatefulWidget {
 }
 
 class _CreateTeamScreen extends State<CreateTeamScreen> {
+late SelectableThumbnailGrid grid;
 
   @override
   void initState() {
     super.initState();
     selectedMembers.clear();
+    grid = SelectableThumbnailGrid(
+      selectedThumbnail: 0,
+      list: Thumbnail.teamThumbnails
+    );
   }
 
   
   final teamNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    SelectableThumbnailGrid grid = SelectableThumbnailGrid(list: Thumbnail.teamThumbnails);
+    
     return Container(
       margin: EdgeInsets.symmetric(
         vertical: 10,
@@ -121,7 +126,7 @@ class _CreateTeamScreen extends State<CreateTeamScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(                          
                         padding: EdgeInsets.zero,
-                        elevation: 0,
+                        elevation: null,
                         backgroundColor:Colors.transparent,
                         content: Container(
                           color: const Color.fromARGB(156, 0, 0, 0),

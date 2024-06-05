@@ -164,7 +164,7 @@ class _CreateMemberScreen extends State<CreateMemberScreen> {
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(
                                       padding: EdgeInsets.zero,
-                                      elevation: 0,
+                                      elevation: null,
                                       backgroundColor: Colors.transparent,
                                       content: Container(
                                           color: const Color.fromARGB(

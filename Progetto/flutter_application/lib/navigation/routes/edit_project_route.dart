@@ -278,7 +278,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 padding: EdgeInsets.zero,
-                                elevation: 0,
+                                elevation: null,
                                 backgroundColor: Colors.transparent,
                                 content: Container(
                                   color: const Color.fromARGB(156, 0, 0, 0),
@@ -317,7 +317,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                         children: [
                           Icon(Icons.save),
                           SizedBox(width: 5),
-                          Text("Modifica progetto")
+                          Flexible(child: Text("Modifica progetto", overflow: TextOverflow.ellipsis))
                         ]
                       )
                     )

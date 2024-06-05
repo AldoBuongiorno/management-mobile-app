@@ -239,7 +239,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         Navigator.of(context).pop(),
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           padding: EdgeInsets.zero,
-                          elevation: 0,
+                          elevation: null,
                           backgroundColor: Colors.transparent,
                           content: Container(
                               color: const Color.fromARGB(156, 0, 0, 0),

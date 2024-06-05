@@ -183,7 +183,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                         children: [
                           Icon(Icons.timer), 
                           SizedBox(width: 5), 
-                          Text('Aggiorna data scadenza')
+                          Flexible(child: Text('Aggiorna data scadenza', overflow: TextOverflow.ellipsis,))
                         ]
                       )
                     )
