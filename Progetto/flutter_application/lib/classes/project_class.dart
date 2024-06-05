@@ -25,7 +25,11 @@ class Project {
     progress = (completedTasks * 100)/tasksList.length;
 
   
+<<<<<<< Updated upstream
     return !progress.isNaN  ? progress : 0.0;
+=======
+    return !progress.isNaN ? ((progress*100).round()/100): 0.0;
+>>>>>>> Stashed changes
 
   }
 
