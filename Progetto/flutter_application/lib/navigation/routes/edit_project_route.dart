@@ -65,6 +65,8 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   @override
   void dispose() {
     projectNameController.dispose();
+    projectDescriptionController.dispose();
+    taskInputController.dispose();
     super.dispose();
   }
 
