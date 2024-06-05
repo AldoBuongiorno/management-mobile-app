@@ -27,12 +27,40 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
   late TextEditingController projectNameController;
   late TextEditingController projectDescriptionController;
   TextEditingController taskInputController = TextEditingController();
+  late FutureBuilder dontSetStatePlease; late SelectableTeamsList chips;
+  
+  late SelectableThumbnailGrid grid;
 
   @override
   void initState() {
     super.initState();
     projectNameController = TextEditingController(text: widget.project.name);
     projectDescriptionController = TextEditingController(text: widget.project.description);
+
+  grid = SelectableThumbnailGrid(
+      selectedThumbnail: Thumbnail.projectThumbnails.indexOf(widget.project.thumbnail),
+      list: Thumbnail.projectThumbnails
+    );
+    dontSetStatePlease = FutureBuilder(
+                    future: DatabaseHelper.instance.getTeams(),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const SizedBox();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        chips = SelectableTeamsList(
+                          teamsList: snapshot.data!,
+                          selectedTeam: snapshot.data!.indexOf(widget.project.team!),
+                        );
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(children: [chips]),
+                        );
+                      }
+                    }
+                  );
+
   }
 
   @override
@@ -49,11 +77,8 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SelectableThumbnailGrid grid = SelectableThumbnailGrid(
-      selectedThumbnail: Thumbnail.projectThumbnails.indexOf(widget.project.thumbnail),
-      list: Thumbnail.projectThumbnails
-    );
-    late SelectableTeamsList chips;
+    
+    
 
     return Container(
       decoration: const BoxDecoration(
@@ -152,25 +177,7 @@ class _EditProjectScreenState extends State<EditProjectScreen> {
                 const SizedBox(height: 5),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0),
-                  child: FutureBuilder(
-                    future: DatabaseHelper.instance.getTeams(),
-                    builder: (BuildContext context, AsyncSnapshot<List<Team>> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const SizedBox();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else {
-                        chips = SelectableTeamsList(
-                          teamsList: snapshot.data!,
-                          selectedTeam: snapshot.data!.indexOf(widget.project.team!),
-                        );
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(children: [chips]),
-                        );
-                      }
-                    }
-                  )
+                  child: dontSetStatePlease,  
                 ),
                 const SizedBox(height: 5),
                 Row(children: [CustomHeadingTitle(titleText: "Copertina")]),

@@ -25,7 +25,7 @@ class Project {
     progress = (completedTasks * 100)/tasksList.length;
 
   
-    return !progress.isNaN ? progress : 0.0;
+    return !progress.isNaN  ? progress : 0.0;
 
   }
 
