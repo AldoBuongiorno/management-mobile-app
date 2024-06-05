@@ -365,7 +365,7 @@ class _ProjectRouteState extends State<ProjectRoute> {
                     } else if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else {
-                      return TasksCheckboxViewForHomepage(tasks: snapshot.data as List<Task>);
+                      return TasksCheckboxView(tasks: snapshot.data as List<Task>);
                     }
                   }
                 ),
